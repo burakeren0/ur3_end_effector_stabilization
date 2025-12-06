@@ -1,0 +1,47 @@
+name: ROS 2 Jazzy CI
+
+# Bu akış ne zaman çalışacak?
+on:
+  push:
+    branches: [ "main", "devel" ]
+  pull_request:
+    branches: [ "main", "devel" ]
+  workflow_dispatch: # Manuel çalıştırma butonu ekler
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    # Hazır ROS 2 Jazzy kurulu ortamı kullanıyoruz (Çok daha hızlıdır)
+    container:
+      image: osrf/ros:jazzy-desktop
+
+    steps:
+      # 1. Kodu GitHub'dan sanal makineye indir
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Eksik kütüphaneleri yükle (ur_description vb.)
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          apt-get update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -r -y
+
+      # 3. Derleme ve Source Testi
+      - name: Build and Source
+        shell: bash
+        run: |
+          # A. Önce ana ROS kurulumunu tanıt
+          source /opt/ros/jazzy/setup.bash
+          
+          # B. Derleme işlemini yap
+          echo "Derleme başlıyor..."
+          colcon build --symlink-install
+          
+          # C. Derleme bitti, şimdi senin çalışma alanını tanıt (Test ediyoruz)
+          source install/setup.bash
+          
+          # D. Kurulumun başarılı olduğunu teyit et
+          echo "Kurulum ve Source işlemi başarılı! Paketler:"
+          ros2 pkg list | grep my_ur3_project || echo "Paket bulunamadı!"
