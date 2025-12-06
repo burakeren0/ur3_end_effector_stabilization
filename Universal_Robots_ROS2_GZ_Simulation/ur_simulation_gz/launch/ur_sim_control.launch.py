@@ -175,6 +175,9 @@ def launch_setup(context, *args, **kwargs):
         executable="parameter_bridge",
         arguments=[
             "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            #"/imu@sensor_msgs/msg/Imu[gz.msgs.IMU",
+            "/imu_data@sensor_msgs/msg/Imu[gz.msgs.IMU",
+
         ],
         output="screen",
     )

@@ -50,7 +50,19 @@ Dosya hiyerarşisi ve görevleri şöyledir:
     * **Gazebo Eklentisi:** Robotun hareket etmesini sağlayan `gz_ros2_control` plugini burada çağrılır.
    
 ### 2. Core Macro (Çekirdek) Dosyası: `ur_macro.xacro`
-* **Konum:** `src/Universal_Robots_ROS2_Description/urdf/`
+* **Konum:** `/opt/ros/jazzy/share/ur_description/urdf`
 * **Görevi:** Robotun fiziksel anatomisini (Linkler, Jointler, Boyutlar, Ağırlıklar) tanımlar.
 * **İlişki:** Wrapper dosyası, bu dosyayı `<xacro:include>` komutuyla içeri alır.
+Universal_Robots_ROS2_Description paketini kullanmıyor ileride bu paketi kaldırabiliriz.
 
+## Simülasyon'u başlat
+Terminal 1
+```bash
+ros2 launch ur_simulation_gz ur_sim_control.launch.py 
+```
+Terminal 2
+```bash
+ros2 run plotjuggler plotjuggler
+```
+Ros topic: /imu_data  imu verileri için
+![alt text](image.png)
