@@ -4,7 +4,7 @@
   
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
   <xacro:include filename="$(find clearpath_platform_description)/urdf/a200/a200.urdf.xacro" />
-  <xacro:include filename="$(find husky_ur3_simulation)/urdf/ur_gz.ros2_control.xacro" />
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur_joint_control.xacro" />
 
   <xacro:arg name="ur_type" default="ur3"/>
   <xacro:arg name="tf_prefix" default="" />
@@ -29,33 +29,13 @@
   )}"/>
 
   <xacro:a200 /> 
+  <link name="ur_base_plate"/> 
 
-  <ros2_control name="Husky_System" type="system">
-    <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-    </hardware>
-    <joint name="front_left_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="front_right_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="rear_left_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="rear_right_wheel_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-  </ros2_control>
-
+  <joint name="husky_ur_joint" type="fixed">
+    <parent link="default_mount" />
+    <child link="ur_base_plate" />
+    <origin xyz="0.2 0 0.1" rpy="0 0 0" />
+  </joint>
   <xacro:ur_robot
     name="$(arg name)"
     tf_prefix="$(arg tf_prefix)"
@@ -68,14 +48,59 @@
     safety_pos_margin="$(arg safety_pos_margin)"
     safety_k_position="$(arg safety_k_position)"
     force_abs_paths="true">
-    <origin xyz="0.2 0 0.01" rpy="0 0 0" />
+    <origin xyz="0.2 0 0.1" rpy="0 0 0" />
   </xacro:ur_robot>
 
-  <xacro:ur_ros2_control
-    name="$(arg name)"
-    tf_prefix="$(arg tf_prefix)"
-    initial_positions="${initial_positions}"
-  />
+  <ros2_control name="MobileManipulatorSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <joint name="front_left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="front_right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="rear_left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <joint name="rear_right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-20</param>
+        <param name="max">20</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+    <xacro:ur_joint_control_description
+      tf_prefix="$(arg tf_prefix)"
+      initial_positions="${initial_positions}"
+    />
+  </ros2_control>
 
   <link name="imu_link">
     <inertial>
