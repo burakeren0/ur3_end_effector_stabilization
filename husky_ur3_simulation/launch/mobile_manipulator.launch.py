@@ -146,6 +146,7 @@ def launch_setup(context, *args, **kwargs):
         gz_sim_bridge,
     ]
 
+
 def generate_launch_description():
     pkg_clearpath_gz = get_package_share_directory('clearpath_gz')
     packages_paths = [os.path.join(p, 'share') for p in os.getenv('AMENT_PREFIX_PATH', '').split(':')]
@@ -154,7 +155,6 @@ def generate_launch_description():
         name='GZ_SIM_RESOURCE_PATH',
         value=[
             os.path.join(pkg_clearpath_gz, 'worlds') + ':',
-            os.path.join(pkg_clearpath_gz, 'meshes') + ':',
             ':' + ':'.join(packages_paths)
         ]
     )

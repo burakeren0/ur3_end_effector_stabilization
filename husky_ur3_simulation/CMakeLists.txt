@@ -17,6 +17,7 @@ install(PROGRAMS
   scripts/ur3_mover.py
   scripts/husky_circle.py
   scripts/master_mover.py
+  scripts/forward_kinematic_analysis.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
