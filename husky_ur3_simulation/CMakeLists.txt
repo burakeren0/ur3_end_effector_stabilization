@@ -18,6 +18,7 @@ install(PROGRAMS
   scripts/husky_circle.py
   scripts/master_mover.py
   scripts/forward_kinematic_analysis.py
+  scripts/velocity_kinematics_analysis.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
