@@ -41,7 +41,7 @@ class UR3Mover(Node):
             # 1. HAREKET: Home Pozisyonu (Dik duruş)
             self.get_logger().info('Hareket 1: Home Pozisyonuna Gidiliyor...')
             # Hedef açılar (Radyan cinsinden)
-            point.positions = [0.0, -1.57, 0.0, -1.57, 0.0, 0.0]
+            point.positions = [0.0, -1.57, -1.57, -1.57, 0.0, 0.0]
             point.time_from_start = Duration(sec=4) # 4 saniyede git
             self.movement_stage += 1
             

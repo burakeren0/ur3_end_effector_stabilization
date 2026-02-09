@@ -99,7 +99,7 @@ class MoveAndMeasure(Node):
             
         except (LookupException, ConnectivityException, ExtrapolationException) as e:
             self.get_logger().error(f'TF verisi okunamadı: {str(e)}')
-            self.get_logger().info('İpucu: Frame isimleri "ur_base_link" ve "ur_tool0" olarak denendi.')
+            self.get_logger().info('İpucu: Frame isimleri "ur_base_link_inertia" ve "ur_tool0" olarak denendi.')
 
 def main(args=None):
     rclpy.init(args=args)
