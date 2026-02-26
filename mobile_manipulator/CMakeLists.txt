@@ -31,6 +31,10 @@ install(DIRECTORY
   config
   rviz
   worlds
+  scripts/robot_dancer.py
+  scripts/velocity_kinematics_analysis.py
+  scripts/generate_bumpy_world.py
+  scripts/generate_street_world.py
   DESTINATION share/${PROJECT_NAME}
 )
 
