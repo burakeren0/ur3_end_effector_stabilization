@@ -80,7 +80,7 @@ def launch_setup(context, *args, **kwargs):
     ur_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["scaled_joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["ur_effort_controller", "-c", "/controller_manager"],
     )
     
     husky_controller_spawner = Node(

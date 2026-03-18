@@ -1,21 +1,34 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 100
 
-    # Eklem durumlarını yayınlayan temel yayıncı
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-    # UR3 Kol Kontrolcüsü (Trajectory Controller)
-    scaled_joint_trajectory_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
+    # YENİ: Kol için efor tabanlı kontrolcü
+    ur_effort_controller:
+      type: effort_controllers/JointGroupEffortController
 
-    # Husky Tekerlek Kontrolcüsü (Diff Drive)
+    # Husky tekerlek kontrolcüsü
     diff_drive_base_controller:
       type: diff_drive_controller/DiffDriveController
 
 # -------------------------------------------------------------------
-# Husky (A200) Tekerlek Ayarları
+# UR3 Kol Efor (Tork) Kontrolcü Ayarları
+# -------------------------------------------------------------------
+ur_effort_controller:
+  ros__parameters:
+    joints:
+      - ur_shoulder_pan_joint
+      - ur_shoulder_lift_joint
+      - ur_elbow_joint
+      - ur_wrist_1_joint
+      - ur_wrist_2_joint
+      - ur_wrist_3_joint
+    # Bu kontrolcü tipi için komut arayüzü varsayılan olarak 'effort' (tork) olur.
+
+# -------------------------------------------------------------------
+# Husky Tekerlek Ayarları (değişiklik yok)
 # -------------------------------------------------------------------
 diff_drive_base_controller:
   ros__parameters:
@@ -24,11 +37,6 @@ diff_drive_base_controller:
 
     wheel_separation: 0.512
     wheel_radius: 0.1651
-
-    # Odometri Ayarları
-    wheel_separation_multiplier: 1.0
-    left_wheel_radius_multiplier: 1.0
-    right_wheel_radius_multiplier: 1.0
 
     publish_rate: 50.0
     odom_frame_id: odom
@@ -41,30 +49,3 @@ diff_drive_base_controller:
 
     cmd_vel_timeout: 50.0
     use_stamped_vel: false
-
-# -------------------------------------------------------------------
-# UR3 Kol Ayarları
-# -------------------------------------------------------------------
-scaled_joint_trajectory_controller:
-  ros__parameters:
-    joints:
-      - ur_shoulder_pan_joint
-      - ur_shoulder_lift_joint
-      - ur_elbow_joint
-      - ur_wrist_1_joint
-      - ur_wrist_2_joint
-      - ur_wrist_3_joint
-    command_interfaces:
-      - position
-
-    state_interfaces:
-      - position
-      - velocity
-
-    state_publish_rate: 100.0
-    action_monitor_rate: 20.0
-    allow_partial_joints_goal: false
-    open_loop_control: true
-    constraints:
-      stopped_velocity_tolerance: 0.2
-      goal_time: 0.0
