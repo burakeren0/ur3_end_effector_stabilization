@@ -6,12 +6,13 @@ from builtin_interfaces.msg import Duration
 from tf2_ros import Buffer, TransformListener
 from tf2_ros import LookupException, ConnectivityException, ExtrapolationException
 import math
-
+M_PI = math.pi
 # ==========================================
 # KULLANICI AYARLARI (Açiları Buraya Gir)
 # ==========================================
 # [Base, Shoulder, Elbow, Wrist1, Wrist2, Wrist3] (Radyan cinsinden)
-HEDEF_ACILAR = [0.0, -1.57/2, -1.57/6, -1.57/2.1, 1.57, 0.0]
+HEDEF_ACILAR = [0.0, +M_PI/2.0, 0.0, -M_PI/2.0, 0.0, 0.0]
+# HEDEF_ACILAR = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # Hareketin tamamlanması için beklenecek süre (Saniye)
 HAREKET_SURESI = 7.0 

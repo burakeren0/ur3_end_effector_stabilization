@@ -12,6 +12,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(urdf REQUIRED)
 find_package(xacro REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 install(PROGRAMS
   scripts/ur3_mover.py
@@ -41,4 +44,18 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+add_executable(computed_torque_cpp src/computed_torque.cpp)
+target_include_directories(computed_torque_cpp PUBLIC
+  $<BUILD_INTERFACE:${Eigen3_INCLUDE_DIRS}>
+)
+# ROS 2 paketleri ament ile bağlanır
+ament_target_dependencies(computed_torque_cpp rclcpp sensor_msgs std_msgs)
+
+# Eigen3 gibi standart kütüphaneler target_link_libraries ile bağlanır
+target_link_libraries(computed_torque_cpp Eigen3::Eigen)
+
+install(TARGETS
+  computed_torque_cpp
+  DESTINATION lib/${PROJECT_NAME}
+)
 ament_package()
