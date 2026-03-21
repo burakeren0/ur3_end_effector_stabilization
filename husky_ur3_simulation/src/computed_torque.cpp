@@ -90,7 +90,7 @@ private:
     void robot_dynamics(const Vector6d& q, const Vector6d& dq, Matrix6d& D, Matrix6d& C, Vector6d& g)
     {
         double th1 = q(0), th2 = q(1), th3 = q(2), th4 = q(3), th5 = q(4), th6 = q(5);
-        double dth1 = dq(0), dth2 = dq(1), dth3 = dq(2), dth4 = dq(3), dth5 = dq(4), dth6 = dq(5);
+        double th1_dot = dq(0), th2_dot = dq(1), th3_dot = dq(2), th4_dot = dq(3), th5_dot = dq(4), th6_dot = dq(5);
 
         for(int i=0; i<6; i++) {
                 g[i] = 0.0;
