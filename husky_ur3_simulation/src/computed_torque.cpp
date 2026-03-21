@@ -93,15 +93,14 @@ private:
         double th1_dot = dq(0), th2_dot = dq(1), th3_dot = dq(2), th4_dot = dq(3), th5_dot = dq(4), th6_dot = dq(5);
 
         for(int i=0; i<6; i++) {
-                g[i] = 0.0;
-                for(int j=0; j<6; j++) {
+            g[i] = 0.0;
+            for(int j=0; j<6; j++) {
                 D[i][j] = 0.0;
                 C[i][j] = 0.0;
-                }
+            }
         }
 
-        // D(q) Matrisi (Atalet/Inertia)
-        D[0][0] = 0.002949*std::sin(th3 + th4 + th5) - 4.494e-5*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001033*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) + 0.002949*std::sin(2.0*th2 + th3 + th4 + th5) + 0.1578*std::cos(2.0*th2 + th3) - 0.002581*std::sin(th4 - 1.0*th5) - 0.02126*std::sin(2.0*th2 + 2.0*th3 + th4) + 0.001033*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*std::cos(2.0*th2) + 8.989e-5*std::cos(2.0*th5) - 0.002581*std::sin(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.02429*std::sin(th3 + th4) + 0.002581*std::sin(th4 + th5) - 0.02429*std::sin(2.0*th2 + th3 + th4) - 0.002949*std::sin(th3 + th4 - 1.0*th5) + 0.1578*std::cos(th3) + 0.005439*std::cos(th5) - 0.002949*std::sin(2.0*th2 + th3 + th4 - 1.0*th5) + 0.002581*std::sin(2.0*th2 + 2.0*th3 + th4 + th5) - 0.02126*std::sin(th4) + 0.06319*std::cos(2.0*th2 + 2.0*th3) - 0.003516*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.2823;
+        D[0][0] = 0.002949*std::sin(th3 + th4 + th5) - 4.494e-5*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001033*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) + 0.002949*std::sin(2.0*th2 + th3 + th4 + th5) + 0.1578*std::cos(2.0*th2 + th3) - 0.002581*std::sin(th4 - 1.0*th5) - 0.02126*std::sin(2.0*th2 + 2.0*th3 + th4) + 0.001033*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*std::cos(2.0*th2) + 8.989e-5*std::cos(2.0*th5) - 0.002581*std::sin(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.02429*std::sin(th3 + th4) + 0.002581*std::sin(th4 + th5) - 0.02429*std::sin(2.0*th2 + th3 + th4) - 0.002949*std::sin(th3 + th4 - 1.0*th5) + 0.1578*std::cos(th3) + 0.005439*std::cos(th5) - 0.002949*std::sin(2.0*th2 + th3 + th4 - 1.0*th5) + 0.002581*std::sin(2.0*th2 + 2.0*th3 + th4 + th5) - 0.02126*std::sin(th4) + 0.06319*std::cos(2.0*th2 + 2.0*th3) - 0.003516*std::cos(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.3019;
         D[0][1] = 0.0112*std::cos(th2 + th3 + th4) + 0.002581*std::sin(th2 + th3 + th5) + 0.002393*std::cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*std::cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*std::cos(th2 + th3 + th4 + 2.0*th5) + 0.002949*std::sin(th2 - 1.0*th5) - 0.0003268*std::cos(th2 + th3 + th4 + th5) + 0.05199*std::sin(th2 + th3) + 0.002949*std::sin(th2 + th5) + 0.002581*std::sin(th2 + th3 - 1.0*th5) + 0.1066*std::sin(th2);
         D[0][2] = 0.0112*std::cos(th2 + th3 + th4) + 0.002581*std::sin(th2 + th3 + th5) + 0.002393*std::cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*std::cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*std::cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*std::cos(th2 + th3 + th4 + th5) + 0.05199*std::sin(th2 + th3) + 0.002581*std::sin(th2 + th3 - 1.0*th5);
         D[0][3] = 0.0112*std::cos(th2 + th3 + th4) + 0.002393*std::cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*std::cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*std::cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*std::cos(th2 + th3 + th4 + th5);
@@ -176,7 +175,6 @@ private:
         g[1] = std::sin(th5)*(0.2375*std::sin(th2 + th3)*std::sin(th4) - 0.2375*std::cos(th2 + th3)*std::cos(th4)) - 11.9*std::cos(th2) - 6.354*std::cos(th2 + th3) + 0.978*std::cos(th2 + th3)*std::sin(th4) + 0.978*std::sin(th2 + th3)*std::cos(th4);
         g[2] = 0.978*std::sin(th2 + th3 + th4) - 6.354*std::cos(th2 + th3) - 0.2375*std::cos(th2 + th3 + th4)*std::sin(th5);
         g[3] = 0.978*std::sin(th2 + th3 + th4) - 0.2375*std::cos(th2 + th3 + th4)*std::sin(th5);
-        g[4] = -0.2375*std::sin(th2 + th3 + th4)*std::cos(th5);
 }
 
     void control_loop()
