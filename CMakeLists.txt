@@ -28,14 +28,20 @@ endif()
 install(DIRECTORY
   launch
   urdf
+  worlds
   config
   rviz
-  worlds
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(PROGRAMS
   scripts/robot_dancer.py
   scripts/velocity_kinematics_analysis.py
   scripts/generate_bumpy_world.py
   scripts/generate_street_world.py
-  DESTINATION share/${PROJECT_NAME}
+  scripts/teacher_data_logger.py
+  scripts/active_stabilizer_node.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
