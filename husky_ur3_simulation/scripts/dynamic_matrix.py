@@ -1,190 +1,87 @@
 import numpy as np
 from numba import jit
+
 @jit(nopython=True, cache=True)
 def robot_dynamics(q, dq):
     th1, th2, th3, th4, th5, th6 = q
-    dth1, dth2, dth3, dth4, dth5, dth6 = dq
+    th1_dot, th2_dot, th3_dot, th4_dot, th5_dot, th6_dot = dq
 
-    # ----------------------------
-    # KISALTMALAR
-    # ----------------------------
-    c = np.cos
-    s = np.sin
+    D = np.zeros((6, 6))
+    D[0, 0] = 0.002949*np.sin(th3 + th4 + th5) - 4.494e-5*np.cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.cos(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001033*np.cos(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) + 0.002949*np.sin(2.0*th2 + th3 + th4 + th5) + 0.1578*np.cos(2.0*th2 + th3) - 0.002581*np.sin(th4 - 1.0*th5) - 0.02126*np.sin(2.0*th2 + 2.0*th3 + th4) + 0.001033*np.cos(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*np.cos(2.0*th2) + 8.989e-5*np.cos(2.0*th5) - 0.002581*np.sin(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.02429*np.sin(th3 + th4) + 0.002581*np.sin(th4 + th5) - 0.02429*np.sin(2.0*th2 + th3 + th4) - 0.002949*np.sin(th3 + th4 - 1.0*th5) + 0.1578*np.cos(th3) + 0.005439*np.cos(th5) - 0.002949*np.sin(2.0*th2 + th3 + th4 - 1.0*th5) + 0.002581*np.sin(2.0*th2 + 2.0*th3 + th4 + th5) - 0.02126*np.sin(th4) + 0.06319*np.cos(2.0*th2 + 2.0*th3) - 0.003516*np.cos(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.2823
+    D[0, 1] = 0.0112*np.cos(th2 + th3 + th4) + 0.002581*np.sin(th2 + th3 + th5) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) + 0.002949*np.sin(th2 - 1.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5) + 0.05199*np.sin(th2 + th3) + 0.002949*np.sin(th2 + th5) + 0.002581*np.sin(th2 + th3 - 1.0*th5) + 0.1066*np.sin(th2)
+    D[0, 2] = 0.0112*np.cos(th2 + th3 + th4) + 0.002581*np.sin(th2 + th3 + th5) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5) + 0.05199*np.sin(th2 + th3) + 0.002581*np.sin(th2 + th3 - 1.0*th5)
+    D[0, 3] = 0.0112*np.cos(th2 + th3 + th4) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5)
+    D[0, 4] = 0.002949*np.sin(th2 - 1.0*th5) - 0.002581*np.sin(th2 + th3 + th5) - 0.0003268*np.cos(th2 + th3 + th4 - 1.0*th5) - 0.002789*np.cos(th2 + th3 + th4) - 0.002393*np.cos(th2 + th3 + th4 + th5) - 0.002949*np.sin(th2 + th5) + 0.002581*np.sin(th2 + th3 - 1.0*th5)
+    D[0, 5] = 8.95e-5*np.cos(th2 + th3 + th4 + th5) - 8.95e-5*np.cos(th2 + th3 + th4 - 1.0*th5)
+    D[1, 0] = 0.0112*np.cos(th2 + th3 + th4) + 0.002581*np.sin(th2 + th3 + th5) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) + 0.002949*np.sin(th2 - 1.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5) + 0.05199*np.sin(th2 + th3) + 0.002949*np.sin(th2 + th5) + 0.002581*np.sin(th2 + th3 - 1.0*th5) + 0.1066*np.sin(th2)
+    D[1, 1] = 0.3156*np.cos(th3) - 0.04252*np.sin(th4) - 0.04858*np.cos(th3)*np.sin(th4) - 0.04858*np.cos(th4)*np.sin(th3) + 0.01032*np.cos(th4)*np.sin(th5) - 0.0003596*np.cos(th5)**2 - 0.0118*np.sin(th3)*np.sin(th4)*np.sin(th5) + 0.0118*np.cos(th3)*np.cos(th4)*np.sin(th5) + 0.3966
+    D[1, 2] = 0.1578*np.cos(th3) - 0.04252*np.sin(th4) - 0.02429*np.cos(th3)*np.sin(th4) - 0.02429*np.cos(th4)*np.sin(th3) + 0.01032*np.cos(th4)*np.sin(th5) - 0.0003596*np.cos(th5)**2 - 0.005898*np.sin(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.cos(th4)*np.sin(th5) + 0.1422
+    D[1, 3] = 0.005162*np.cos(th4)*np.sin(th5) - 0.02429*np.cos(th3)*np.sin(th4) - 0.02429*np.cos(th4)*np.sin(th3) - 0.02126*np.sin(th4) - 0.0003596*np.cos(th5)**2 - 0.005898*np.sin(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.cos(th4)*np.sin(th5) + 0.01225
+    D[1, 4] = 1.21e-6*np.cos(th5)*(4873.0*np.sin(th3 + th4) + 4265.0*np.sin(th4) - 1707.0)
+    D[1, 5] = 0.000179*np.cos(th5)
+    D[2, 0] = 0.0112*np.cos(th2 + th3 + th4) + 0.002581*np.sin(th2 + th3 + th5) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5) + 0.05199*np.sin(th2 + th3) + 0.002581*np.sin(th2 + th3 - 1.0*th5)
+    D[2, 1] = 0.1578*np.cos(th3) - 0.04252*np.sin(th4) - 0.02429*np.cos(th3)*np.sin(th4) - 0.02429*np.cos(th4)*np.sin(th3) + 0.01032*np.cos(th4)*np.sin(th5) - 0.0003596*np.cos(th5)**2 - 0.005898*np.sin(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.cos(th4)*np.sin(th5) + 0.1422
+    D[2, 2] = 0.01032*np.cos(th4)*np.sin(th5) - 0.04252*np.sin(th4) - 0.0003596*np.cos(th5)**2 + 0.1422
+    D[2, 3] = 0.005162*np.cos(th4)*np.sin(th5) - 0.02126*np.sin(th4) - 0.0003596*np.cos(th5)**2 + 0.01225
+    D[2, 4] = 1.21e-6*np.cos(th5)*(4265.0*np.sin(th4) - 1707.0)
+    D[2, 5] = 0.000179*np.cos(th5)
+    D[3, 0] = 0.0112*np.cos(th2 + th3 + th4) + 0.002393*np.cos(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.cos(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.cos(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.cos(th2 + th3 + th4 + th5)
+    D[3, 1] = 0.005162*np.cos(th4)*np.sin(th5) - 0.02429*np.cos(th3)*np.sin(th4) - 0.02429*np.cos(th4)*np.sin(th3) - 0.02126*np.sin(th4) - 0.0003596*np.cos(th5)**2 - 0.005898*np.sin(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.cos(th4)*np.sin(th5) + 0.01225
+    D[3, 2] = 0.005162*np.cos(th4)*np.sin(th5) - 0.02126*np.sin(th4) - 0.0003596*np.cos(th5)**2 + 0.01225
+    D[3, 3] = 0.0003596*np.sin(th5)**2 + 0.01189
+    D[3, 4] = -0.002066*np.cos(th5)
+    D[3, 5] = 0.000179*np.cos(th5)
+    D[4, 0] = 0.002949*np.sin(th2 - 1.0*th5) - 0.002581*np.sin(th2 + th3 + th5) - 0.0003268*np.cos(th2 + th3 + th4 - 1.0*th5) - 0.002789*np.cos(th2 + th3 + th4) - 0.002393*np.cos(th2 + th3 + th4 + th5) - 0.002949*np.sin(th2 + th5) + 0.002581*np.sin(th2 + th3 - 1.0*th5)
+    D[4, 1] = 1.21e-6*np.cos(th5)*(4873.0*np.sin(th3 + th4) + 4265.0*np.sin(th4) - 1707.0)
+    D[4, 2] = 1.21e-6*np.cos(th5)*(4265.0*np.sin(th4) - 1707.0)
+    D[4, 3] = -0.002066*np.cos(th5)
+    D[4, 4] = 0.002789
+    D[5, 0] = 8.95e-5*np.cos(th2 + th3 + th4 + th5) - 8.95e-5*np.cos(th2 + th3 + th4 - 1.0*th5)
+    D[5, 1] = 0.000179*np.cos(th5)
+    D[5, 2] = 0.000179*np.cos(th5)
+    D[5, 3] = 0.000179*np.cos(th5)
+    D[5, 5] = 0.000179
 
-    # ----------------------------
-    # YERÇEKİMİ VEKTÖRÜ (g)
-    # ----------------------------
+    C = np.zeros((6, 6))
+    C[0, 0] = th5_dot*(0.001474*np.cos(th3 + th4 + th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) + 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) + 0.00129*np.cos(th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) - 8.989e-5*np.sin(2.0*th5) + 0.00129*np.cos(th4 + th5) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) - 0.00272*np.sin(th5)) - 1.0*th2_dot*(0.1578*np.sin(2.0*th2 + th3) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.002949*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*np.sin(2.0*th2) + 0.02429*np.cos(2.0*th2 + th3 + th4) + 0.002949*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.06319*np.sin(2.0*th2 + 2.0*th3)) - 1.0*th3_dot*(0.0789*np.sin(2.0*th2 + th3) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.0789*np.sin(th3) + 0.06319*np.sin(2.0*th2 + 2.0*th3)) - 1.0*th4_dot*(0.00129*np.cos(th4 - 1.0*th5) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.01063*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) - 0.00129*np.cos(th4 + th5) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.01063*np.cos(th4))
+    C[0, 1] = th3_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.0112*np.sin(th2 + th3 + th4) - 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.0003268*np.sin(th2 + th3 + th4 + th5) + 0.05199*np.cos(th2 + th3) + 0.002581*np.cos(th2 + th3 - 1.0*th5)) + th2_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.0112*np.sin(th2 + th3 + th4) - 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.002949*np.cos(th2 - 1.0*th5) + 0.0003268*np.sin(th2 + th3 + th4 + th5) + 0.05199*np.cos(th2 + th3) + 0.002949*np.cos(th2 + th5) + 0.002581*np.cos(th2 + th3 - 1.0*th5) + 0.1066*np.cos(th2)) - 1.0*th4_dot*(0.0112*np.sin(th2 + th3 + th4) + 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.sin(th2 + th3 + th4 + th5)) + th5_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) + th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 1.0*th1_dot*(0.1578*np.sin(2.0*th2 + th3) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.002949*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*np.sin(2.0*th2) + 0.02429*np.cos(2.0*th2 + th3 + th4) + 0.002949*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.06319*np.sin(2.0*th2 + 2.0*th3))
+    C[0, 2] = th2_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.0112*np.sin(th2 + th3 + th4) - 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.0003268*np.sin(th2 + th3 + th4 + th5) + 0.05199*np.cos(th2 + th3) + 0.002581*np.cos(th2 + th3 - 1.0*th5)) + th3_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.0112*np.sin(th2 + th3 + th4) - 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.0003268*np.sin(th2 + th3 + th4 + th5) + 0.05199*np.cos(th2 + th3) + 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th4_dot*(0.0112*np.sin(th2 + th3 + th4) + 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.sin(th2 + th3 + th4 + th5)) + th5_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) + th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 1.0*th1_dot*(0.0789*np.sin(2.0*th2 + th3) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.0789*np.sin(th3) + 0.06319*np.sin(2.0*th2 + 2.0*th3))
+    C[0, 3] = th5_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) - 1.0*th2_dot*(0.0112*np.sin(th2 + th3 + th4) + 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.sin(th2 + th3 + th4 + th5)) - 1.0*th3_dot*(0.0112*np.sin(th2 + th3 + th4) + 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.sin(th2 + th3 + th4 + th5)) - 1.0*th4_dot*(0.0112*np.sin(th2 + th3 + th4) + 0.002393*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) - 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.0003268*np.sin(th2 + th3 + th4 + th5)) - 1.0*th1_dot*(0.00129*np.cos(th4 - 1.0*th5) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.01063*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) - 0.00129*np.cos(th4 + th5) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.01063*np.cos(th4)) + th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5))
+    C[0, 4] = th2_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) - 1.0*th5_dot*(0.002581*np.cos(th2 + th3 + th5) + 0.0003268*np.sin(th2 + th3 + th4 - 1.0*th5) + 0.002949*np.cos(th2 - 1.0*th5) - 0.002393*np.sin(th2 + th3 + th4 + th5) + 0.002949*np.cos(th2 + th5) + 0.002581*np.cos(th2 + th3 - 1.0*th5)) + th3_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) + th4_dot*(0.001394*np.sin(th2 + th3 + th4) + 0.00136*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) + 0.00136*np.sin(th2 + th3 + th4 + th5)) - 1.0*th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th1_dot*(0.001474*np.cos(th3 + th4 + th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) + 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) + 0.00129*np.cos(th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) - 8.989e-5*np.sin(2.0*th5) + 0.00129*np.cos(th4 + th5) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) - 0.00272*np.sin(th5))
+    C[0, 5] = th2_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th3_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th4_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 1.0*th5_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5))
+    C[1, 0] = th5_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.002949*np.cos(th2 - 1.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) + 0.002949*np.cos(th2 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th1_dot*(0.1578*np.sin(2.0*th2 + th3) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.002949*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.1224*np.sin(2.0*th2) + 0.02429*np.cos(2.0*th2 + th3 + th4) + 0.002949*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.06319*np.sin(2.0*th2 + 2.0*th3))
+    C[1, 1] = 2.0e-36*th5_dot*np.cos(th5)*(2.949e+33*np.cos(th3 + th4) + 2.581e+33*np.cos(th4) + 1.798e+32*np.sin(th5)) - 1.0*th3_dot*(0.1578*np.sin(th3) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5)) - 1.0*th4_dot*(0.02126*np.cos(th4) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005162*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5))
+    C[1, 2] = th5_dot*(0.002949*np.cos(th3 + th4 + th5) + 0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5)) - 1.0*th2_dot*(0.02429*np.cos(th3 + th4) - 0.002949*np.cos(th3 + th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5) + 0.1578*np.sin(th3)) - 1.0*th3_dot*(0.02429*np.cos(th3 + th4) - 0.002949*np.cos(th3 + th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5) + 0.1578*np.sin(th3)) - 1.0*th4_dot*(0.002581*np.cos(th4 - 1.0*th5) - 0.002949*np.cos(th3 + th4 + th5) + 0.02429*np.cos(th3 + th4) - 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5) + 0.02126*np.cos(th4))
+    C[1, 3] = th5_dot*(0.0001798*np.sin(2.0*th5) + 0.005162*np.cos(th4)*np.cos(th5) - 0.005898*np.cos(th5)*np.sin(th3)*np.sin(th4) + 0.005898*np.cos(th3)*np.cos(th4)*np.cos(th5)) - 1.0*th3_dot*(0.02126*np.cos(th4) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005162*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5)) - 1.0*th4_dot*(0.02126*np.cos(th4) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005162*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5)) - 1.0*th2_dot*(0.02126*np.cos(th4) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005162*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5))
+    C[1, 4] = th1_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.002949*np.cos(th2 - 1.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) + 0.002949*np.cos(th2 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) + th2_dot*(0.002949*np.cos(th3 + th4 + th5) + 0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5)) + th3_dot*(0.002949*np.cos(th3 + th4 + th5) + 0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5)) + th4_dot*(0.002949*np.cos(th3 + th4 + th5) + 0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5)) + th5_dot*(0.002949*np.cos(th3 + th4 + th5) - 0.002581*np.cos(th4 - 1.0*th5) + 0.002581*np.cos(th4 + th5) - 0.002949*np.cos(th3 + th4 - 1.0*th5) + 0.002066*np.sin(th5)) - 8.95e-5*th6_dot*np.sin(th5)
+    C[1, 5] = - 1.0*th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[2, 0] = th5_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th1_dot*(0.0789*np.sin(2.0*th2 + th3) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.02126*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.002581*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.0789*np.sin(th3) + 0.06319*np.sin(2.0*th2 + 2.0*th3))
+    C[2, 1] = th5_dot*(0.0001798*np.sin(2.0*th5) + 0.005162*np.cos(th4)*np.cos(th5) + 2.125e-15*np.cos(th5)*np.sin(th3)*np.sin(th4) - 2.125e-15*np.cos(th3)*np.cos(th4)*np.cos(th5)) - 1.0*th4_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5)) + th2_dot*(0.1578*np.sin(th3) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5))
+    C[2, 2] = th5_dot*(0.005162*np.cos(th4)*np.cos(th5) + 0.0003596*np.cos(th5)*np.sin(th5)) - 1.0*th4_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5))
+    C[2, 3] = th5_dot*(0.005162*np.cos(th4)*np.cos(th5) + 0.0003596*np.cos(th5)*np.sin(th5)) - 1.0*th2_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5)) - 1.0*th3_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5)) - 1.0*th4_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5))
+    C[2, 4] = th2_dot*(0.002581*np.cos(th4 - 1.0*th5) - 1.063e-15*np.cos(th3 + th4 + th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) - 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) + th5_dot*(0.002581*np.cos(th4 + th5) - 0.002581*np.cos(th4 - 1.0*th5) + 0.002066*np.sin(th5)) + th1_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 8.95e-5*th6_dot*np.sin(th5) + th3_dot*(0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5)) + th4_dot*(0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5))
+    C[2, 5] = - 1.0*th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[3, 0] = th1_dot*(0.00129*np.cos(th4 - 1.0*th5) - 0.001474*np.cos(th3 + th4 + th5) - 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) - 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) - 0.003516*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.01063*np.cos(2.0*th2 + 2.0*th3 + th4) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001033*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.01215*np.cos(th3 + th4) - 0.00129*np.cos(th4 + th5) + 0.01215*np.cos(2.0*th2 + th3 + th4) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) - 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) + 0.01063*np.cos(th4)) + th5_dot*(0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) - 0.001394*np.sin(th2 + th3 + th4) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5)) - 1.0*th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5))
+    C[3, 1] = th2_dot*(0.02126*np.cos(th4) + 0.02429*np.cos(th3)*np.cos(th4) - 0.02429*np.sin(th3)*np.sin(th4) + 0.005162*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th3)*np.sin(th4)*np.sin(th5) + 0.005898*np.cos(th4)*np.sin(th3)*np.sin(th5)) + th3_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5)) + th5_dot*(0.0001798*np.sin(2.0*th5) - 4.623e-15*np.cos(th4)*np.cos(th5) + 2.125e-15*np.cos(th5)*np.sin(th3)*np.sin(th4) - 2.125e-15*np.cos(th3)*np.cos(th4)*np.cos(th5))
+    C[3, 2] = th2_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5)) - 1.0*th5_dot*(4.623e-15*np.cos(th4)*np.cos(th5) - 0.0003596*np.cos(th5)*np.sin(th5)) + th3_dot*(0.02126*np.cos(th4) + 0.005162*np.sin(th4)*np.sin(th5))
+    C[3, 3] = 0.0001798*th5_dot*np.sin(2.0*th5)
+    C[3, 4] = th1_dot*(0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) - 0.001394*np.sin(th2 + th3 + th4) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5)) - 1.0*th2_dot*(1.063e-15*np.cos(th3 + th4 + th5) + 2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5) + 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) + 0.0001798*th4_dot*np.sin(2.0*th5) + 0.002066*th5_dot*np.sin(th5) - 8.95e-5*th6_dot*np.sin(th5) - 1.0*th3_dot*(2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5))
+    C[3, 5] = - 1.0*th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[4, 0] = th6_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 1.0*th4_dot*(0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) - 0.001394*np.sin(th2 + th3 + th4) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5)) - 1.0*th2_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.002949*np.cos(th2 - 1.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) + 0.002949*np.cos(th2 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th3_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th1_dot*(0.001474*np.cos(th3 + th4 + th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 - 2.0*th5) + 4.494e-5*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + 2.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 + th5) + 0.00129*np.cos(th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.0005165*np.sin(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) - 8.989e-5*np.sin(2.0*th5) + 0.00129*np.cos(th4 + th5) + 0.001474*np.cos(th3 + th4 - 1.0*th5) + 0.001474*np.cos(2.0*th2 + th3 + th4 - 1.0*th5) + 0.00129*np.cos(2.0*th2 + 2.0*th3 + th4 + th5) - 0.00272*np.sin(th5))
+    C[4, 1] = th4_dot*(1.063e-15*np.cos(th3 + th4 + th5) + 2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5) + 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) - 1.0*th1_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.002949*np.cos(th2 - 1.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) + 0.002949*np.cos(th2 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th3_dot*(0.002581*np.cos(th4 - 1.0*th5) - 1.063e-15*np.cos(th3 + th4 + th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) - 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) - 1.0*th2_dot*(0.002949*np.cos(th3 + th4 + th5) + 0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) + 0.002949*np.cos(th3 + th4 - 1.0*th5)) + 8.95e-5*th6_dot*np.sin(th5)
+    C[4, 2] = 8.95e-5*th6_dot*np.sin(th5) - 1.0*th1_dot*(0.002581*np.cos(th2 + th3 + th5) - 0.001394*np.sin(th2 + th3 + th4) + 0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5) - 0.002581*np.cos(th2 + th3 - 1.0*th5)) - 1.0*th2_dot*(0.002581*np.cos(th4 - 1.0*th5) - 1.063e-15*np.cos(th3 + th4 + th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5) - 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) + th4_dot*(2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5)) - 1.0*th3_dot*(0.002581*np.cos(th4 - 1.0*th5) + 0.0001798*np.sin(2.0*th5) + 0.002581*np.cos(th4 + th5))
+    C[4, 3] = th2_dot*(1.063e-15*np.cos(th3 + th4 + th5) + 2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5) + 1.063e-15*np.cos(th3 + th4 - 1.0*th5)) - 1.0*th1_dot*(0.001033*np.sin(th2 + th3 + th4 - 1.0*th5) - 0.001394*np.sin(th2 + th3 + th4) + 8.989e-5*np.sin(th2 + th3 + th4 - 2.0*th5) + 8.989e-5*np.sin(th2 + th3 + th4 + 2.0*th5) - 0.001033*np.sin(th2 + th3 + th4 + th5)) - 0.0001798*th4_dot*np.sin(2.0*th5) + 8.95e-5*th6_dot*np.sin(th5) + th3_dot*(2.312e-15*np.cos(th4 - 1.0*th5) - 0.0001798*np.sin(2.0*th5) + 2.312e-15*np.cos(th4 + th5))
+    C[4, 5] = th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + 8.95e-5*th2_dot*np.sin(th5) + 8.95e-5*th3_dot*np.sin(th5) + 8.95e-5*th4_dot*np.sin(th5)
+    C[5, 0] = th2_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th3_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) + th4_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 1.0*th5_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5))
+    C[5, 1] = th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[5, 2] = th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[5, 3] = th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) - 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th5_dot*np.sin(th5)
+    C[5, 4] = - 1.0*th1_dot*(4.475e-5*np.sin(th2 + th3 + th4 - 1.0*th5) + 4.475e-5*np.sin(th2 + th3 + th4 + th5)) - 8.95e-5*th2_dot*np.sin(th5) - 8.95e-5*th3_dot*np.sin(th5) - 8.95e-5*th4_dot*np.sin(th5)
+
     g = np.zeros(6)
-    
-    g[0] = 0.0
-    g[1] = 0.978*s(th2 + th3 + th4) - 6.354*c(th2 + th3) - 11.905*c(th2) - 0.237*c(th2 + th3 + th4)*s(th5)
-    g[2] = 0.978*s(th2 + th3 + th4) - 6.354*c(th2 + th3) - 0.237*c(th2 + th3 + th4)*s(th5)
-    g[3] = 0.978*s(th2 + th3 + th4) - 0.237*c(th2 + th3 + th4)*s(th5)
-    g[4] = -0.237*s(th2 + th3 + th4)*c(th5)
-    g[5] = 0.0
-
-    # ----------------------------
-    # INERTIA MATRİSİ D(q)
-    # ----------------------------
-    D = np.zeros((6,6))
-
-    D[0,0] = (0.003*s(th3 + th4 + th5) + 0.003*s(2.0*th2 + th3 + th4 + th5) - 0.003*s(th4 - 1.0*th5) - 0.021*s(2.0*th2 + 2.0*th3 + th4) - 0.003*s(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.024*s(th3 + th4) + 0.003*s(th4 + th5) - 0.024*s(2.0*th2 + th3 + th4) - 0.003*s(th3 + th4 - 1.0*th5) - 0.003*s(2.0*th2 + th3 + th4 - 1.0*th5) + 0.003*s(2.0*th2 + 2.0*th3 + th4 + th5) - 0.021*s(th4) + 0.126*c(th2 + th3)**2 + 0.245*c(th2)**2 + 0.001*c(th5)**2 - 0.007*c(th2 + th3 + th4)**2 - 0.002*c(th2 + th3 + th4 - 0.5*th5)**2 + 0.002*c(th2 + th3 + th4 + 0.5*th5)**2 + 0.316*c(th2 + 0.5*th3)**2 + 0.316*c(0.5*th3)**2 + 0.011*c(0.5*th5)**2 - 0.241)
-    D[0,1] = (0.011*c(th2 + th3 + th4) + 0.003*s(th2 + th3 + th5) + 0.002*c(th2 + th3 + th4 - 1.0*th5) + 0.003*s(th2 - 1.0*th5) + 0.052*s(th2 + th3) + 0.003*s(th2 + th5) + 0.003*s(th2 + th3 - 1.0*th5) + 0.107*s(th2) - 0.013)
-    D[0,2] = (0.011*c(th2 + th3 + th4) + 0.003*s(th2 + th3 + th5) + 0.002*c(th2 + th3 + th4 - 1.0*th5) + 0.002*s(th2 - 1.0*th5) + 0.052*s(th2 + th3) + 0.002*s(th2 + th5) + 0.003*s(th2 + th3 - 1.0*th5) + 0.033*s(th2))
-    D[0,3] = (0.011*c(th2 + th3 + th4) + 0.001*s(th2 + th3 + th5) + 0.002*c(th2 + th3 + th4 - 1.0*th5) + 0.011*s(th2 + th3) + 0.001*s(th2 + th3 - 1.0*th5))
-    D[0,4] = (0.003*s(th2 - 1.0*th5) - 0.003*s(th2 + th3 + th5) - 0.001*c(th2 + th3 + th4) - 0.002*c(th2 + th3 + th4 + th5) - 0.003*s(th2 + th5) + 0.003*s(th2 + th3 - 1.0*th5))
-
-    D[1,0] = D[0,1]
-    D[1,1] = (0.006*s(th3 + th4 + th5) - 0.004*c(th2 + th3 + th4) - 0.005*s(th4 - 1.0*th5) - 0.001*c(2.0*th5) - 0.026*s(th2 + th3) - 0.049*s(th3 + th4) + 0.005*s(th4 + th5) - 0.006*s(th3 + th4 - 1.0*th5) + 0.316*c(th3) - 0.049*s(th2) - 0.043*s(th4) + 0.382)
-    D[1,2] = (0.005*s(th3 + th4 + th5) - 0.002*c(th2 + th3 + th4) - 0.005*s(th4 - 1.0*th5) - 0.001*c(2.0*th5) - 0.013*s(th2 + th3) - 0.037*s(th3 + th4) + 0.005*s(th4 + th5) - 0.005*s(th3 + th4 - 1.0*th5) + 0.242*c(th3) - 0.009*s(th2) - 0.043*s(th4) + 0.242)
-    D[1,3] = (0.003*s(th3 + th4 + th5) - 0.002*c(th2 + th3 + th4) - 0.003*s(th4 - 1.0*th5) - 0.001*c(2.0*th5) - 0.002*s(th2 + th3) - 0.024*s(th3 + th4) + 0.003*s(th4 + th5) - 0.003*s(th3 + th4 - 1.0*th5) + 0.024*c(th3) - 0.026*s(th4) + 0.029)
-    # Büyük çarpan içeri dağıtıldı (1.21e-6 * 4873 vs)
-    D[1,4] = c(th5) * (0.006*s(th3 + th4) + 0.005*s(th4) - 0.002)
-
-    D[2,0] = D[0,2]
-    D[2,1] = D[1,2]
-    D[2,2] = (0.168*c(th3) - 0.043*s(th4) - 0.026*c(th3)*s(th4) - 0.026*c(th4)*s(th3) + 0.010*c(th4)*s(th5) - 0.001*c(th5)**2 - 0.006*s(th3)*s(th4)*s(th5) + 0.006*c(th3)*c(th4)*s(th5) + 0.192)
-    D[2,3] = (0.013*c(th3) - 0.026*s(th4) - 0.013*c(th3)*s(th4) - 0.013*c(th4)*s(th3) + 0.006*c(th4)*s(th5) - 0.001*c(th5)**2 - 0.003*s(th3)*s(th4)*s(th5) + 0.003*c(th3)*c(th4)*s(th5) + 0.030)
-    D[2,4] = c(th5) * (0.003*s(th3 + th4) + 0.005*s(th4) - 0.002)
-
-    D[3,0] = D[0,3]
-    D[3,1] = D[1,3]
-    D[3,2] = D[2,3]
-    D[3,3] = (0.001*s(th5)**2 - 0.010*s(th4) - 0.002*s(th5)*(2.0*s(0.5*th4)**2 - 1.0) + 0.013)
-    D[3,4] = c(th5) * (0.001*s(th4) - 0.002)
-
-    D[4,0] = D[0,4]
-    D[4,1] = D[1,4]
-    D[4,2] = D[2,4]
-    D[4,3] = D[3,4]
-    D[4,4] = 0.001
-
-    # ----------------------------
-    # CORIOLIS MATRİSİ C(q,dq)
-    # ----------------------------
-    C = np.zeros((6,6))
-
-    C[0,0] = (dth5*(0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 + th5) + 0.001*c(th4 - 1.0*th5) + 0.001*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.001*c(th4 + th5) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + 2.0*th3 + th4 + th5) - 0.003*s(th5)) 
-            - dth2*(0.158*s(2.0*th2 + th3) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.003*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.021*c(2.0*th2 + 2.0*th3 + th4) + 0.003*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.122*s(2.0*th2) + 0.024*c(2.0*th2 + th3 + th4) + 0.003*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.003*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.063*s(2.0*th2 + 2.0*th3)) 
-            - dth3*(0.079*s(2.0*th2 + th3) - 0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.001*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.021*c(2.0*th2 + 2.0*th3 + th4) + 0.003*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.012*c(th3 + th4) + 0.012*c(2.0*th2 + th3 + th4) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.003*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.079*s(th3) + 0.063*s(2.0*th2 + 2.0*th3)) 
-            - dth4*(0.001*c(th4 - 1.0*th5) - 0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.001*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.011*c(2.0*th2 + 2.0*th3 + th4) + 0.001*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.012*c(th3 + th4) - 0.001*c(th4 + th5) + 0.012*c(2.0*th2 + th3 + th4) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.001*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.011*c(th4)))
-    
-    C[0,1] = (dth2*(0.003*c(th2 + th3 + th5) - 0.011*s(th2 + th3 + th4) - 0.002*s(th2 + th3 + th4 - 1.0*th5) + 0.003*c(th2 - 1.0*th5) + 0.052*c(th2 + th3) + 0.003*c(th2 + th5) + 0.003*c(th2 + th3 - 1.0*th5) + 0.107*c(th2)) 
-            - dth1*(0.158*s(2.0*th2 + th3) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.003*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.021*c(2.0*th2 + 2.0*th3 + th4) + 0.003*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.122*s(2.0*th2) + 0.024*c(2.0*th2 + th3 + th4) + 0.003*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.003*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.063*s(2.0*th2 + 2.0*th3)) 
-            - dth4*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.005*c(th2 + th3)) 
-            - dth3*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) - 0.052*c(th2 + th3) - 0.001*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5) - 0.016*c(th2)) 
-            + dth5*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5)))
-
-    C[0,2] = (dth5*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5) + 0.001*c(th2 + th5)) 
-            - dth1*(0.079*s(2.0*th2 + th3) - 0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.001*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.021*c(2.0*th2 + 2.0*th3 + th4) + 0.003*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.012*c(th3 + th4) + 0.012*c(2.0*th2 + th3 + th4) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.003*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.079*s(th3) + 0.063*s(2.0*th2 + 2.0*th3)) 
-            - dth4*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.005*c(th2 + th3)) 
-            - dth2*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) - 0.052*c(th2 + th3) - 0.001*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5) - 0.016*c(th2)) 
-            - dth3*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.052*c(th2 + th3) - 0.003*c(th2 + th3 - 1.0*th5)))
-
-    C[0,3] = (dth5*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5)) 
-            - dth4*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5)) 
-            - dth1*(0.001*c(th4 - 1.0*th5) - 0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) - 0.001*c(2.0*th2 + th3 + th4 + th5) - 0.004*s(2.0*th2 + 2.0*th3 + 2.0*th4) + 0.011*c(2.0*th2 + 2.0*th3 + th4) + 0.001*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) + 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.012*c(th3 + th4) - 0.001*c(th4 + th5) + 0.012*c(2.0*th2 + th3 + th4) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) - 0.001*c(2.0*th2 + 2.0*th3 + th4 + th5) + 0.011*c(th4)) 
-            - dth2*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.005*c(th2 + th3)) 
-            - dth3*(0.011*s(th2 + th3 + th4) + 0.002*s(th2 + th3 + th4 - 1.0*th5) - 0.005*c(th2 + th3)))
-
-    C[0,4] = (dth1*(0.001*c(th3 + th4 + th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 + th5) + 0.001*c(th4 - 1.0*th5) + 0.001*c(2.0*th2 + 2.0*th3 + th4 - 1.0*th5) - 0.001*s(2.0*th2 + 2.0*th3 + 2.0*th4 + th5) + 0.001*c(th4 + th5) + 0.001*c(th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + th3 + th4 - 1.0*th5) + 0.001*c(2.0*th2 + 2.0*th3 + th4 + th5) - 0.003*s(th5)) 
-            - dth5*(0.003*c(th2 + th3 + th5) + 0.003*c(th2 - 1.0*th5) - 0.002*s(th2 + th3 + th4 + th5) + 0.003*c(th2 + th5) + 0.003*c(th2 + th3 - 1.0*th5)) 
-            + dth4*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5)) 
-            + dth3*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5) + 0.001*c(th2 + th5)) 
-            + dth2*(0.001*s(th2 + th3 + th4) + 0.001*s(th2 + th3 + th4 - 1.0*th5) + 0.001*s(th2 + th3 + th4 + th5)))
-
-    C[1,0] = -C[0,1] # Simetri
-    
-    C[1,1] = (dth5*(0.003*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5)) 
-            - dth3*(0.002*s(th2 + th3 + th4) - 0.003*c(th3 + th4 + th5) + 0.013*c(th2 + th3) + 0.024*c(th3 + th4) + 0.003*c(th3 + th4 - 1.0*th5) + 0.158*s(th3)) 
-            - dth2*(0.002*s(th2 + th3 + th4) + 0.013*c(th2 + th3) + 0.024*c(th2)) 
-            - dth4*(0.003*c(th4 - 1.0*th5) - 0.002*s(th2 + th3 + th4) - 0.003*c(th3 + th4 + th5) + 0.024*c(th3 + th4) - 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5) + 0.021*c(th4)))
-
-    C[1,2] = (dth5*(0.004*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.004*c(th3 + th4 - 1.0*th5)) 
-            - dth3*(0.002*s(th2 + th3 + th4) - 0.005*c(th3 + th4 + th5) + 0.013*c(th2 + th3) + 0.037*c(th3 + th4) + 0.005*c(th3 + th4 - 1.0*th5) + 0.242*s(th3)) 
-            - dth2*(0.002*s(th2 + th3 + th4) - 0.003*c(th3 + th4 + th5) + 0.013*c(th2 + th3) + 0.024*c(th3 + th4) + 0.003*c(th3 + th4 - 1.0*th5) + 0.158*s(th3)) 
-            - dth4*(0.003*c(th4 - 1.0*th5) - 0.002*s(th2 + th3 + th4) - 0.004*c(th3 + th4 + th5) + 0.001*c(th2 + th3) + 0.031*c(th3 + th4) - 0.003*c(th4 + th5) + 0.004*c(th3 + th4 - 1.0*th5) + 0.021*c(th4) + 0.012*s(th3)) 
-            - dth1*(0.001*c(th2 - 1.0*th5) + 0.001*c(th2 + th5) + 0.016*c(th2)))
-
-    C[1,3] = (dth5*(0.003*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5)) 
-            - dth4*(0.003*c(th4 - 1.0*th5) - 0.002*s(th2 + th3 + th4) - 0.003*c(th3 + th4 + th5) + 0.024*c(th3 + th4) - 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5) + 0.026*c(th4)) 
-            - dth1*(0.005*c(th2 + th3)) 
-            - dth2*(0.003*c(th4 - 1.0*th5) - 0.002*s(th2 + th3 + th4) - 0.003*c(th3 + th4 + th5) + 0.024*c(th3 + th4) - 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5) + 0.021*c(th4)) 
-            - dth3*(0.003*c(th4 - 1.0*th5) - 0.002*s(th2 + th3 + th4) - 0.004*c(th3 + th4 + th5) + 0.001*c(th2 + th3) + 0.031*c(th3 + th4) - 0.003*c(th4 + th5) + 0.004*c(th3 + th4 - 1.0*th5) + 0.021*c(th4) + 0.012*s(th3)))
-
-    C[1,4] = (dth5*(0.003*c(th3 + th4 + th5) - 0.003*c(th4 - 1.0*th5) + 0.003*c(th4 + th5) - 0.003*c(th3 + th4 - 1.0*th5) + 0.002*s(th5)) 
-            + dth1*(0.003*c(th2 + th3 + th5) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.003*c(th2 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5) + 0.003*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5)) 
-            + dth2*(0.003*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5)) 
-            + dth4*(0.003*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5)) 
-            + dth3*(0.004*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.004*c(th3 + th4 - 1.0*th5)))
-
-    C[2,0] = -C[0,2]
-
-    C[2,1] = (dth2*(0.158*s(th3) - 0.009*c(th2) + 0.024*c(th3)*c(th4) - 0.024*s(th3)*s(th4) + 0.006*c(th3)*s(th4)*s(th5) + 0.006*c(th4)*s(th3)*s(th5)) 
-            - dth4*(0.021*c(th4) - 0.012*s(th3) - 0.001*c(th2)*c(th3) + 0.006*c(th3)*c(th4) + 0.001*s(th2)*s(th3) - 0.006*s(th3)*s(th4) + 0.005*s(th4)*s(th5) + 0.002*c(th3)*s(th4)*s(th5) + 0.002*c(th4)*s(th3)*s(th5)) 
-            + dth1*(0.016*c(th2) + 0.002*c(th2)*c(th5)) 
-            + dth5*(0.001*s(2.0*th5) + 0.005*c(th4)*c(th5) - 0.002*c(th5)*s(th3)*s(th4) + 0.002*c(th3)*c(th4)*c(th5)))
-
-    # İkinci büyük çarpan (5.0e-12 * 1.03e9 vs) içeri dağıtıldı
-    C[2,2] = (dth5*c(th5)*(0.003*c(th3 + th4) + 0.005*c(th4) + 0.001*s(th5)) 
-            - dth3*(0.084*s(th3) + 0.013*c(th3)*c(th4) - 0.013*s(th3)*s(th4) + 0.003*c(th3)*s(th4)*s(th5) + 0.003*c(th4)*s(th3)*s(th5)) 
-            - dth4*(0.021*c(th4) + 0.013*c(th3)*c(th4) - 0.013*s(th3)*s(th4) + 0.005*s(th4)*s(th5) + 0.003*c(th3)*s(th4)*s(th5) + 0.003*c(th4)*s(th3)*s(th5)))
-
-    C[2,3] = (dth5*(0.001*s(2.0*th5) + 0.006*c(th4)*c(th5) - 0.003*c(th5)*s(th3)*s(th4) + 0.003*c(th3)*c(th4)*c(th5)) 
-            - dth3*(0.021*c(th4) + 0.013*c(th3)*c(th4) - 0.013*s(th3)*s(th4) + 0.005*s(th4)*s(th5) + 0.003*c(th3)*s(th4)*s(th5) + 0.003*c(th4)*s(th3)*s(th5)) 
-            - dth4*(0.026*c(th4) + 0.013*c(th3)*c(th4) - 0.013*s(th3)*s(th4) + 0.006*s(th4)*s(th5) + 0.003*c(th3)*s(th4)*s(th5) + 0.003*c(th4)*s(th3)*s(th5)) 
-            - dth2*(0.021*c(th4) - 0.012*s(th3) - 0.001*c(th2)*c(th3) + 0.006*c(th3)*c(th4) + 0.001*s(th2)*s(th3) - 0.006*s(th3)*s(th4) + 0.005*s(th4)*s(th5) + 0.002*c(th3)*s(th4)*s(th5) + 0.002*c(th4)*s(th3)*s(th5)) 
-            - dth1*(0.005*c(th2)*c(th3) - 0.005*s(th2)*s(th3) - 0.001*c(th5)*s(th2)*s(th3) + 0.001*c(th2)*c(th3)*c(th5)))
-
-    C[2,4] = (dth2*(0.001*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.001*c(th3 + th4 - 1.0*th5)) 
-            + dth3*(0.002*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.002*c(th3 + th4 - 1.0*th5)) 
-            + dth4*(0.002*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.002*c(th3 + th4 - 1.0*th5)) 
-            + dth5*(0.002*c(th3 + th4 + th5) - 0.003*c(th4 - 1.0*th5) + 0.003*c(th4 + th5) - 0.002*c(th3 + th4 - 1.0*th5) + 0.002*s(th5)) 
-            + dth1*(0.003*c(th2 + th3 + th5) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5) + 0.001*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5)))
-
-    C[3,0] = -C[0,3]
-    
-    C[3,1] = (dth2*(0.003*c(th4 - 1.0*th5) - 0.003*c(th3 + th4 + th5) - 0.002*c(th2 + th3) + 0.024*c(th3 + th4) - 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5) + 0.021*c(th4)) 
-            - dth3*(0.001*c(th3 + th4 + th5) - 0.003*c(th4 - 1.0*th5) + 0.001*c(th2 + th3) - 0.006*c(th3 + th4) + 0.003*c(th4 + th5) - 0.001*c(th3 + th4 - 1.0*th5) - 0.021*c(th4) + 0.012*s(th3)) 
-            + dth5*(0.001*s(2.0*th5)) 
-            + dth1*(0.005*c(th2 + th3)))
-
-    C[3,2] = (dth2*(0.021*c(th4) - 0.012*s(th3) - 0.001*c(th2)*c(th3) + 0.006*c(th3)*c(th4) + 0.001*s(th2)*s(th3) - 0.006*s(th3)*s(th4) + 0.005*s(th4)*s(th5) + 0.002*c(th3)*s(th4)*s(th5) + 0.002*c(th4)*s(th3)*s(th5)) 
-            + dth1*(0.005*c(th2)*c(th3) - 0.005*s(th2)*s(th3) - 0.001*c(th5)*s(th2)*s(th3) + 0.001*c(th2)*c(th3)*c(th5)) 
-            + dth5*(0.001*s(2.0*th5) + 0.001*c(th4)*c(th5)) 
-            + dth3*(0.021*c(th4) - 0.013*s(th3) + 0.005*s(th4)*s(th5)))
-
-    # Üçüncü büyük çarpan dağıtıldı
-    C[3,3] = (dth5*c(th5)*(0.001*c(th4) + 0.001*s(th5)) - dth4*(0.005*c(th4) + 0.002*c(0.5*th4)*s(0.5*th4)*s(th5)))
-
-    C[3,4] = (dth5*(0.001*c(th4 + th5) - 0.001*c(th4 - 1.0*th5) + 0.002*s(th5)) 
-            + dth1*(0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5)) 
-            + dth2*(0.001*s(2.0*th5)) 
-            + dth3*(0.001*s(2.0*th5)) 
-            + dth4*(0.001*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.001*c(th4 + th5)))
-
-    C[4,0] = -C[0,4]
-
-    C[4,1] = (- dth2*(0.003*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.003*c(th3 + th4 - 1.0*th5)) 
-            - dth3*(0.001*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.001*c(th3 + th4 - 1.0*th5)) 
-            - dth1*(0.003*c(th2 + th3 + th5) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.003*c(th2 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5) + 0.003*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5)) 
-            - dth4*(0.001*s(2.0*th5)))
-
-    C[4,2] = (- dth2*(0.001*c(th3 + th4 + th5) + 0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5) + 0.001*c(th3 + th4 - 1.0*th5)) 
-            - dth4*(0.001*s(2.0*th5)) 
-            - dth3*(0.003*c(th4 - 1.0*th5) + 0.001*s(2.0*th5) + 0.003*c(th4 + th5)) 
-            - dth1*(0.003*c(th2 + th3 + th5) + 0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*c(th2 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5) + 0.001*c(th2 + th5) - 0.003*c(th2 + th3 - 1.0*th5)))
-
-    C[4,3] = (- dth1*(0.001*s(th2 + th3 + th4 - 1.0*th5) - 0.001*s(th2 + th3 + th4 + th5)) 
-            - 0.001*dth4*s(2.0*th5) 
-            - dth2*(0.001*s(2.0*th5)) 
-            - dth3*(0.001*s(2.0*th5)))
-
-    C[4,4] = 0.0 
+    g[1] = np.sin(th5)*(0.2375*np.sin(th2 + th3)*np.sin(th4) - 0.2375*np.cos(th2 + th3)*np.cos(th4)) - 11.9*np.cos(th2) - 6.354*np.cos(th2 + th3) + 0.978*np.cos(th2 + th3)*np.sin(th4) + 0.978*np.sin(th2 + th3)*np.cos(th4)
+    g[2] = 0.978*np.sin(th2 + th3 + th4) - 6.354*np.cos(th2 + th3) - 0.2375*np.cos(th2 + th3 + th4)*np.sin(th5)
+    g[3] = 0.978*np.sin(th2 + th3 + th4) - 0.2375*np.cos(th2 + th3 + th4)*np.sin(th5)
+    g[4] = -0.2375*np.sin(th2 + th3 + th4)*np.cos(th5)
 
     return D, C, g
-
-
-
-
-
