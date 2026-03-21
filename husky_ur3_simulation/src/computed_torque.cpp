@@ -20,12 +20,12 @@ public:
     {
         // --- 1. KONTROLCÜ AYARLARI ---
         Vector6d Kp_diag, Kv_diag;
-        Kp_diag << 15.0, 12.5, 12.5, 12.0, 5.0, 2.0;
-        Kp_diag /= 5;  // Tüm elemanları 4'e böler
+        Kp_diag << 100.0, 100.0, 100.0, 100.0, 100.0, 100.0;
+        //Kp_diag /= 5;  // Tüm elemanları 4'e böler
         
         // Kritik sönüm: Kv = 2 * sqrt(Kp)
         for (int i = 0; i < 6; ++i) {
-            Kv_diag(i) =  4.0 * std::sqrt(Kp_diag(i));           
+            Kv_diag(i) =  2.0 * std::sqrt(Kp_diag(i));           
         }
 
         Kp_ = Kp_diag.asDiagonal();
