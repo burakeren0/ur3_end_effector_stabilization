@@ -1,4 +1,4 @@
-## 📂 Package Architecture (Folder Structure)
+## Package Architecture (Folder Structure)
 
 * `urdf/`: Basic robot definition (Xacro) files combining Husky and UR3.
 * `launch/`: Launch files that launch the simulation, Rviz and maps.
@@ -21,7 +21,7 @@ git clone https://github.com/burakeren0/ur3_end_effector_stabilization.git
 
 
 
-## 🛠️ How to operate it?
+## How to operate it?
 
 **1. terminal (Starting the simulation):**
 ```bash
