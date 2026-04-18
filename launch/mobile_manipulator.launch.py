@@ -133,7 +133,7 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
         arguments=[
             "-string", robot_description_content,
-            "-name", "mobile_manipulator",
+            "-name", "ur3_end_effector_stabilization",
             "-allow_renaming", "true", # İsim çakışırsa otomatik yeniden adlandır
             "-z", "0.2",
         ],
@@ -198,7 +198,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "controllers_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("mobile_manipulator"), "config", "husky_ur3_controllers.yaml"]
+                [FindPackageShare("ur3_end_effector_stabilization"), "config", "husky_ur3_controllers.yaml"]
             ),
         )
     )
@@ -207,7 +207,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "description_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("mobile_manipulator"), "urdf", "mobile_manipulator.urdf.xacro"]
+                [FindPackageShare("ur3_end_effector_stabilization"), "urdf", "mobile_manipulator.urdf.xacro"]
             ),
         )
     )

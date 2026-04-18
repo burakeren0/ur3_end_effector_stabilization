@@ -123,7 +123,7 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
         arguments=[
             "-string", robot_description_content,
-            "-name", "mobile_manipulator",
+            "-name", "ur3_end_effector_stabilization",
             "-allow_renaming", "true",
             "-z", "0.5", 
         ],
@@ -170,7 +170,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'world', 
-            default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "worlds", "bumpy_world.sdf"]), 
+            default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "worlds", "bumpy_world.sdf"]), 
             description='Gazebo World Name'
         )
     )
@@ -186,7 +186,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "controllers_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("mobile_manipulator"), "config", "husky_ur3_controllers.yaml"]
+                [FindPackageShare("ur3_end_effector_stabilization"), "config", "husky_ur3_controllers.yaml"]
             ),
         )
     )
@@ -195,7 +195,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "description_file",
             default_value=PathJoinSubstitution(
-                [FindPackageShare("mobile_manipulator"), "urdf", "mobile_manipulator.urdf.xacro"]
+                [FindPackageShare("ur3_end_effector_stabilization"), "urdf", "mobile_manipulator.urdf.xacro"]
             ),
         )
     )

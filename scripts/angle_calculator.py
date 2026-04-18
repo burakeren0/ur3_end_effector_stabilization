@@ -12,8 +12,11 @@ class AngleCalculator(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
         
-        # CSV dosyasını çalışma alanının kök dizinine oluştur
-        self.csv_file_path = os.path.expanduser('~/ur3_ws/angle_data.csv')
+        # CSV dosyasını istenilen analiz dizinine kaydet
+        self.csv_file_path = '/home/taylan/ur3_ws/src/ur3_end_effector_stabilization/analysis/angle_data.csv'
+        
+        # Eğer 'analysis' klasörü yoksa otomatik olarak oluştur
+        os.makedirs(os.path.dirname(self.csv_file_path), exist_ok=True)
         
         # Dosyayı ilk açtığında başlıkları yaz (Eski verileri ezer)
         with open(self.csv_file_path, mode='w', newline='') as file:
@@ -50,7 +53,7 @@ class AngleCalculator(Node):
             quat = t.transform.rotation
             roll, pitch, yaw = self.euler_from_quaternion(quat.x, quat.y, quat.z, quat.w)
             
-						# Zamanı ve açıları dereceye çevirip kaydet
+            # Zamanı ve açıları dereceye çevirip kaydet
             current_time = (self.get_clock().now().nanoseconds / 1e9) - self.start_time
             roll_deg = math.degrees(roll)
             pitch_deg = math.degrees(pitch)

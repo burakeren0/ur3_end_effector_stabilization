@@ -49,12 +49,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim_resource_path,
-        DeclareLaunchArgument('world', default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "worlds", "hilly_world.sdf"])),
+        DeclareLaunchArgument('world', default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "worlds", "hilly_world.sdf"])),
         DeclareLaunchArgument('use_sim_time', default_value='true'),
         DeclareLaunchArgument("ur_type", default_value="ur3"),
         DeclareLaunchArgument("tf_prefix", default_value='ur_'),
-        DeclareLaunchArgument("controllers_file", default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "config", "husky_ur3_controllers.yaml"])),
-        DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "urdf", "mobile_manipulator.urdf.xacro"])),
+				DeclareLaunchArgument("controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "config", "husky_ur3_controllers.yaml"])),
+				DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "urdf", "mobile_manipulator.urdf.xacro"])),
         DeclareLaunchArgument("launch_rviz", default_value="true"),
         DeclareLaunchArgument("rviz_config_file", default_value=PathJoinSubstitution([FindPackageShare("ur_description"), "rviz", "view_robot.rviz"])),
         OpaqueFunction(function=launch_setup)

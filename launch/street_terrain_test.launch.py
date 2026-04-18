@@ -38,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
         PythonLaunchDescriptionSource(PathJoinSubstitution([get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])),
         launch_arguments={'gz_args': [world, ' -r -v 4']}.items(),
     )
-    gz_spawn_entity = Node(package="ros_gz_sim", executable="create", output="screen", arguments=["-string", robot_description_content, "-name", "mobile_manipulator", "-allow_renaming", "true", "-z", "0.3"])
+    gz_spawn_entity = Node(package="ros_gz_sim", executable="create", output="screen", arguments=["-string", robot_description_content, "-name", "ur3_end_effector_stabilization", "-allow_renaming", "true", "-z", "0.3"])
     gz_sim_bridge = Node(package="ros_gz_bridge", executable="parameter_bridge", arguments=["/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock", "/imu_data@sensor_msgs/msg/Imu[gz.msgs.IMU"], output="screen")
 
     return [robot_state_publisher_node, gz_sim, gz_spawn_entity, joint_state_broadcaster_spawner, ur_controller_spawner, ur_vel_controller_spawner, ur_eff_controller_spawner, husky_controller_spawner, gz_sim_bridge, delay_rviz]
@@ -49,12 +49,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim_resource_path,
-        DeclareLaunchArgument('world', default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "worlds", "street_world.sdf"])),
+        DeclareLaunchArgument('world', default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "worlds", "street_world.sdf"])),
         DeclareLaunchArgument('use_sim_time', default_value='true'),
         DeclareLaunchArgument("ur_type", default_value="ur3"),
         DeclareLaunchArgument("tf_prefix", default_value='ur_'),
-        DeclareLaunchArgument("controllers_file", default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "config", "husky_ur3_controllers.yaml"])),
-        DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("mobile_manipulator"), "urdf", "mobile_manipulator.urdf.xacro"])),
+        DeclareLaunchArgument("controllers_file", default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "config", "husky_ur3_controllers.yaml"])),
+        DeclareLaunchArgument("description_file", default_value=PathJoinSubstitution([FindPackageShare("ur3_end_effector_stabilization"), "urdf", "mobile_manipulator.urdf.xacro"])),
         DeclareLaunchArgument("launch_rviz", default_value="true"),
         DeclareLaunchArgument("rviz_config_file", default_value=PathJoinSubstitution([FindPackageShare("ur_description"), "rviz", "view_robot.rviz"])),
         OpaqueFunction(function=launch_setup)

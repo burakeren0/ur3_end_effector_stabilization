@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(mobile_manipulator)
+project(ur3_end_effector_stabilization)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -49,10 +49,11 @@ install(DIRECTORY
 install(PROGRAMS
   scripts/robot_dancer.py
   scripts/velocity_kinematics_analysis.py
-  scripts/generate_bumpy_world.py
-  scripts/generate_street_world.py
-  scripts/raw_data_logger.py
-  scripts/active_stabilizer_v3.py
+  scripts/world_generators/generate_bumpy_world.py
+  scripts/world_generators/generate_street_world.py
+  scripts/world_generators/generate_hilly_world.py
+  scripts/neural_network/raw_data_logger.py
+  scripts/neural_network/active_stabilizer_v3.py
   scripts/angle_calculator.py
   DESTINATION lib/${PROJECT_NAME}
 )
