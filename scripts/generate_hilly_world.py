@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+import os
+
+world_path = os.path.expanduser('~/ur3_ws/src/mobile_manipulator/worlds/hilly_world.sdf')
+
+sdf_content = """<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="hilly_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"></plugin>
+
+    <scene>
+      <ambient>1.0 1.0 1.0 1</ambient>
+      <background>0.8 0.9 1.0 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <light type="directional" name="sun">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry></collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ramp_up">
+      <static>true</static>
+      <pose>3.0 0 0.16 0 -0.08 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>4 10 0.1</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>4 10 0.1</size></box></geometry>
+          <material>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="hill_top">
+      <static>true</static>
+      <pose>6.5 0 0.32 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>3 10 0.1</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>3 10 0.1</size></box></geometry>
+          <material>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="ramp_down">
+      <static>true</static>
+      <pose>10.0 0 0.16 0 0.08 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>4 10 0.1</size></box></geometry></collision>
+        <visual name="visual">
+          <geometry><box><size>4 10 0.1</size></box></geometry>
+          <material>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
+"""
+
+with open(world_path, 'w') as f:
+    f.write(sdf_content)
+
+print(f"Genişletilmiş ve eğimi azaltılmış yokuşlu harita BAŞARIYLA güncellendi: {world_path}")
