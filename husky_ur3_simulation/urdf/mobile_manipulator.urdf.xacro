@@ -34,7 +34,7 @@
   <joint name="husky_ur_joint" type="fixed">
     <parent link="default_mount" />
     <child link="ur_base_plate" />
-    <origin xyz="0.2 0 0.1" rpy="0 0 0" />
+    <origin xyz="0.25 0 0.0" rpy="0 0 0" />
   </joint>
   <xacro:ur_robot
     name="$(arg name)"
@@ -48,7 +48,7 @@
     safety_pos_margin="$(arg safety_pos_margin)"
     safety_k_position="$(arg safety_k_position)"
     force_abs_paths="true">
-    <origin xyz="0.2 0 0.1" rpy="0 0 0" />
+    <origin xyz="0.2 0 0.0" rpy="0 0 0" />
   </xacro:ur_robot>
 
   <ros2_control name="MobileManipulatorSystem" type="system">
@@ -126,9 +126,58 @@
   </link>
 
   <joint name="imu_joint" type="fixed">
-    <parent link="$(arg tf_prefix)tool0"/>
+    <parent link="ur_base_link_inertia"/>
     <child link="imu_link"/>
-    <origin xyz="0 0 0.02" rpy="0 0 0"/> 
+    <origin xyz="0 0.1 0.01" rpy="0 0 0"/> 
+  </joint>
+
+  <!--
+    Asimetrik tool0 referans marker'ı.
+    Kütle/atalet ihmal edilebilir düzeydedir; collision eklenmediği için dinamiğe pratikte dokunmaz.
+    Yeşil kol +X, mavi kol +Z yönünü gösterir; kırmızı ofset uç simetriyi bozar.
+  -->
+  <link name="tool0_orientation_marker">
+    <inertial>
+      <mass value="0.0001"/>
+      <origin xyz="0.03 0.0 0.03" rpy="0 0 0"/>
+      <inertia ixx="1e-9" ixy="0" ixz="0" iyy="1e-9" iyz="0" izz="1e-9"/>
+    </inertial>
+
+    <visual name="marker_x_arm">
+      <origin xyz="0.06 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.12 0.012 0.012"/>
+      </geometry>
+      <material name="marker_green">
+        <color rgba="0.0 0.9 0.1 1.0"/>
+      </material>
+    </visual>
+
+    <visual name="marker_z_arm">
+      <origin xyz="0 0 0.06" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.012 0.012 0.12"/>
+      </geometry>
+      <material name="marker_blue">
+        <color rgba="0.1 0.25 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <visual name="marker_asymmetric_tip">
+      <origin xyz="0.125 0.025 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      <material name="marker_red">
+        <color rgba="1.0 0.05 0.05 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="tool0_orientation_marker_joint" type="fixed">
+    <parent link="ur_tool0"/>
+    <child link="tool0_orientation_marker"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
   <gazebo>
@@ -157,5 +206,41 @@
       <render_engine>ogre2</render_engine>
     </plugin>
   </gazebo> 
+
+  <gazebo reference="front_left_wheel_link">
+    <mu1>2.5</mu1>
+    <mu2>2.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.003</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
+
+  <gazebo reference="front_right_wheel_link">
+    <mu1>2.5</mu1>
+    <mu2>2.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.003</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
+
+  <gazebo reference="rear_left_wheel_link">
+    <mu1>2.5</mu1>
+    <mu2>2.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.003</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
+
+  <gazebo reference="rear_right_wheel_link">
+    <mu1>2.5</mu1>
+    <mu2>2.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.003</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
 
 </robot>

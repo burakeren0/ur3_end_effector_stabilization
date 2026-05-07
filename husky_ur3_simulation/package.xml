@@ -15,10 +15,13 @@
   <depend>ur_simulation_gz</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rclpy</depend>
+  <depend>tf2_ros</depend>
   <depend>eigen</depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
-  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>teleop_twist_keyboard</exec_depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>

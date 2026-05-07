@@ -22,6 +22,7 @@ class ComputedTorqueController(Node):
         # Hedef Açı (Radyan) - Robotu "Home" pozisyonuna benzer bir yere gönderiyoruz
         self.q_d = np.array([np.pi/4, -np.pi/2, 0.0, -np.pi/4, np.pi/2, 0.0])
         
+        
         # Durum değişkenleri
         self.q = np.zeros(6)
         self.dq = np.zeros(6)

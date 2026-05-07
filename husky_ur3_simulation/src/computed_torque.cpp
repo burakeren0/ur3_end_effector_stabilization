@@ -32,7 +32,7 @@ public:
         Kv_ = Kv_diag.asDiagonal();
 
         // Hedef Açı (Radyan)
-        q_d_ << M_PI/4.0, -M_PI/2.0, 0.0, -M_PI/4.0, M_PI/2.0, 0.0;
+        q_d_ << 0, -M_PI/2.0, M_PI/2.0, -M_PI, -M_PI/2.0, 0.0;
 
         q_.setZero();
         dq_.setZero();
@@ -45,6 +45,9 @@ public:
         // --- 2. ROS ABONELİK VE YAYINLAR ---
         subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
             "/joint_states", 10, std::bind(&ComputedTorqueController::joint_state_callback, this, _1));
+
+        target_angles_sub_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
+            "/target_angles", 10, std::bind(&ComputedTorqueController::target_angles_callback, this, _1));
 
         publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/ur_effort_controller/commands", 10);
@@ -64,6 +67,7 @@ private:
     std::vector<std::string> joint_order_;
 
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_;
+    rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr target_angles_sub_;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
 
@@ -71,6 +75,15 @@ private:
     inline double c(double angle) { return std::cos(angle); }
     inline double s(double angle) { return std::sin(angle); }
     inline double sq(double val) { return val * val; } // Karesini alma kısaltması
+
+    void target_angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
+    {
+        if (msg->data.size() >= 6) {
+            for (int i = 0; i < 6; ++i) {
+                q_d_(i) = msg->data[i];
+            }
+        }
+    }
 
     void joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
     {
