@@ -30,27 +30,19 @@ endif()
 # ==============================================================================
 # 1. C++ DÜĞÜMLERİNİN (NODES) DERLENMESİ
 # ==============================================================================
-
-# Eski Düğümlerin
 add_executable(computed_torque_node src/computed_torque.cpp)
 target_include_directories(computed_torque_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
 ament_target_dependencies(computed_torque_node rclcpp sensor_msgs std_msgs)
 
-add_executable(computed_torque_v_node src/computed_torque_Vposition.cpp)
-target_include_directories(computed_torque_v_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
-ament_target_dependencies(computed_torque_v_node rclcpp sensor_msgs std_msgs tf2 tf2_ros tf2_geometry_msgs geometry_msgs)
+# ---> YENİ EKLENEN PARKOUR DÜĞÜMLERİ <---
 
-add_executable(imu_test_node src/imu_test_node.cpp)
-ament_target_dependencies(imu_test_node rclcpp sensor_msgs tf2 tf2_geometry_msgs)
+# 1. Target Pose Düğümü
+add_executable(target_pose src/target_pose.cpp)
+ament_target_dependencies(target_pose rclcpp sensor_msgs std_msgs)
 
-# ---> YENİ EKLENEN AKTİF 3D ORYANTASYON KONTROLCÜSÜ <---
-add_executable(world_frame_torque_control_node src/world_frame_torque_control.cpp)
-target_include_directories(world_frame_torque_control_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
-ament_target_dependencies(world_frame_torque_control_node rclcpp sensor_msgs std_msgs)
-
-add_executable(quaternion_inverse_node src/quaternion_inverse.cpp)
-target_include_directories(quaternion_inverse_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
-ament_target_dependencies(quaternion_inverse_node rclcpp sensor_msgs std_msgs)
+# 2. Inverse Kinematics Düğümü
+add_executable(inverse_kinematics_node src/inverse_kinematics.cpp)
+ament_target_dependencies(inverse_kinematics_node rclcpp std_msgs)
 
 
 # ==============================================================================
@@ -58,10 +50,13 @@ ament_target_dependencies(quaternion_inverse_node rclcpp sensor_msgs std_msgs)
 # ==============================================================================
 install(TARGETS
   computed_torque_node
-  computed_torque_v_node
-  imu_test_node
-  world_frame_torque_control_node
-  quaternion_inverse_node
+  #computed_torque_v_node
+  #imu_test_node
+  #world_frame_torque_control_node
+  #quaternion_inverse_node
+  target_pose
+  inverse_kinematics_node
+  # computed_torque_cpp  # Eski hedef adı; computed_torque_node yukarıda derlenip kuruluyor.
   DESTINATION lib/${PROJECT_NAME}
 )
 

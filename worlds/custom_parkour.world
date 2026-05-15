@@ -1,0 +1,140 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="custom_parkour">
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name='roll_right_bump'>
+      <static>true</static>
+      <pose>3.0 -0.4 -0.05 0 0 0.0</pose>
+      
+        <link name='up_link'>
+          <pose>0.7483314773547883 0 0.05 0 -0.06671614841022526 0</pose>
+          <collision name='up_col'><geometry><box><size>1.5 0.4 0.1</size></box></geometry></collision>
+          <visual name='up_vis'>
+            <geometry><box><size>1.5 0.4 0.1</size></box></geometry>
+            <material><ambient>1.0 0.8 0.0 1</ambient><diffuse>1.0 0.8 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='down_link'>
+          <pose>2.244994432064365 0 0.05 0 0.06671614841022526 0</pose>
+          <collision name='down_col'><geometry><box><size>1.5 0.4 0.1</size></box></geometry></collision>
+          <visual name='down_vis'>
+            <geometry><box><size>1.5 0.4 0.1</size></box></geometry>
+            <material><ambient>1.0 0.8 0.0 1</ambient><diffuse>1.0 0.8 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+    </model>
+    
+    <model name='roll_left_bump'>
+      <static>true</static>
+      <pose>7.0 0.4 -0.05 0 0 0.0</pose>
+      
+        <link name='up_link'>
+          <pose>0.7483314773547883 0 0.05 0 -0.06671614841022526 0</pose>
+          <collision name='up_col'><geometry><box><size>1.5 0.4 0.1</size></box></geometry></collision>
+          <visual name='up_vis'>
+            <geometry><box><size>1.5 0.4 0.1</size></box></geometry>
+            <material><ambient>1.0 0.5 0.0 1</ambient><diffuse>1.0 0.5 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='down_link'>
+          <pose>2.244994432064365 0 0.05 0 0.06671614841022526 0</pose>
+          <collision name='down_col'><geometry><box><size>1.5 0.4 0.1</size></box></geometry></collision>
+          <visual name='down_vis'>
+            <geometry><box><size>1.5 0.4 0.1</size></box></geometry>
+            <material><ambient>1.0 0.5 0.0 1</ambient><diffuse>1.0 0.5 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+    </model>
+    
+    <model name='pitch_ramp'>
+      <static>true</static>
+      <pose>12.0 0.0 -0.05 0 0 0.0</pose>
+      
+        <link name='up_link'>
+          <pose>0.7475961476626267 0 0.06 0 -0.08008558003365901 0</pose>
+          <collision name='up_col'><geometry><box><size>1.5 3.0 0.1</size></box></geometry></collision>
+          <visual name='up_vis'>
+            <geometry><box><size>1.5 3.0 0.1</size></box></geometry>
+            <material><ambient>0.0 0.8 0.0 1</ambient><diffuse>0.0 0.8 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='flat_link'>
+          <pose>1.9951922953252534 0 0.12 0 0 0</pose>
+          <collision name='flat_col'><geometry><box><size>1.0 3.0 0.1</size></box></geometry></collision>
+          <visual name='flat_vis'>
+            <geometry><box><size>1.0 3.0 0.1</size></box></geometry>
+            <material><ambient>0.0 0.8 0.0 1</ambient><diffuse>0.0 0.8 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='down_link'>
+          <pose>3.24278844298788 0 0.06 0 0.08008558003365901 0</pose>
+          <collision name='down_col'><geometry><box><size>1.5 3.0 0.1</size></box></geometry></collision>
+          <visual name='down_vis'>
+            <geometry><box><size>1.5 3.0 0.1</size></box></geometry>
+            <material><ambient>0.0 0.8 0.0 1</ambient><diffuse>0.0 0.8 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+    </model>
+    
+    <model name='combined_ramp'>
+      <static>true</static>
+      <pose>18.0 0.0 -0.05 0 0 0.5235</pose>
+      
+        <link name='up_link'>
+          <pose>0.7475961476626267 0 0.06 0 -0.08008558003365901 0</pose>
+          <collision name='up_col'><geometry><box><size>1.5 3.0 0.1</size></box></geometry></collision>
+          <visual name='up_vis'>
+            <geometry><box><size>1.5 3.0 0.1</size></box></geometry>
+            <material><ambient>0.8 0.0 0.0 1</ambient><diffuse>0.8 0.0 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='flat_link'>
+          <pose>1.9951922953252534 0 0.12 0 0 0</pose>
+          <collision name='flat_col'><geometry><box><size>1.0 3.0 0.1</size></box></geometry></collision>
+          <visual name='flat_vis'>
+            <geometry><box><size>1.0 3.0 0.1</size></box></geometry>
+            <material><ambient>0.8 0.0 0.0 1</ambient><diffuse>0.8 0.0 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+        <link name='down_link'>
+          <pose>3.24278844298788 0 0.06 0 0.08008558003365901 0</pose>
+          <collision name='down_col'><geometry><box><size>1.5 3.0 0.1</size></box></geometry></collision>
+          <visual name='down_vis'>
+            <geometry><box><size>1.5 3.0 0.1</size></box></geometry>
+            <material><ambient>0.8 0.0 0.0 1</ambient><diffuse>0.8 0.0 0.0 1</diffuse></material>
+          </visual>
+        </link>
+        
+    </model>
+    
+  </world>
+</sdf>

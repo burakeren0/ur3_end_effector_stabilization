@@ -6,6 +6,7 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
+#include <array>  // Gelen UR eklem durumlarının tamamının alındığını takip etmek için kullanılır.
 
 using std::placeholders::_1;
 
@@ -32,10 +33,11 @@ public:
         Kv_ = Kv_diag.asDiagonal();
 
         // Hedef Açı (Radyan)
-        q_d_ << M_PI/4.0, -M_PI/2.0, 0.0, -M_PI/4.0, M_PI/2.0, 0.0;
+        q_d_ << 0, -M_PI/2.0, M_PI/2.0, -M_PI, -M_PI/2.0, 0.0;
 
         q_.setZero();
         dq_.setZero();
+        have_joint_state_.fill(false); // Kontrol başlamadan önce 6 UR ekleminin tamamını bekletir.
 
         joint_order_ = {
             "ur_shoulder_pan_joint", "ur_shoulder_lift_joint", "ur_elbow_joint",
@@ -46,10 +48,13 @@ public:
         subscription_ = this->create_subscription<sensor_msgs::msg::JointState>(
             "/joint_states", 10, std::bind(&ComputedTorqueController::joint_state_callback, this, _1));
 
+        target_angles_sub_ = this->create_subscription<std_msgs::msg::Float64MultiArray>(
+            "/target_angles", 10, std::bind(&ComputedTorqueController::target_angles_callback, this, _1));
+
         publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/ur_effort_controller/commands", 10);
 
-        // 100 Hz Kontrol Döngüsü (10 ms)
+        // 500 Hz Kontrol Döngüsü (2 ms)
         timer_ = this->create_wall_timer(
             std::chrono::milliseconds(2),
             std::bind(&ComputedTorqueController::control_loop, this));
@@ -62,8 +67,10 @@ private:
     Matrix6d Kp_, Kv_;
     bool data_received_;
     std::vector<std::string> joint_order_;
+    std::array<bool, 6> have_joint_state_; // Eksik joint_states mesajıyla tork komutu basılmasını engeller.
 
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_;
+    rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr target_angles_sub_;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_;
     rclcpp::TimerBase::SharedPtr timer_;
 
@@ -72,24 +79,35 @@ private:
     inline double s(double angle) { return std::sin(angle); }
     inline double sq(double val) { return val * val; } // Karesini alma kısaltması
 
+    void target_angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
+    {
+        if (msg->data.size() >= 6) {
+            for (int i = 0; i < 6; ++i) {
+                q_d_(i) = msg->data[i];
+            }
+        }
+    }
+
     void joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
     {
         for (size_t i = 0; i < msg->name.size(); ++i) {
             auto it = std::find(joint_order_.begin(), joint_order_.end(), msg->name[i]);
             if (it != joint_order_.end()) {
                 int idx = std::distance(joint_order_.begin(), it);
+                if (msg->position.size() <= i) { continue; } // Pozisyonu olmayan eklem mesajını güvenli şekilde yok sayar.
                 q_(idx) = msg->position[i];
+                have_joint_state_[idx] = true; // Bu UR ekleminin geçerli pozisyon bilgisinin geldiğini işaretler.
                 if (msg->velocity.size() > i) {
                     dq_(idx) = msg->velocity[i];
                 }
             }
         }
-        data_received_ = true;
+        data_received_ = std::all_of(have_joint_state_.begin(), have_joint_state_.end(), [](bool received) { return received; }); // 6 UR eklemi gelmeden kontrol döngüsünü başlatmaz.
     }
 
     void robot_dynamics(const Vector6d& q, const Vector6d& dq, Matrix6d& D, Matrix6d& C, Vector6d& g)
     {
-        double th1 = q(0), th2 = q(1), th3 = q(2), th4 = q(3), th5 = q(4), th6 = q(5);
+        double th2 = q(1), th3 = q(2), th4 = q(3), th5 = q(4); // Dinamik ifadelerde yalnız kullanılan açıları çıkarır.
         double th1_dot = dq(0), th2_dot = dq(1), th3_dot = dq(2), th4_dot = dq(3), th5_dot = dq(4), th6_dot = dq(5);
 
         for(int i=0; i<6; i++) {

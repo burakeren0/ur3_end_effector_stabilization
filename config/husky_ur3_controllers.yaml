@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 500  # Hz
 
     # Eklem durumlarını yayınlayan temel yayıncı
     joint_state_broadcaster:
@@ -19,21 +19,6 @@ controller_manager:
 
     ur_effort_controller:
       type: effort_controllers/JointGroupEffortController
-
-ur_effort_controller:
-  ros__parameters:
-    joints:
-      - ur_shoulder_pan_joint
-      - ur_shoulder_lift_joint
-      - ur_elbow_joint
-      - ur_wrist_1_joint
-      - ur_wrist_2_joint
-      - ur_wrist_3_joint
-    command_interfaces:
-      - effort
-    state_interfaces:
-      - position
-      - velocity
 
 # -------------------------------------------------------------------
 # Husky (A200) Tekerlek Ayarları
@@ -61,7 +46,6 @@ diff_drive_base_controller:
     enable_odom_tf: true
 
     cmd_vel_timeout: 50.0
-    use_stamped_vel: false
 
 # -------------------------------------------------------------------
 # UR3 Kol Ayarları

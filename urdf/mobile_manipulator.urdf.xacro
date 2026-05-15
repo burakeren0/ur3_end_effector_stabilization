@@ -155,8 +155,10 @@
   </link>
 
   <joint name="base_imu_joint" type="fixed">
-    <parent link="$(arg tf_prefix)base_link"/> <child link="base_imu_link"/>
-    <origin xyz="-0.05 0 0.02" rpy="0 0 0"/> </joint>
+    <parent link="$(arg tf_prefix)base_link_inertia"/> <!-- tf_prefix degisse bile IMU'yu UR taban ataletsel frame'ine baglar. -->
+    <child link="base_imu_link"/> <!-- base_imu_link adını korur; imu_link end-effector IMU tarafından kullanılıyor. -->
+    <origin xyz="0 0.1 0.01" rpy="0 0 0"/> <!-- mm.urdf.xacro'daki IMU yerleşimini base IMU için uygular. -->
+  </joint> <!-- base IMU fixed joint bloğunu okunabilir ve mm mantığıyla uyumlu hale getirir. -->
 
   <gazebo>
     <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
