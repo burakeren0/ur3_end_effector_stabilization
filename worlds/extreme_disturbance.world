@@ -1,0 +1,3329 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+<world name="extreme_disturbance_parkour">
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+    <scene>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <background>0.4 0.6 0.8 1</background>
+      <shadows>true</shadows>
+    </scene>
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation><range>1000</range><constant>0.9</constant><linear>0.01</linear><quadratic>0.001</quadratic></attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material><ambient>0.7 0.7 0.7 1</ambient><diffuse>0.7 0.7 0.7 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="ramp_pitch">
+      <static>true</static>
+      <pose>4.0000 0.0000 0.4000 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="ramp_roll_pitch">
+      <static>true</static>
+      <pose>12.0000 0.0000 1.2000 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <material>
+            <ambient>0.6 0.4 0.4 1</ambient>
+            <diffuse>0.6 0.4 0.4 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="ramp_down">
+      <static>true</static>
+      <pose>20.0000 0.0000 1.2000 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
+          <material>
+            <ambient>0.4 0.6 0.4 1</ambient>
+            <diffuse>0.4 0.6 0.4 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_0">
+      <static>true</static>
+      <pose>2.3954 -1.4396 0.3395 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0116</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0116</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_1">
+      <static>true</static>
+      <pose>3.2660 -1.6371 0.4269 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0170</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0170</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_2">
+      <static>true</static>
+      <pose>5.5895 0.0770 0.6600 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_3">
+      <static>true</static>
+      <pose>5.7825 -1.1577 0.6793 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0151</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0151</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_4">
+      <static>true</static>
+      <pose>2.8528 -0.9669 0.3854 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0084</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0084</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_5">
+      <static>true</static>
+      <pose>2.5249 -1.4603 0.3525 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0145</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0145</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_6">
+      <static>true</static>
+      <pose>4.1082 1.6654 0.5114 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_7">
+      <static>true</static>
+      <pose>4.8885 1.1357 0.5896 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0107</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0107</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_8">
+      <static>true</static>
+      <pose>5.8937 -1.6162 0.6905 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0108</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0108</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_9">
+      <static>true</static>
+      <pose>1.9135 -0.8027 0.2912 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0143</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0143</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_10">
+      <static>true</static>
+      <pose>2.7356 0.3608 0.3736 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_11">
+      <static>true</static>
+      <pose>0.2412 -0.2401 0.1234 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_12">
+      <static>true</static>
+      <pose>2.4096 -1.5090 0.3409 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0129</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0129</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_13">
+      <static>true</static>
+      <pose>4.7969 0.0444 0.5805 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0125</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0125</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_14">
+      <static>true</static>
+      <pose>4.2055 -0.2448 0.5211 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0140</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0140</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_15">
+      <static>true</static>
+      <pose>0.6655 -0.6627 0.1659 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0089</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0089</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_16">
+      <static>true</static>
+      <pose>6.1258 0.1232 0.7138 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0193</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0193</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_17">
+      <static>true</static>
+      <pose>4.9766 0.2867 0.5985 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0102</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0102</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_18">
+      <static>true</static>
+      <pose>1.8317 1.3626 0.2829 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0088</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0088</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_19">
+      <static>true</static>
+      <pose>3.2518 1.6725 0.4254 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_20">
+      <static>true</static>
+      <pose>6.8454 0.2162 0.7860 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0121</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0121</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_21">
+      <static>true</static>
+      <pose>5.1327 0.8712 0.6142 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_22">
+      <static>true</static>
+      <pose>5.8342 -1.4100 0.6845 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_23">
+      <static>true</static>
+      <pose>4.8075 -0.5103 0.5815 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0197</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0197</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_24">
+      <static>true</static>
+      <pose>7.2874 -0.8931 0.8303 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0173</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0173</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_25">
+      <static>true</static>
+      <pose>1.8041 1.0002 0.2802 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_26">
+      <static>true</static>
+      <pose>5.4527 -1.0512 0.6463 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0146</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0146</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_27">
+      <static>true</static>
+      <pose>4.0956 0.8150 0.5101 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0136</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0136</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_28">
+      <static>true</static>
+      <pose>5.0869 -0.2912 0.6096 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0178</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0178</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_29">
+      <static>true</static>
+      <pose>3.4835 -0.7781 0.4487 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_30">
+      <static>true</static>
+      <pose>4.7939 -0.3913 0.5802 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0137</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0137</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_31">
+      <static>true</static>
+      <pose>6.3656 -1.5372 0.7378 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_32">
+      <static>true</static>
+      <pose>5.0548 1.5926 0.6063 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_33">
+      <static>true</static>
+      <pose>0.4505 0.2850 0.1444 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0147</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0147</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_34">
+      <static>true</static>
+      <pose>4.6128 -1.1050 0.5620 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0149</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0149</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_35">
+      <static>true</static>
+      <pose>1.2164 -0.3811 0.2212 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0150</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0150</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_36">
+      <static>true</static>
+      <pose>2.8041 0.8998 0.3805 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_37">
+      <static>true</static>
+      <pose>5.7268 -0.2345 0.6738 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0155</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0155</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_38">
+      <static>true</static>
+      <pose>0.7205 -0.9701 0.1715 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0161</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0161</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_39">
+      <static>true</static>
+      <pose>5.2531 -0.8160 0.6262 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_40">
+      <static>true</static>
+      <pose>3.0871 1.0247 0.4089 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_41">
+      <static>true</static>
+      <pose>4.5893 0.5092 0.5596 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0186</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0186</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_42">
+      <static>true</static>
+      <pose>6.1843 1.3771 0.7197 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0179</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0179</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_43">
+      <static>true</static>
+      <pose>5.0831 -0.7938 0.6092 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0133</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0133</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_44">
+      <static>true</static>
+      <pose>7.4669 -0.0372 0.8484 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0188</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0188</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_45">
+      <static>true</static>
+      <pose>3.7847 0.8099 0.4789 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0183</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0183</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_46">
+      <static>true</static>
+      <pose>6.8926 0.5380 0.7907 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0167</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0167</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_47">
+      <static>true</static>
+      <pose>2.7755 -1.4654 0.3776 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0144</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0144</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_48">
+      <static>true</static>
+      <pose>1.1990 -0.6663 0.2195 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0185</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0185</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_49">
+      <static>true</static>
+      <pose>5.3509 0.4832 0.6360 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0182</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0182</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_50">
+      <static>true</static>
+      <pose>5.8529 0.1068 0.6864 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0083</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0083</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_51">
+      <static>true</static>
+      <pose>4.4765 0.3565 0.5483 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0154</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0154</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_52">
+      <static>true</static>
+      <pose>3.8888 -1.5160 0.4893 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_53">
+      <static>true</static>
+      <pose>3.2942 -0.7553 0.4297 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0176</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0176</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_54">
+      <static>true</static>
+      <pose>1.7029 -0.3078 0.2700 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0095</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0095</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_55">
+      <static>true</static>
+      <pose>0.2618 1.5091 0.1254 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0168</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_56">
+      <static>true</static>
+      <pose>7.6280 0.0644 0.8645 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_57">
+      <static>true</static>
+      <pose>6.0841 -0.8057 0.7096 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0135</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0135</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_58">
+      <static>true</static>
+      <pose>4.3560 0.5381 0.5362 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0174</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0174</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_59">
+      <static>true</static>
+      <pose>4.2650 0.1297 0.5271 0.0000 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_60">
+      <static>true</static>
+      <pose>12.6498 -1.2568 1.2774 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_61">
+      <static>true</static>
+      <pose>9.0505 -0.7160 0.9544 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0177</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0177</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_62">
+      <static>true</static>
+      <pose>10.6459 -1.5643 1.0547 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0190</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0190</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_63">
+      <static>true</static>
+      <pose>8.9924 -1.2933 0.9079 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0127</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0127</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_64">
+      <static>true</static>
+      <pose>15.3164 0.7609 1.6871 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_65">
+      <static>true</static>
+      <pose>13.2969 -1.1849 1.3474 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0128</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0128</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_66">
+      <static>true</static>
+      <pose>8.8975 0.3863 1.0167 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_67">
+      <static>true</static>
+      <pose>10.8434 1.5440 1.2935 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0082</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0082</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_68">
+      <static>true</static>
+      <pose>11.5368 1.4240 1.3546 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0092</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0092</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_69">
+      <static>true</static>
+      <pose>11.1345 -0.0645 1.2094 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_70">
+      <static>true</static>
+      <pose>11.8429 -0.0858 1.2789 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_71">
+      <static>true</static>
+      <pose>10.6384 0.8844 1.2265 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0096</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_72">
+      <static>true</static>
+      <pose>12.3490 1.3387 1.4301 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0138</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0138</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_73">
+      <static>true</static>
+      <pose>14.3836 1.6754 1.6580 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_74">
+      <static>true</static>
+      <pose>11.6479 1.3678 1.3618 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_75">
+      <static>true</static>
+      <pose>10.7581 0.6900 1.2248 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_76">
+      <static>true</static>
+      <pose>12.0340 0.6851 1.3524 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0141</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_77">
+      <static>true</static>
+      <pose>14.5324 1.4269 1.6554 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_78">
+      <static>true</static>
+      <pose>10.3452 0.5781 1.1754 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0109</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0109</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_79">
+      <static>true</static>
+      <pose>12.3572 0.6142 1.3799 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0123</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0123</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_80">
+      <static>true</static>
+      <pose>10.2353 -1.6776 1.0055 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_81">
+      <static>true</static>
+      <pose>13.9157 0.8521 1.5530 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_82">
+      <static>true</static>
+      <pose>12.7451 -1.4608 1.2726 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0173</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0173</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_83">
+      <static>true</static>
+      <pose>10.5784 1.6440 1.2740 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0088</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0088</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_84">
+      <static>true</static>
+      <pose>11.5299 0.4975 1.2886 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0134</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0134</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_85">
+      <static>true</static>
+      <pose>10.4453 1.0448 1.2184 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_86">
+      <static>true</static>
+      <pose>8.7749 -0.8402 0.9180 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0100</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0100</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_87">
+      <static>true</static>
+      <pose>10.7585 1.4662 1.2795 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0180</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0180</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_88">
+      <static>true</static>
+      <pose>12.4234 -1.5761 1.2322 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0147</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0147</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_89">
+      <static>true</static>
+      <pose>15.5541 0.2806 1.6771 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_90">
+      <static>true</static>
+      <pose>10.9858 -0.8355 1.1401 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0183</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0183</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_91">
+      <static>true</static>
+      <pose>12.0036 1.0575 1.3756 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0169</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0169</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_92">
+      <static>true</static>
+      <pose>13.4878 0.9453 1.5166 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0138</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0138</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_93">
+      <static>true</static>
+      <pose>8.5684 1.1253 1.0357 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_94">
+      <static>true</static>
+      <pose>11.4749 -1.2015 1.1634 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_95">
+      <static>true</static>
+      <pose>9.8280 -1.1571 1.0013 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0140</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0140</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_96">
+      <static>true</static>
+      <pose>11.3170 -0.7714 1.1779 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0164</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0164</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_97">
+      <static>true</static>
+      <pose>11.9753 0.2377 1.3150 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0125</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0125</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_98">
+      <static>true</static>
+      <pose>8.0758 0.0017 0.9071 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0110</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0110</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_99">
+      <static>true</static>
+      <pose>9.3664 1.6200 1.1507 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_100">
+      <static>true</static>
+      <pose>10.5327 1.4470 1.2555 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_101">
+      <static>true</static>
+      <pose>12.2033 1.5044 1.4272 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0179</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0179</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_102">
+      <static>true</static>
+      <pose>14.7640 -0.4140 1.5489 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_103">
+      <static>true</static>
+      <pose>12.5862 -0.7512 1.3066 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_104">
+      <static>true</static>
+      <pose>12.5581 1.3758 1.4537 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0134</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0134</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_105">
+      <static>true</static>
+      <pose>15.4528 -1.5476 1.5381 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0198</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0198</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_106">
+      <static>true</static>
+      <pose>15.2206 -0.2954 1.6031 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0180</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0180</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_107">
+      <static>true</static>
+      <pose>14.2359 0.8371 1.5841 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0177</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0177</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_108">
+      <static>true</static>
+      <pose>14.5002 0.7635 1.6054 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0091</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_109">
+      <static>true</static>
+      <pose>11.9907 -0.3785 1.2731 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0092</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0092</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_110">
+      <static>true</static>
+      <pose>9.0957 1.0771 1.0852 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0100</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0100</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_111">
+      <static>true</static>
+      <pose>11.0513 -0.0981 1.1986 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0126</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_112">
+      <static>true</static>
+      <pose>13.2414 0.1053 1.4327 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0119</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0119</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_113">
+      <static>true</static>
+      <pose>15.2398 1.4037 1.7247 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0130</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0130</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_114">
+      <static>true</static>
+      <pose>8.3690 -0.5445 0.8981 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0097</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_115">
+      <static>true</static>
+      <pose>15.4472 1.6620 1.7637 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0189</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0189</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_116">
+      <static>true</static>
+      <pose>10.0765 -1.3485 1.0127 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0184</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0184</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_117">
+      <static>true</static>
+      <pose>12.5365 0.2850 1.3747 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0081</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0081</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_118">
+      <static>true</static>
+      <pose>14.2787 -0.6180 1.4858 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0184</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0184</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_119">
+      <static>true</static>
+      <pose>9.2632 0.8732 1.0877 0.0700 -0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0158</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0158</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_120">
+      <static>true</static>
+      <pose>23.7077 -0.2182 0.9441 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0118</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0118</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_121">
+      <static>true</static>
+      <pose>22.2640 1.6461 0.9576 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0086</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0086</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_122">
+      <static>true</static>
+      <pose>17.5140 -0.5584 1.5895 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0152</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0152</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_123">
+      <static>true</static>
+      <pose>18.0969 -0.1385 1.5015 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0099</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_124">
+      <static>true</static>
+      <pose>17.9702 0.7684 1.4503 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0095</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0095</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_125">
+      <static>true</static>
+      <pose>17.0935 1.0067 1.5214 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_126">
+      <static>true</static>
+      <pose>20.1832 0.8902 1.2196 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_127">
+      <static>true</static>
+      <pose>17.6201 -0.2072 1.5541 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0155</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0155</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_128">
+      <static>true</static>
+      <pose>20.7046 -0.4439 1.2613 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0120</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_129">
+      <static>true</static>
+      <pose>16.8570 0.2623 1.5976 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0110</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0110</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_130">
+      <static>true</static>
+      <pose>22.2133 -0.5569 1.1179 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_131">
+      <static>true</static>
+      <pose>22.8249 -0.7105 1.0674 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0122</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0122</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_132">
+      <static>true</static>
+      <pose>23.6748 -0.4796 0.9658 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0109</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0109</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_133">
+      <static>true</static>
+      <pose>17.1549 1.1842 1.5028 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0102</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0102</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_134">
+      <static>true</static>
+      <pose>23.7358 -0.9438 0.9924 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0181</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0181</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_135">
+      <static>true</static>
+      <pose>23.1094 -1.0232 1.0609 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0189</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0189</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_136">
+      <static>true</static>
+      <pose>23.4924 0.9734 0.8817 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0139</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0139</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_137">
+      <static>true</static>
+      <pose>18.0919 -0.0985 1.4991 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0144</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0144</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_138">
+      <static>true</static>
+      <pose>20.9183 -1.5977 1.3212 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0085</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0085</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_139">
+      <static>true</static>
+      <pose>23.0370 1.2942 0.9048 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0170</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0170</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_140">
+      <static>true</static>
+      <pose>20.7778 1.4408 1.1212 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0159</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0159</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_141">
+      <static>true</static>
+      <pose>17.1401 -0.1300 1.5969 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0148</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_142">
+      <static>true</static>
+      <pose>22.6205 -0.0614 1.0421 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0127</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0127</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_143">
+      <static>true</static>
+      <pose>18.4922 -0.9894 1.5218 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0085</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0085</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_144">
+      <static>true</static>
+      <pose>16.7999 1.6912 1.5027 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_145">
+      <static>true</static>
+      <pose>17.0054 0.5578 1.5619 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0153</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0153</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_146">
+      <static>true</static>
+      <pose>22.7399 -1.2248 1.1122 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0083</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0083</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_147">
+      <static>true</static>
+      <pose>20.6928 -0.4543 1.2632 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0166</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0166</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_148">
+      <static>true</static>
+      <pose>20.4782 -1.6412 1.3684 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_149">
+      <static>true</static>
+      <pose>21.6655 0.4233 1.1038 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0114</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0114</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_150">
+      <static>true</static>
+      <pose>23.8134 -0.4730 0.9515 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0107</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0107</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_151">
+      <static>true</static>
+      <pose>20.8011 -1.2522 1.3086 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0129</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0129</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_152">
+      <static>true</static>
+      <pose>19.7605 -1.5596 1.4347 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0163</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0163</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_153">
+      <static>true</static>
+      <pose>23.9357 -0.8415 0.9652 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0116</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0116</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_154">
+      <static>true</static>
+      <pose>16.3030 -0.3092 1.6935 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0150</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0150</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_155">
+      <static>true</static>
+      <pose>23.3626 0.0420 0.9604 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0089</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0089</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_156">
+      <static>true</static>
+      <pose>21.1755 -1.5559 1.2924 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_157">
+      <static>true</static>
+      <pose>21.6019 0.2591 1.1218 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0145</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0145</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_158">
+      <static>true</static>
+      <pose>18.3566 0.9089 1.4016 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0080</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0080</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_159">
+      <static>true</static>
+      <pose>17.0558 1.4735 1.4923 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0194</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_160">
+      <static>true</static>
+      <pose>21.5117 1.3978 1.0506 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0172</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_161">
+      <static>true</static>
+      <pose>19.7944 0.3206 1.2988 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0137</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0137</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_162">
+      <static>true</static>
+      <pose>19.2008 -0.0804 1.3866 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0112</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0112</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_163">
+      <static>true</static>
+      <pose>19.1658 0.1920 1.3709 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_164">
+      <static>true</static>
+      <pose>21.3980 1.3618 1.0645 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0175</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0175</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_165">
+      <static>true</static>
+      <pose>19.3751 0.5016 1.3281 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0158</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0158</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_166">
+      <static>true</static>
+      <pose>20.2232 -1.2993 1.3699 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_167">
+      <static>true</static>
+      <pose>22.3964 1.2960 0.9690 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0131</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0131</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_168">
+      <static>true</static>
+      <pose>21.2598 0.8694 1.1131 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0104</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_169">
+      <static>true</static>
+      <pose>22.1395 -0.1406 1.0960 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0122</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0122</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_170">
+      <static>true</static>
+      <pose>22.2084 -0.8660 1.1402 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0160</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_171">
+      <static>true</static>
+      <pose>21.4845 -0.8818 1.2139 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0154</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0154</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_172">
+      <static>true</static>
+      <pose>21.5183 0.1810 1.1357 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0103</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_173">
+      <static>true</static>
+      <pose>21.8336 -0.6757 1.1644 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0165</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0165</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_174">
+      <static>true</static>
+      <pose>19.0632 -0.6360 1.4396 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0199</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_175">
+      <static>true</static>
+      <pose>16.1091 1.3659 1.5949 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0113</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0113</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_176">
+      <static>true</static>
+      <pose>16.6354 0.8577 1.5779 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0191</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_177">
+      <static>true</static>
+      <pose>20.2429 -1.5998 1.3891 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0195</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0195</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_178">
+      <static>true</static>
+      <pose>21.2591 1.5417 1.0658 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0098</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+    <model name="stone_179">
+      <static>true</static>
+      <pose>21.8433 -1.1561 1.1973 -0.0700 0.1000 0.0000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><sphere><radius>0.0196</radius></sphere></geometry>
+          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.0196</radius></sphere></geometry>
+          <material>
+            <ambient>0.7 0.6 0.5 1</ambient>
+            <diffuse>0.7 0.6 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    </world>
+</sdf>

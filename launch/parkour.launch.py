@@ -239,7 +239,7 @@ def generate_launch_description():
                 [
                     FindPackageShare("ur3_end_effector_stabilization"),
                     "worlds",
-                    "custom_parkour.world",
+                    "extreme_disturbance.world",
                 ]
             ),
             description="Gazebo world file",
