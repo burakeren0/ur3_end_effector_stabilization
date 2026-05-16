@@ -78,6 +78,11 @@ private:
     inline double c(double angle) { return std::cos(angle); }
     inline double s(double angle) { return std::sin(angle); }
     inline double sq(double val) { return val * val; } // Karesini alma kısaltması
+    inline double wrap_to_pi(double angle) { // Eklem hatasını en kısa açısal yola sarmak için kullanılır.
+        while (angle > M_PI) { angle -= 2.0 * M_PI; } // +pi üstündeki eşdeğer açıları geri sarar.
+        while (angle < -M_PI) { angle += 2.0 * M_PI; } // -pi altındaki eşdeğer açıları ileri sarar.
+        return angle; // Kontrolcüye [-pi, pi] aralığında en kısa hata döner.
+    } // Açısal wrap yardımcısı burada biter.
 
     void target_angles_callback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
@@ -201,7 +206,10 @@ private:
         if (!data_received_) return;
 
         // 1. Hataları Hesapla
-        Vector6d e = q_d_ - q_;
+        Vector6d e; // Eklem hataları ham fark yerine açısal olarak sarılmış tutulur.
+        for (int i = 0; i < 6; ++i) { // Her UR eklemi için en kısa açısal hata hesaplanır.
+            e(i) = wrap_to_pi(q_d_(i) - q_(i)); // +/-pi sınırındaki 360 derece tur komutunu engeller.
+        } // Açısal hata vektörü tamamlanır.
         Vector6d de = -dq_; 
         
         // 2. Dış Döngü Komutu (u = Kp*e + Kv*de)

@@ -39,6 +39,8 @@ ament_target_dependencies(computed_torque_node rclcpp sensor_msgs std_msgs)
 # 1. Target Pose Düğümü
 add_executable(target_pose src/target_pose.cpp)
 ament_target_dependencies(target_pose rclcpp sensor_msgs std_msgs)
+add_executable(target_pose_full_rpy src/target_pose_full_rpy.cpp)  # Roll, pitch ve yaw korunumu icin ayri target pose dugumu.
+ament_target_dependencies(target_pose_full_rpy rclcpp sensor_msgs std_msgs)  # Yeni dugumun ROS 2 bagimliliklari.
 
 # 2. Inverse Kinematics Düğümü
 add_executable(inverse_kinematics_node src/inverse_kinematics.cpp)
@@ -55,6 +57,7 @@ install(TARGETS
   #world_frame_torque_control_node
   #quaternion_inverse_node
   target_pose
+  target_pose_full_rpy  # Roll, pitch ve yaw koruyan yeni executable kurulur.
   inverse_kinematics_node
   # computed_torque_cpp  # Eski hedef adı; computed_torque_node yukarıda derlenip kuruluyor.
   DESTINATION lib/${PROJECT_NAME}

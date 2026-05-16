@@ -368,23 +368,24 @@ constexpr std::array<double, 6> REFERENCE_Q{{
   0.0,
 }};
 
-double angular_distance_squared_to_reference(const double * q)
+double angular_distance_squared_to_reference(const double * q, const std::array<double, 6> & reference)  // IK çözümünü verilen süreklilik referansına göre puanlar.
 {
   double score = 0.0;
   for (int i = 0; i < 6; ++i) {
-    const double delta = normalize_angle(q[i] - REFERENCE_Q[i]);
+    const double delta = normalize_angle(q[i] - reference[i]);  // IK dalı son hedefe en yakın açısal farkla puanlanır.
     score += delta * delta;
   }
   return score;
 }
 
-int select_closest_solution(const double * q_sols, int num_sols)
+int select_closest_solution(  // Birden fazla IK çözümü içinden sürekliliği en iyi olanı seçer.
+  const double * q_sols, int num_sols, const std::array<double, 6> & reference)  // Sabit poz yerine son hedef referansı kullanılır.
 {
   int best_index = -1;
   double best_score = std::numeric_limits<double>::infinity();
 
   for (int i = 0; i < num_sols; ++i) {
-    const double score = angular_distance_squared_to_reference(&q_sols[i * 6]);
+    const double score = angular_distance_squared_to_reference(&q_sols[i * 6], reference);  // Çözüm seçimi sabit poz yerine süreklilik referansını kullanır.
     if (score < best_score) {
       best_score = score;
       best_index = i;
@@ -392,6 +393,16 @@ int select_closest_solution(const double * q_sols, int num_sols)
   }
 
   return best_index;
+}
+
+std::array<double, 6> unwrap_solution_to_reference(  // Normalize IK açısını önceki hedefin çevresindeki eşdeğer açıya taşır.
+  const double * q, const std::array<double, 6> & reference)  // Unwrap işlemi her eklem için süreklilik referansına göre yapılır.
+{
+  std::array<double, 6> unwrapped{};  // Yayınlanacak hedefler önceki hedefin çevresinde süreklileştirilir.
+  for (int i = 0; i < 6; ++i) {  // Her eklem için eşdeğer 2*pi dalı ayrı seçilir.
+    unwrapped[i] = reference[i] + normalize_angle(q[i] - reference[i]);  // Önceki hedefe en yakın eşdeğer açı yayınlanır.
+  }  // Unwrap döngüsü biter.
+  return unwrapped;  // Sürekli hedef eklem açıları döndürülür.
 }
 
 }  // namespace
@@ -456,12 +467,14 @@ private:
       return;
     }
 
-    const int best_index = select_closest_solution(q_sols, num_sols);
+    const std::array<double, 6> & continuity_reference = last_target_ready_ ? last_target_q_ : REFERENCE_Q;  // İlk mesajda başlangıç pozu, sonrasında son hedef referans alınır.
+    const int best_index = select_closest_solution(q_sols, num_sols, continuity_reference);  // IK çözümü önceki hedefe en yakın dal olarak seçilir.
     if (best_index < 0) {
       return;
     }
 
     const double * best_q = &q_sols[best_index * 6];
+    const std::array<double, 6> unwrapped_q = unwrap_solution_to_reference(best_q, continuity_reference);  // +/-pi geçişleri önceki hedefe göre açılır.
 
     std_msgs::msg::Float64MultiArray out;
     out.layout.dim.resize(1);
@@ -470,17 +483,18 @@ private:
     out.layout.dim[0].stride = 6;
     out.layout.data_offset = 0;
     out.data = {
-      best_q[0],
-      best_q[1],
-      best_q[2],
-      best_q[3],
-      best_q[4],
-      best_q[5],
+      unwrapped_q[0],  // Süreklileştirilmiş 1. eklem hedefi yayınlanır.
+      unwrapped_q[1],  // Süreklileştirilmiş 2. eklem hedefi yayınlanır.
+      unwrapped_q[2],  // Süreklileştirilmiş 3. eklem hedefi yayınlanır.
+      unwrapped_q[3],  // Süreklileştirilmiş 4. eklem hedefi yayınlanır.
+      unwrapped_q[4],  // Süreklileştirilmiş 5. eklem hedefi yayınlanır.
+      unwrapped_q[5],  // Süreklileştirilmiş 6. eklem hedefi yayınlanır.
     };
     target_angles_pub_->publish(out);
+    last_target_q_ = unwrapped_q;  // Bir sonraki IK mesajında süreklilik referansı olarak bu hedef kullanılır.
+    last_target_ready_ = true;  // İlk geçerli hedeften sonra sabit referans yerine son hedef kullanılmasını sağlar.
 
-    const std::array<double, 6> q{
-      best_q[0], best_q[1], best_q[2], best_q[3], best_q[4], best_q[5]};
+    const std::array<double, 6> q = unwrapped_q;  // FK kontrolü de yayınlanan sürekli hedefle yapılır.
     const Mat4 fk = forward_kinematics_tool0(q);
     const double position_error = std::sqrt(
       (fk[0][3] - target_x) * (fk[0][3] - target_x) +
@@ -496,6 +510,8 @@ private:
   std::string target_pose_topic_;
   std::string target_angles_topic_;
   double q6_des_{0.0};
+  std::array<double, 6> last_target_q_{REFERENCE_Q};  // IK çözüm seçimi için son yayınlanan hedef eklem açıları saklanır.
+  bool last_target_ready_{false};  // İlk hedef gelene kadar REFERENCE_Q kullanılmasını sağlar.
 
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr target_pose_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr target_angles_pub_;

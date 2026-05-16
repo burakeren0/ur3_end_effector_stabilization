@@ -173,7 +173,7 @@ def launch_setup(context, *args, **kwargs):
         actions=[
             Node(
                 package="ur3_end_effector_stabilization",
-                executable="target_pose",
+                executable="target_pose_full_rpy",  # Roll, pitch ve yaw korunumu icin eski target_pose yerine yeni dugum kullanilir.
                 output="screen",
             )
         ],
@@ -239,7 +239,7 @@ def generate_launch_description():
                 [
                     FindPackageShare("ur3_end_effector_stabilization"),
                     "worlds",
-                    "hilly_world.sdf",
+                    "custom_parkour.world",
                 ]
             ),
             description="Gazebo world file",
