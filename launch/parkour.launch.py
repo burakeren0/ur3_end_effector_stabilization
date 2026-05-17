@@ -23,6 +23,26 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 
+def resolve_world_file(world_arg):
+    if os.path.isabs(world_arg) or os.path.dirname(world_arg):
+        return world_arg
+
+    package_worlds_dir = os.path.join(
+        get_package_share_directory("ur3_end_effector_stabilization"),
+        "worlds",
+    )
+    candidates = [world_arg]
+    if not world_arg.endswith((".sdf", ".world")):
+        candidates.extend([f"{world_arg}.sdf", f"{world_arg}.world"])
+
+    for candidate in candidates:
+        world_path = os.path.join(package_worlds_dir, candidate)
+        if os.path.exists(world_path):
+            return world_path
+
+    return os.path.join(package_worlds_dir, world_arg)
+
+
 def launch_setup(context, *args, **kwargs):
     ur_type = LaunchConfiguration("ur_type")
     safety_limits = LaunchConfiguration("safety_limits")
@@ -35,7 +55,7 @@ def launch_setup(context, *args, **kwargs):
     launch_rviz = LaunchConfiguration("launch_rviz")
     rviz_config_file = LaunchConfiguration("rviz_config_file")
 
-    world = LaunchConfiguration("world")
+    world = resolve_world_file(LaunchConfiguration("world").perform(context))
 
     robot_description_content = Command(
         [
@@ -233,14 +253,11 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "world",
-            default_value=PathJoinSubstitution(
-                [
-                    FindPackageShare("ur3_end_effector_stabilization"),
-                    "worlds",
-                    "extreme_disturbance.world",
-                ]
+            default_value="extreme_disturbance",
+            description=(
+                "Gazebo world file. Use a name from this package's worlds directory "
+                "(for example bumpy_world), or pass a full path."
             ),
-            description="Gazebo world file",
         )
     )
     declared_arguments.append(
