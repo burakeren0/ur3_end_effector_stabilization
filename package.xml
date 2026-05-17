@@ -28,7 +28,11 @@
   <depend>tf2_ros</depend>                   <!-- ROS 2 integration for TF2 -->
   <depend>tf2_geometry_msgs</depend>         <!-- Geometry messages with TF2 support -->
 
-  <!-- SECTION 3: COMPUTATION DEPENDENCIES -->
+  <!-- SECTION 3: RUNTIME TOOLS -->
+  <!-- Required by parkour.launch.py for keyboard control of the mobile base -->
+  <exec_depend>teleop_twist_keyboard</exec_depend>
+
+  <!-- SECTION 4: COMPUTATION DEPENDENCIES -->
   <!-- Required for control algorithms and kinematics calculations -->
   <depend>Eigen3</depend>                    <!-- Matrix/vector computation library -->
 

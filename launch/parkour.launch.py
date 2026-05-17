@@ -155,8 +155,6 @@ def launch_setup(context, *args, **kwargs):
                     "bash",
                     "-lc",
                     (
-                        "source /opt/ros/jazzy/setup.bash && "
-                        "source /home/taylan/ur3_ws/install/setup.bash && "
                         "ros2 run teleop_twist_keyboard teleop_twist_keyboard "
                         "--ros-args -p stamped:=true "
                         "--remap cmd_vel:=/diff_drive_base_controller/cmd_vel; "
