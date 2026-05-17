@@ -47,14 +47,14 @@ for i in range(400):
     z = 0.0 # Yarı gömülü olması için
     
     # Boyutu artırdık: 5 cm ile 15 cm arası
-    radius = random.uniform(0.05, 0.15) 
+    radius = random.uniform(0.05, 0.10) 
     
     sdf_content += f"""
     <model name="bump_{i}">
       <static>true</static>
       <pose>{x} {y} {z} 0 0 0</pose>
       <link name="link">
-        <collision name="collision"><geometry><sphere><radius>{radius}</radius></sphere></geometry></collision>
+        <collision name="collision"><geometry><sphere><radius>{radius}</radius></sphere></geometry><surface><friction><ode><mu>100.0</mu><mu2>100.0</mu2></ode></friction></surface></collision>
         <visual name="visual"><geometry><sphere><radius>{radius}</radius></sphere></geometry>
         <material><ambient>0.3 0.3 0.3 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
         </visual>
