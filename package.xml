@@ -1,28 +1,39 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
+  <!-- Package Metadata -->
   <name>ur3_end_effector_stabilization</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>UR3 robotic arm end-effector stabilization controller with computed torque control and inverse kinematics</description>
   <maintainer email="tylndrsn@gmail.com">taylan</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache-2.0</license>
 
+  <!-- Build Tool Dependency -->
+  <!-- Required for CMake-based build system -->
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>rclcpp</depend>
-  <depend>urdf</depend>
-  <depend>xacro</depend>
-  <depend>robot_state_publisher</depend>
-  <depend>clearpath_msgs</depend>
-  <depend>eigen</depend>
+  <!-- SECTION 1: CORE ROS 2 DEPENDENCIES -->
+  <!-- Packages required at both runtime and compile-time -->
+  <depend>rclcpp</depend>                    <!-- ROS 2 C++ client library -->
+  <depend>std_msgs</depend>                  <!-- Standard ROS message types -->
+  <depend>geometry_msgs</depend>             <!-- Pose, vector and transform message types -->
+  <depend>sensor_msgs</depend>               <!-- Joint state and sensor message types -->
 
-  <depend>tf2</depend>
-  <depend>tf2_ros</depend>
-  <depend>tf2_geometry_msgs</depend>
-  <depend>geometry_msgs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>std_msgs</depend>
+  <!-- SECTION 2: ROBOT MODEL AND TRANSFORM DEPENDENCIES -->
+  <!-- Required for robot description and coordinate transforms -->
+  <depend>urdf</depend>                      <!-- URDF robot file format parser -->
+  <depend>xacro</depend>                     <!-- URDF macros processor -->
+  <depend>robot_state_publisher</depend>     <!-- Publishes robot state (joint state -> TF) -->
+  <depend>tf2</depend>                       <!-- Transform library for coordinate transforms -->
+  <depend>tf2_ros</depend>                   <!-- ROS 2 integration for TF2 -->
+  <depend>tf2_geometry_msgs</depend>         <!-- Geometry messages with TF2 support -->
 
+  <!-- SECTION 3: COMPUTATION DEPENDENCIES -->
+  <!-- Required for control algorithms and kinematics calculations -->
+  <depend>Eigen3</depend>                    <!-- Matrix/vector computation library -->
+
+  <!-- Test Dependencies -->
+  <!-- Linting and testing frameworks (optional) -->
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

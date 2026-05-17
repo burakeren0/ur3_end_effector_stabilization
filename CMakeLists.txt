@@ -1,25 +1,40 @@
 cmake_minimum_required(VERSION 3.8)
 project(ur3_end_effector_stabilization)
 
+# Enable strict compiler warnings during development
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# --- BAĞIMLILIKLARIN BULUNMASI ---
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(urdf REQUIRED)
-find_package(xacro REQUIRED)
-find_package(robot_state_publisher REQUIRED)
-find_package(clearpath_msgs REQUIRED)
-find_package(Eigen3 REQUIRED)
-find_package(tf2 REQUIRED)
-find_package(tf2_ros REQUIRED)
-find_package(tf2_geometry_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
+# ==============================================================================
+# SECTION 0: FINDING DEPENDENCIES
+# ==============================================================================
+# This section finds all required ROS 2 packages for the project build.
+# Each find_package() call searches for the CMake files of the specified package.
 
+# Build system
+find_package(ament_cmake REQUIRED)           # ROS 2 build system (ament)
+
+# Core ROS 2 packages
+find_package(rclcpp REQUIRED)                # ROS 2 C++ client library
+find_package(std_msgs REQUIRED)              # Standard message types
+find_package(geometry_msgs REQUIRED)         # Geometry message types (poses, transforms)
+find_package(sensor_msgs REQUIRED)           # Sensor message types (joint states)
+
+# Robot description and state publishing
+find_package(urdf REQUIRED)                  # URDF file parsing
+find_package(xacro REQUIRED)                 # XACRO macro processing
+find_package(robot_state_publisher REQUIRED) # Publish robot state from joint values
+
+# Transform library (TF2 - transform handling)
+find_package(tf2 REQUIRED)                   # Core transform library
+find_package(tf2_ros REQUIRED)               # ROS 2 integration for TF2
+find_package(tf2_geometry_msgs REQUIRED)     # Geometry message support for TF2
+
+# Linear algebra and math
+find_package(Eigen3 REQUIRED)                # Eigen matrix library for computations
+
+# Testing dependencies (optional, only if tests are enabled)
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   set(ament_cmake_copyright_FOUND TRUE)
@@ -28,61 +43,66 @@ if(BUILD_TESTING)
 endif()
 
 # ==============================================================================
-# 1. C++ DÜĞÜMLERİNİN (NODES) DERLENMESİ
+# SECTION 1: BUILDING C++ NODES (Executables)
 # ==============================================================================
+# Each add_executable() line creates an executable from a C++ source file.
+# The ament_target_dependencies() line specifies required ROS 2 packages
+# and linking libraries for that program.
+
+# Computed Torque Controller Node
+# Purpose: Manipulator output control (computed torque control)
 add_executable(computed_torque_node src/computed_torque.cpp)
 target_include_directories(computed_torque_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
 ament_target_dependencies(computed_torque_node rclcpp sensor_msgs std_msgs)
 
-# ---> YENİ EKLENEN PARKOUR DÜĞÜMLERİ <---
-
-# 1. Target Pose Düğümü
+# Target Pose Node
+# Purpose: Publish target pose for controller
 add_executable(target_pose src/target_pose.cpp)
 ament_target_dependencies(target_pose rclcpp sensor_msgs std_msgs)
-add_executable(target_pose_full_rpy src/target_pose_full_rpy.cpp)  # Roll, pitch ve yaw korunumu icin ayri target pose dugumu.
-ament_target_dependencies(target_pose_full_rpy rclcpp sensor_msgs std_msgs)  # Yeni dugumun ROS 2 bagimliliklari.
 
-# 2. Inverse Kinematics Düğümü
+# Target Pose with Full RPY Node
+# Purpose: Publish target pose with individual Roll, Pitch, Yaw angle control
+add_executable(target_pose_full_rpy src/target_pose_full_rpy.cpp)
+ament_target_dependencies(target_pose_full_rpy rclcpp sensor_msgs std_msgs)
+
+# Inverse Kinematics Node
+# Purpose: Transform Cartesian position to joint angles (inverse kinematics)
 add_executable(inverse_kinematics_node src/inverse_kinematics.cpp)
 ament_target_dependencies(inverse_kinematics_node rclcpp std_msgs)
 
 
 # ==============================================================================
-# 2. C++ DÜĞÜMLERİNİN SİSTEME KURULMASI (ros2 run İÇİN ZORUNLU)
+# SECTION 2: INSTALLING NODES TO THE SYSTEM (Install Executables)
 # ==============================================================================
+# This section installs the compiled C++ programs to the system.
+# After installation, they can be run with 'ros2 run' command.
+# DESTINATION lib/${PROJECT_NAME}: Programs are copied to the
+# install/lib/ur3_end_effector_stabilization/ directory.
+
 install(TARGETS
   computed_torque_node
-  #computed_torque_v_node
-  #imu_test_node
-  #world_frame_torque_control_node
-  #quaternion_inverse_node
   target_pose
-  target_pose_full_rpy  # Roll, pitch ve yaw koruyan yeni executable kurulur.
+  target_pose_full_rpy
   inverse_kinematics_node
-  # computed_torque_cpp  # Eski hedef adı; computed_torque_node yukarıda derlenip kuruluyor.
   DESTINATION lib/${PROJECT_NAME}
 )
 
 # ==============================================================================
-# 3. DİĞER KLASÖR VE PYTHON SCRİPTLERİNİN KURULUMU
+# SECTION 3: INSTALLING RESOURCE FILES (Install Resources)
 # ==============================================================================
+# This section installs files used by the nodes (required at runtime) to the system.
+# These files include launch configurations, URDF robot definitions, SDF world files,
+# controller configurations, and RViz settings.
+# DESTINATION share/${PROJECT_NAME}: Files are copied to the
+# install/share/ur3_end_effector_stabilization/ directory.
+
 install(DIRECTORY
-  launch
-  urdf
-  worlds
-  config
-  rviz
+  launch          # ROS 2 launch files (for automatic node startup)
+  urdf            # Robot URDF definition files
+  worlds          # Gazebo simulation world files (SDF format)
+  config          # Controller configuration files (YAML)
+  rviz            # RViz visualization configurations
   DESTINATION share/${PROJECT_NAME}
-)
-
-install(PROGRAMS
-  scripts/robot_dancer.py
-  scripts/velocity_kinematics_analysis.py
-  scripts/world_generators/generate_bumpy_world.py
-  scripts/world_generators/generate_street_world.py
-  scripts/world_generators/generate_hilly_world.py
-  scripts/neural_network/raw_data_logger.py
-  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
