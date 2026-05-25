@@ -61,22 +61,11 @@ ros2 launch ur3_end_effector_stabilization parkour_ct_pi_pd.launch.py
 ros2 launch ur3_end_effector_stabilization parkour_ct_pid.launch.py
 ```
 
-### 2. Kontrol düğümünü çalıştırma
+### 2. Kontrol düğümlerinin başlatılması
 
-Simülasyon başladıktan sonra kontrolörleri aktif edin:
+Seçtiğiniz launch dosyası, simülasyon ile birlikte ilgili kontrolörleri ve hesaplanmış tork / PD / PI-PD / PID düğümünü otomatik olarak başlatır. Bu nedenle normal kullanımda ayrı bir `ros2 run` komutu girmenize gerek yoktur.
 
-```bash
-ros2 control set_controller_state scaled_joint_trajectory_controller inactive
-ros2 control set_controller_state ur_effort_controller active
-```
-
-Ardından ilgili kontrol düğümünü başlatın:
-
-```bash
-ros2 run ur3_end_effector_stabilization computed_torque_v_node
-```
-
-> Paket içinde farklı kontrol stratejileri için `src/computed_torque_pd.cpp`, `src/computed_torque_pi_pd.cpp` ve `src/computed_torque_pid.cpp` dosyaları mevcuttur.
+> Paketinizdeki launch dosyaları `controller_manager` aracılığıyla `ur_effort_controller` ve `diff_drive_base_controller` denetleyicilerini yükler ve aynı zamanda hedef poz, ters kinematik ve dengeleme düğümlerini başlatır.
 
 ### 3. Son efektör açılarını izleme
 
