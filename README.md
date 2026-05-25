@@ -61,6 +61,12 @@ ros2 launch ur3_end_effector_stabilization parkour_ct_pi_pd.launch.py
 ros2 launch ur3_end_effector_stabilization parkour_ct_pid.launch.py
 ```
 
+Belirli bir dünya seçmek için `world:=` argümanını kullanabilirsiniz. Örnek:
+
+```bash
+ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py world:=bumpy_world
+```
+
 ### 2. Kontrol düğümlerinin başlatılması
 
 Seçtiğiniz launch dosyası, simülasyon ile birlikte ilgili kontrolörleri ve hesaplanmış tork / PD / PI-PD / PID düğümünü otomatik olarak başlatır. Bu nedenle normal kullanımda ayrı bir `ros2 run` komutu girmenize gerek yoktur.
