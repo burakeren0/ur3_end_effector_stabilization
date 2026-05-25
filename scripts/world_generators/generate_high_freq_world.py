@@ -3,9 +3,9 @@ import random
 def generate_high_freq_world():
     # Harita Ayarları
     world_name = "high_freq_bumpy.world"
-    num_bumps = 800       # Yüksek frekans için çok sayıda taş
-    path_length = 10.0    # X ekseninde 7 metrelik bir yol
-    path_width = 2.0      # Y ekseninde yolun genişliği (+1 ile -1 arası)
+    num_bumps = 500       # Yüksek frekans için çok sayıda taş
+    path_length = 6.0    # X ekseninde 7 metrelik bir yol
+    path_width = 1.5      # Y ekseninde yolun genişliği (+1 ile -1 arası)
     
     # Tümsek (Bozucu) Ayarları
     # Husky'nin rahat geçmesi için tümseklerin yeryüzünde kalan yüksekliği 1 cm ile 3 cm arası olacak.

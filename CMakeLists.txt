@@ -51,9 +51,39 @@ endif()
 
 # Computed Torque Controller Node
 # Purpose: Manipulator output control (computed torque control)
-add_executable(computed_torque_node src/computed_torque.cpp)
+add_executable(computed_torque_node src/computed_torque_pd.cpp)
 target_include_directories(computed_torque_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
 ament_target_dependencies(computed_torque_node rclcpp sensor_msgs std_msgs)
+
+# Computed Torque + PID Controller Node
+# Purpose: Computed torque kontrolüne PID terimi ekler
+add_executable(computed_torque_pid_node src/computed_torque_pid.cpp)
+target_include_directories(computed_torque_pid_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
+ament_target_dependencies(computed_torque_pid_node rclcpp sensor_msgs std_msgs)
+
+# PID Controller Node
+# Purpose: Basit PID tabanlı eklem-space tork kontrolü
+add_executable(pid_controller_node src/pid_controller.cpp)
+target_include_directories(pid_controller_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
+ament_target_dependencies(pid_controller_node rclcpp sensor_msgs std_msgs)
+
+# PD Controller Node
+# Purpose: Basit PD eklem-space tork kontrolü
+add_executable(pd_controller_node src/pd_controller.cpp)
+target_include_directories(pd_controller_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
+ament_target_dependencies(pd_controller_node rclcpp sensor_msgs std_msgs)
+
+# PI+PD Controller Node
+# Purpose: Basit PI+PD eklem-space tork kontrolü
+add_executable(pi_pd_controller_node src/pi_pd_controller.cpp)
+target_include_directories(pi_pd_controller_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
+ament_target_dependencies(pi_pd_controller_node rclcpp sensor_msgs std_msgs)
+
+# Computed Torque + PI+PD Controller Node
+# Purpose: Computed torque kontrolüne PI+PD terimi ekler
+add_executable(computed_torque_pi_pd_node src/computed_torque_pi_pd.cpp)
+target_include_directories(computed_torque_pi_pd_node PUBLIC ${EIGEN3_INCLUDE_DIRS})
+ament_target_dependencies(computed_torque_pi_pd_node rclcpp sensor_msgs std_msgs)
 
 # Target Pose with Full RPY Node
 # Purpose: Publish target pose with individual Roll, Pitch, Yaw angle control
@@ -76,6 +106,11 @@ ament_target_dependencies(inverse_kinematics_node rclcpp std_msgs)
 
 install(TARGETS
   computed_torque_node
+  computed_torque_pid_node
+  computed_torque_pi_pd_node
+  pid_controller_node
+  pd_controller_node
+  pi_pd_controller_node
   target_pose_full_rpy
   inverse_kinematics_node
   DESTINATION lib/${PROJECT_NAME}
