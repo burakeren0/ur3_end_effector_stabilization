@@ -116,6 +116,15 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# Install Python scripts
+# These can be run with 'ros2 run ur3_end_effector_stabilization <script_name>'
+install(PROGRAMS
+  scripts/matlab_tf_logger.py
+  scripts/read_target_angles.py
+  scripts/read_target_and_actual_angles.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # ==============================================================================
 # SECTION 3: INSTALLING RESOURCE FILES (Install Resources)
 # ==============================================================================
@@ -130,6 +139,8 @@ install(DIRECTORY
   urdf            # Robot URDF definition files
   worlds          # Gazebo simulation world files (SDF format)
   config          # Controller configuration files (YAML)
+  analysis        # MATLAB analysis files and data
+  rviz            # RViz configuration files
   DESTINATION share/${PROJECT_NAME}
 )
 
