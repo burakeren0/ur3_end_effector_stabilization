@@ -149,5 +149,3 @@ ros2 topic pub /diff_drive_base_controller/cmd_vel geometry_msgs/msg/TwistStampe
 
 This package is licensed under the Apache-2.0 License.
 
----
-If you want, I can also: provide a short developer guide for adding a new controller, generate a diagram of node/topic interactions, or translate this README into Turkish as a companion file.
