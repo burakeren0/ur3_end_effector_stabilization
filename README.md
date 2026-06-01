@@ -1,4 +1,4 @@
-# UR3 End-Effector Stabilization (ROS 2)
+# UR3 End-Effector Stabilization (ROS2: Jazzy)
 
 This package provides a ROS 2-based control architecture for stabilizing the UR3 robot arm end-effector mounted on a Husky mobile base. It includes computed-torque and classic feedback controllers (PD, PI-PD, PID), inverse kinematics utilities, launch files for simulation, and helper scripts for data logging and world generation.
 
