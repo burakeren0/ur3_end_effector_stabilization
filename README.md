@@ -96,25 +96,21 @@ Your workspace source tree should contain three main folders:
 
 ```bash
 cd ~/ur3_ws/src/clearpath_repositories
-git clone <CLEARPATH_COMMON_GITHUB_LINK> clearpath_common
-git clone <CLEARPATH_CONFIG_GITHUB_LINK> clearpath_config
-git clone <CLEARPATH_MSGS_GITHUB_LINK> clearpath_msgs
-git clone <CLEARPATH_SIMULATOR_GITHUB_LINK> clearpath_simulator
+git clone https://github.com/clearpathrobotics/clearpath_common.git -b jazzy
+git clone https://github.com/clearpathrobotics/clearpath_config.git -b jazzy
+git clone https://github.com/clearpathrobotics/clearpath_msgs.git -b jazzy
+git clone https://github.com/clearpathrobotics/clearpath_simulator.git -b jazzy
 ```
-
-> Replace each placeholder with the actual GitHub URL for the corresponding Clearpath repository.
 
 ### 4. Clone Universal Robots repositories
 
 ```bash
 cd ~/ur3_ws/src/universal_robots_repositories
-git clone <UNIVERSAL_ROBOTS_CLIENT_LIBRARY_GITHUB_LINK> Universal_Robots_Client_Library
-git clone <UNIVERSAL_ROBOTS_ROS2_DESCRIPTION_GITHUB_LINK> Universal_Robots_ROS2_Description
-git clone <UNIVERSAL_ROBOTS_ROS2_DRIVER_GITHUB_LINK> Universal_Robots_ROS2_Driver
-git clone <UNIVERSAL_ROBOTS_ROS2_GZ_SIMULATION_GITHUB_LINK> Universal_Robots_ROS2_GZ_Simulation
+git clone https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git -b jazzy
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git -b jazzy
+git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_GZ_Simulation.git
 ```
-
-> Replace the placeholder links with the actual GitHub URLs for each Universal Robots repository.
 
 ### 5. Add this package
 
@@ -212,17 +208,23 @@ If you need a full path, pass the file path instead of the short name.
 
 The package includes several built-in worlds for testing different conditions.
 
-### Bumpy World
+### Hilly World
 
 A moderately uneven terrain that tests end-effector stability over bumps.
 
-![Bumpy World](images/bumpy_world.png)
+![Hilly World](world/world_images/hilly_world_ss.png)
 
 ### Extreme Disturbance
 
 A harder test environment with large disturbances to evaluate controller robustness.
 
 ![Extreme Disturbance](images/extreme_disturbance.png)
+
+### High Freq Bumpy
+
+A harder test environment with large disturbances to evaluate controller robustness.
+
+![Extreme Disturbance](world/world_images/high_freq_bumpy_ss.png)
 
 ### Screenshot guidance for GitHub
 
