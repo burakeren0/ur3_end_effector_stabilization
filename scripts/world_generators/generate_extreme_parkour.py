@@ -94,24 +94,24 @@ def generate_world():
     # --- RAMPALAR ---
     # Roll (yanal yatma) eğimleri 0.15'ten 0.07'ye düşürüldü ki robot devrilmesin.
     ramps = [
-        {"name": "ramp_pitch",      "X": 4.0,  "Y": 0, "Z": 0.4, "roll": 0,     "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.5 0.5 0.5 1"},
-        {"name": "ramp_roll_pitch", "X": 12.0, "Y": 0, "Z": 1.2, "roll": 0.07,  "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.6 0.4 0.4 1"},
-        {"name": "ramp_down",       "X": 20.0, "Y": 0, "Z": 1.2, "roll": -0.07, "pitch": 0.1,  "L": 8.5, "W": 4, "H": 0.2, "color": "0.4 0.6 0.4 1"}
+        {"name": "ramp_pitch",      "X": 8.0,  "Y": 0, "Z": 0.4, "roll": 0,     "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.5 0.5 0.5 1"},
+        {"name": "ramp_roll_pitch", "X": 16.0, "Y": 0, "Z": 1.2, "roll": 0.07,  "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.6 0.4 0.4 1"},
+        {"name": "ramp_down",       "X": 24.0, "Y": 0, "Z": 1.2, "roll": -0.07, "pitch": 0.1,  "L": 8.5, "W": 4, "H": 0.2, "color": "0.4 0.6 0.4 1"}
     ]
     
     for r in ramps:
         world += create_box_model(r["name"], r["X"], r["Y"], r["Z"], r["roll"], r["pitch"], 0, r["L"], r["W"], r["H"], r["color"])
 
     # --- YARIM KÜRE TAŞLAR ---
-    num_stones_per_ramp = 60 
+    num_stones_per_ramp = 120
     stone_idx = 0
     
     for r in ramps:
         for _ in range(num_stones_per_ramp):
-            x_L = random.uniform(-r["L"]/2 + 0.3, r["L"]/2 - 0.3)
-            y_L = random.uniform(-r["W"]/2 + 0.3, r["W"]/2 - 0.3)
+            x_L = random.uniform(-r["L"]/2 + 0.2, r["L"]/2 - 0.2)
+            y_L = random.uniform(-r["W"]/2 + 0.2, r["W"]/2 - 0.2)
             
-            radius = random.uniform(0.008, 0.02)
+            radius = random.uniform(0.02, 0.04)
             z_L = r["H"]/2
             
             X_G, Y_G, Z_G = transform_to_global(x_L, y_L, z_L, r["X"], r["Y"], r["Z"], r["roll"], r["pitch"])

@@ -214,7 +214,7 @@ A moderately uneven terrain that tests end-effector stability over rolling hills
 
 World file: `worlds/hilly_world.sdf`
 
-![Hilly World](worlds/world_images/hilly_world_ss.png)
+![Hilly World](images/hilly_world_ss.png)
 
 ### High Frequency Bumpy World (`world:=high_freq_bumpy`)
 
@@ -222,7 +222,7 @@ A higher-frequency disturbance world that tests controller response to rapid ter
 
 World file: `worlds/high_freq_bumpy.world`
 
-![High Frequency Bumpy World](worlds/world_images/high_freq_bumpy_ss.png)
+![High Frequency Bumpy World](images/high_freq_bumpy_ss.png)
 
 ### Extreme Disturbance (`world:=extreme_disturbance`)
 
@@ -230,7 +230,7 @@ A more aggressive disturbance environment that stresses the stabilizer and evalu
 
 World file: `worlds/extreme_disturbance.world`
 
-![Extreme Disturbance World](worlds/world_images/extreme_disturbance_ss.png)
+![Extreme Disturbance World](images/extreme_disturbance_ss.png)
 
 ### Street World (`world:=street_world`)
 
@@ -238,7 +238,7 @@ A structured road test scene for evaluating controller performance on a street-l
 
 World file: `worlds/street_world.sdf`
 
-![Street World](worlds/world_images/street_world_ss.png)
+![Street World](images/street_world_ss.png)
 
 ## Monitoring and Utilities
 
