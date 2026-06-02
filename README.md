@@ -6,7 +6,6 @@ This package implements a ROS 2 control stack for stabilizing the UR3 arm end-ef
 
 - **CMakeLists.txt**: Top-level ROS 2 CMake build file for this package.
 - **package.xml**: Package manifest listing dependencies and ROS 2 metadata.
-- **README.md**: This documentation file.
 
 - **analysis/**: MATLAB analysis scripts used to validate kinematics and compare logged data.
   - `analysis/matlab_files/compare_rotations.m`: Compare rotation matrices or angles from different sources.
