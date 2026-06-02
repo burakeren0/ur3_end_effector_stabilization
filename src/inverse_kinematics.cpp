@@ -156,8 +156,9 @@ void pose_to_ur_solver_format(
   double R[3][3];
   quaternion_to_rotation(qx, qy, qz, qw, R);
 
-  // UR analitik çözücünün beklediği sıra. Bu giriş ROS'taki
-  // ur_base_link_inertia -> ur_tool0 pozu ile uyumludur.
+  // Reorder rotation/position into the flat array layout expected by
+  // the UR analytical solver. This mapping matches the ROS
+  // ur_base_link_inertia -> ur_tool0 pose convention.
   T[0] = -R[0][2];
   T[1] = R[0][0];
   T[2] = R[0][1];
@@ -368,24 +369,24 @@ constexpr std::array<double, 6> REFERENCE_Q{{
   0.0,
 }};
 
-double angular_distance_squared_to_reference(const double * q, const std::array<double, 6> & reference)  // IK çözümünü verilen süreklilik referansına göre puanlar.
+double angular_distance_squared_to_reference(const double * q, const std::array<double, 6> & reference)  // score IK solution against a continuity reference
 {
   double score = 0.0;
   for (int i = 0; i < 6; ++i) {
-    const double delta = normalize_angle(q[i] - reference[i]);  // IK dalı son hedefe en yakın açısal farkla puanlanır.
+    const double delta = normalize_angle(q[i] - reference[i]);  // square the shortest angular distance to the reference
     score += delta * delta;
   }
   return score;
 }
 
-int select_closest_solution(  // Birden fazla IK çözümü içinden sürekliliği en iyi olanı seçer.
-  const double * q_sols, int num_sols, const std::array<double, 6> & reference)  // Sabit poz yerine son hedef referansı kullanılır.
+int select_closest_solution(  // Choose the IK solution that best preserves continuity
+  const double * q_sols, int num_sols, const std::array<double, 6> & reference)  // use the previous target as the continuity reference
 {
   int best_index = -1;
   double best_score = std::numeric_limits<double>::infinity();
 
   for (int i = 0; i < num_sols; ++i) {
-    const double score = angular_distance_squared_to_reference(&q_sols[i * 6], reference);  // Çözüm seçimi sabit poz yerine süreklilik referansını kullanır.
+    const double score = angular_distance_squared_to_reference(&q_sols[i * 6], reference);  // scoring uses continuity reference instead of a fixed pose
     if (score < best_score) {
       best_score = score;
       best_index = i;
@@ -395,14 +396,14 @@ int select_closest_solution(  // Birden fazla IK çözümü içinden süreklili�
   return best_index;
 }
 
-std::array<double, 6> unwrap_solution_to_reference(  // Normalize IK açısını önceki hedefin çevresindeki eşdeğer açıya taşır.
-  const double * q, const std::array<double, 6> & reference)  // Unwrap işlemi her eklem için süreklilik referansına göre yapılır.
+std::array<double, 6> unwrap_solution_to_reference(  // Convert normalized IK angles to angles near the reference for continuity
+  const double * q, const std::array<double, 6> & reference)  // unwrap each joint angle to the equivalent angle closest to the reference
 {
-  std::array<double, 6> unwrapped{};  // Yayınlanacak hedefler önceki hedefin çevresinde süreklileştirilir.
-  for (int i = 0; i < 6; ++i) {  // Her eklem için eşdeğer 2*pi dalı ayrı seçilir.
-    unwrapped[i] = reference[i] + normalize_angle(q[i] - reference[i]);  // Önceki hedefe en yakın eşdeğer açı yayınlanır.
-  }  // Unwrap döngüsü biter.
-  return unwrapped;  // Sürekli hedef eklem açıları döndürülür.
+  std::array<double, 6> unwrapped{};  // The published targets are adjusted to be near the previous target
+  for (int i = 0; i < 6; ++i) {  // pick the 2*pi-equivalent angle closest to the continuity reference
+    unwrapped[i] = reference[i] + normalize_angle(q[i] - reference[i]);  // publish the equivalent angle nearest to the reference
+  }
+  return unwrapped;  // return continuous joint targets
 }
 
 }  // namespace
@@ -467,14 +468,14 @@ private:
       return;
     }
 
-    const std::array<double, 6> & continuity_reference = last_target_ready_ ? last_target_q_ : REFERENCE_Q;  // İlk mesajda başlangıç pozu, sonrasında son hedef referans alınır.
-    const int best_index = select_closest_solution(q_sols, num_sols, continuity_reference);  // IK çözümü önceki hedefe en yakın dal olarak seçilir.
+    const std::array<double, 6> & continuity_reference = last_target_ready_ ? last_target_q_ : REFERENCE_Q;  // use initial reference on first message, then the last published target for continuity
+    const int best_index = select_closest_solution(q_sols, num_sols, continuity_reference);  // select the IK branch closest to the continuity reference
     if (best_index < 0) {
       return;
     }
 
     const double * best_q = &q_sols[best_index * 6];
-    const std::array<double, 6> unwrapped_q = unwrap_solution_to_reference(best_q, continuity_reference);  // +/-pi geçişleri önceki hedefe göre açılır.
+    const std::array<double, 6> unwrapped_q = unwrap_solution_to_reference(best_q, continuity_reference);  // Unwrap +/-pi transitions to keep continuity with the previous published target.
 
     std_msgs::msg::Float64MultiArray out;
     out.layout.dim.resize(1);
@@ -483,18 +484,18 @@ private:
     out.layout.dim[0].stride = 6;
     out.layout.data_offset = 0;
     out.data = {
-      unwrapped_q[0],  // Süreklileştirilmiş 1. eklem hedefi yayınlanır.
-      unwrapped_q[1],  // Süreklileştirilmiş 2. eklem hedefi yayınlanır.
-      unwrapped_q[2],  // Süreklileştirilmiş 3. eklem hedefi yayınlanır.
-      unwrapped_q[3],  // Süreklileştirilmiş 4. eklem hedefi yayınlanır.
-      unwrapped_q[4],  // Süreklileştirilmiş 5. eklem hedefi yayınlanır.
-      unwrapped_q[5],  // Süreklileştirilmiş 6. eklem hedefi yayınlanır.
+      unwrapped_q[0],  // continuous 1st joint target
+      unwrapped_q[1],  // continuous 2nd joint target
+      unwrapped_q[2],  // continuous 3rd joint target
+      unwrapped_q[3],  // continuous 4th joint target
+      unwrapped_q[4],  // continuous 5th joint target
+      unwrapped_q[5],  // continuous 6th joint target
     };
     target_angles_pub_->publish(out);
-    last_target_q_ = unwrapped_q;  // Bir sonraki IK mesajında süreklilik referansı olarak bu hedef kullanılır.
-    last_target_ready_ = true;  // İlk geçerli hedeften sonra sabit referans yerine son hedef kullanılmasını sağlar.
+    last_target_q_ = unwrapped_q;  // store this published target as continuity reference for the next IK call
+    last_target_ready_ = true;  // after the first valid target, use last_target_q_ instead of REFERENCE_Q
 
-    const std::array<double, 6> q = unwrapped_q;  // FK kontrolü de yayınlanan sürekli hedefle yapılır.
+    const std::array<double, 6> q = unwrapped_q;  // run FK check against the published continuous target
     const Mat4 fk = forward_kinematics_tool0(q);
     const double position_error = std::sqrt(
       (fk[0][3] - target_x) * (fk[0][3] - target_x) +
@@ -510,8 +511,8 @@ private:
   std::string target_pose_topic_;
   std::string target_angles_topic_;
   double q6_des_{0.0};
-  std::array<double, 6> last_target_q_{REFERENCE_Q};  // IK çözüm seçimi için son yayınlanan hedef eklem açıları saklanır.
-  bool last_target_ready_{false};  // İlk hedef gelene kadar REFERENCE_Q kullanılmasını sağlar.
+  std::array<double, 6> last_target_q_{REFERENCE_Q};  // Stores the last published joint-target used for IK solution continuity selection.
+  bool last_target_ready_{false};  // When false, REFERENCE_Q is used until the first valid target has been published.
 
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr target_pose_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr target_angles_pub_;

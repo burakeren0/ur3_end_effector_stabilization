@@ -12,6 +12,10 @@ using std::placeholders::_1;
 using Vector6d = Eigen::Matrix<double, 6, 1>;
 using Matrix6d = Eigen::Matrix<double, 6, 6>;
 
+// Node implementing a computed-torque controller with PI for position
+// and PD for derivative action. The controller computes joint-space
+// torques using the robot's inertia (D), Coriolis/centrifugal (C),
+// and gravity (g) terms and publishes torque commands.
 class ComputedTorquePIPDController : public rclcpp::Node
 {
 public:
@@ -46,11 +50,12 @@ public:
         publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
             "/ur_effort_controller/commands", 10);
 
+        // Control loop timer at 2 ms (500 Hz)
         timer_ = this->create_wall_timer(
             std::chrono::milliseconds(2),
             std::bind(&ComputedTorquePIPDController::control_loop, this));
 
-        RCLCPP_INFO(this->get_logger(), "Computed torque + PI+PD kontrolcüsü başlatıldı.");
+        RCLCPP_INFO(this->get_logger(), "Computed torque + PI+PD controller started.");
     }
 
 private:
@@ -86,6 +91,8 @@ private:
 
     void joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
     {
+        // Map incoming JointState message positions/velocities to the
+        // controller's joint vector according to `joint_order_`.
         for (size_t i = 0; i < msg->name.size(); ++i) {
             auto it = std::find(joint_order_.begin(), joint_order_.end(), msg->name[i]);
             if (it != joint_order_.end()) {
@@ -105,6 +112,8 @@ private:
 
     void robot_dynamics(const Vector6d& q, const Vector6d& dq, Matrix6d& D, Matrix6d& C, Vector6d& g)
     {
+        // Compute the robot dynamics terms used by the computed-torque law.
+        // D: inertia matrix, C: Coriolis/centrifugal matrix, g: gravity vector.
         double th2 = q(1), th3 = q(2), th4 = q(3), th5 = q(4);
         double th1_dot = dq(0), th2_dot = dq(1), th3_dot = dq(2), th4_dot = dq(3), th5_dot = dq(4), th6_dot = dq(5);
 
@@ -196,7 +205,7 @@ private:
     void control_loop()
     {
         if (!data_received_) return;
-
+        // Compute position error and derivative (velocity) error.
         Vector6d e;
         Vector6d de;
         for (int i = 0; i < 6; ++i) {
@@ -209,12 +218,15 @@ private:
             integral_(i) = std::clamp(integral_(i), -integral_limit_, integral_limit_);
         }
 
+        // Control law in joint space (PI + PD): u = Kp*e + Ki*integral + Kd*de
         Vector6d u = Kp_ * e + Ki_ * integral_ + Kd_ * de;
 
         Matrix6d D, C;
         Vector6d g;
         robot_dynamics(q_, dq_, D, C, g);
 
+        // Map the desired joint accelerations/efforts through dynamics to
+        // compute feedforward torques: tau = D*u + C*dq + g
         Vector6d tau = D * u + C * dq_ + g;
         for (int i = 0; i < 6; ++i) {
             tau(i) = std::clamp(tau(i), -torque_limit_, torque_limit_);

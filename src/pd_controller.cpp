@@ -12,6 +12,12 @@ using std::placeholders::_1;
 using Vector6d = Eigen::Matrix<double, 6, 1>;
 using Matrix6d = Eigen::Matrix<double, 6, 6>;
 
+// PDController node
+// - Subscribes to: `/joint_states` (sensor_msgs/JointState) and `/target_angles` (Float64MultiArray)
+// - Publishes to: `/ur_effort_controller/commands` (Float64MultiArray) containing 6 joint torques
+// - Implements a simple PD law in joint space with angle wrapping to handle discontinuities at +/-pi
+// - The controller runs at a fixed timer period (`dt_sec_`) and clamps torques to `torque_limit_`.
+
 class PDController : public rclcpp::Node
 {
 public:
@@ -49,7 +55,7 @@ public:
             std::chrono::milliseconds(2),
             std::bind(&PDController::control_loop, this));
 
-        RCLCPP_INFO(this->get_logger(), "PD Kontrolcüsü Başlatıldı: /ur_effort_controller/commands yayınlanıyor.");
+        RCLCPP_INFO(this->get_logger(), "PD Controller started: publishing to /ur_effort_controller/commands");
     }
 
 private:
@@ -66,6 +72,8 @@ private:
     const double dt_sec_ = 0.002;
     const double torque_limit_ = 80.0;
 
+    // Wrap an angle to the range [-pi, +pi]. This prevents the controller
+    // from producing large error values when the target crosses the +/-pi boundary.
     inline double wrap_to_pi(double angle)
     {
         while (angle > M_PI) angle -= 2.0 * M_PI;
@@ -107,18 +115,24 @@ private:
             return;
         }
 
+        // Compute joint-space error (wrapped) and derivative term
         Vector6d error;
         Vector6d derivative;
         for (int i = 0; i < 6; ++i) {
+            // shortest-path angular error
             error(i) = wrap_to_pi(q_d_(i) - q_(i));
+            // derivative approximated as negative measured velocity (target velocity assumed zero)
             derivative(i) = -dq_(i);
         }
 
+        // PD law: tau = Kp * error + Kd * derivative
         Vector6d tau = Kp_ * error + Kd_ * derivative;
+        // clamp torques to protect actuators/sim
         for (int i = 0; i < 6; ++i) {
             tau(i) = std::clamp(tau(i), -torque_limit_, torque_limit_);
         }
 
+        // Publish the torque vector as a Float64MultiArray (6 elements)
         std_msgs::msg::Float64MultiArray msg;
         msg.data.assign(tau.data(), tau.data() + tau.size());
         publisher_->publish(msg);

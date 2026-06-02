@@ -22,6 +22,10 @@ from launch.substitutions import (
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+# Launch file for the parkour UR3 scenario with computed torque + PID controller.
+# It starts the simulation, spawns the robot, and launches target pose,
+# inverse kinematics, and the PID controller in sequence.
+# The launch file also handles world resolution and controller configuration.
 
 def resolve_world_file(world_arg):
     if os.path.isabs(world_arg) or os.path.dirname(world_arg):
@@ -44,6 +48,8 @@ def resolve_world_file(world_arg):
 
 
 def launch_setup(context, *args, **kwargs):
+    # Collect launch arguments and build nodes from their values.
+    # `launch_setup` is called by OpaqueFunction after the argument parsing stage.
     ur_type = LaunchConfiguration("ur_type")
     safety_limits = LaunchConfiguration("safety_limits")
     safety_pos_margin = LaunchConfiguration("safety_pos_margin")
@@ -55,8 +61,12 @@ def launch_setup(context, *args, **kwargs):
     launch_rviz = LaunchConfiguration("launch_rviz")
     rviz_config_file = LaunchConfiguration("rviz_config_file")
 
+    # Resolve the world file path. If a relative world name is provided,
+    # look under this package's `worlds` directory and append .sdf/.world if needed.
     world = resolve_world_file(LaunchConfiguration("world").perform(context))
 
+    # Generate the robot_description parameter from the URDF xacro file.
+    # This lets Gazebo and the ROS robot_state_publisher use the same model.
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -87,6 +97,7 @@ def launch_setup(context, *args, **kwargs):
     )
     robot_description = {"robot_description": robot_description_content}
 
+    # Publish the robot state from the URDF model to TF and joint_state topics.
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -132,6 +143,7 @@ def launch_setup(context, *args, **kwargs):
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     gz_args_options = [world, " -r -v 4"]
 
+    # Include the Gazebo simulation launch from ros_gz_sim.
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([pkg_ros_gz_sim, "launch", "gz_sim.launch.py"])

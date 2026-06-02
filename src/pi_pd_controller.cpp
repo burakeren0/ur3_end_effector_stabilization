@@ -12,6 +12,12 @@ using std::placeholders::_1;
 using Vector6d = Eigen::Matrix<double, 6, 1>;
 using Matrix6d = Eigen::Matrix<double, 6, 6>;
 
+// PI+PD Controller node
+// - Subscribes to: `/joint_states` and `/target_angles`
+// - Publishes torque commands to `/ur_effort_controller/commands`
+// - Implements PI+PD: integral term for low-frequency error correction
+//   with clamping (`integral_limit_`) to avoid wind-up.
+
 class PIPDController : public rclcpp::Node
 {
 public:
@@ -51,7 +57,7 @@ public:
             std::chrono::milliseconds(2),
             std::bind(&PIPDController::control_loop, this));
 
-        RCLCPP_INFO(this->get_logger(), "PI+PD Kontrolcüsü Başlatıldı: /ur_effort_controller/commands yayınlanıyor.");
+        RCLCPP_INFO(this->get_logger(), "PI+PD Controller started: publishing to /ur_effort_controller/commands");
     }
 
 private:
@@ -69,6 +75,7 @@ private:
     const double integral_limit_ = 5.0;
     const double torque_limit_ = 80.0;
 
+    // wrap angle into [-pi, +pi] to compute shortest-path error
     inline double wrap_to_pi(double angle)
     {
         while (angle > M_PI) angle -= 2.0 * M_PI;
@@ -110,6 +117,7 @@ private:
             return;
         }
 
+        // compute wrapped error and derivative
         Vector6d error;
         Vector6d derivative;
         for (int i = 0; i < 6; ++i) {
@@ -117,16 +125,19 @@ private:
             derivative(i) = -dq_(i);
         }
 
+        // integrate with anti-windup via clamping
         integral_ += error * dt_sec_;
         for (int i = 0; i < 6; ++i) {
             integral_(i) = std::clamp(integral_(i), -integral_limit_, integral_limit_);
         }
 
+        // PI + PD law
         Vector6d tau = Kp_ * error + Ki_ * integral_ + Kd_ * derivative;
         for (int i = 0; i < 6; ++i) {
             tau(i) = std::clamp(tau(i), -torque_limit_, torque_limit_);
         }
 
+        // publish torques
         std_msgs::msg::Float64MultiArray msg;
         msg.data.assign(tau.data(), tau.data() + tau.size());
         publisher_->publish(msg);

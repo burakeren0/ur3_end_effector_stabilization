@@ -1,149 +1,258 @@
 # UR3 End-Effector Stabilization (ROS2: Jazzy)
 
-This package provides a ROS 2-based control architecture for stabilizing the UR3 robot arm end-effector mounted on a Husky mobile base. It includes computed-torque and classic feedback controllers (PD, PI-PD, PID), inverse kinematics utilities, launch files for simulation, and helper scripts for data logging and world generation.
+This package implements a ROS 2 control stack for stabilizing the UR3 arm end-effector mounted on a Clearpath Husky mobile base. It includes multiple controller variants, an inverse kinematics pipeline, simulation launch files, and helper tools for logging and generating test worlds.
 
-**Repository Layout and Detailed Description**
+## Repository Layout and Detailed Description
 
-- **CMakeLists.txt**: Top-level CMake build file for the ROS 2 package.
-- **package.xml**: ROS 2 package manifest with dependencies and metadata.
-- **README.md**: This file.
-- **q6_fixed_test.csv, target_actual_angles.csv, target_angles_log.csv**: Example/recorded data CSVs used for offline analysis and plotting.
+- **CMakeLists.txt**: Top-level ROS 2 CMake build file for this package.
+- **package.xml**: Package manifest listing dependencies and ROS 2 metadata.
+- **README.md**: This documentation file.
 
-- **analysis/**: MATLAB scripts and analysis helpers used to validate kinematics and compare logged data.
-	- [analysis/matlab_files/compare_rotations.m](analysis/matlab_files/compare_rotations.m): Compare rotation matrices/angles from different sources.
-	- [analysis/matlab_files/forward_kinematics.m](analysis/matlab_files/forward_kinematics.m): FK helper used for validating end-effector poses.
-	- [analysis/matlab_files/plot_target_angles.m](analysis/matlab_files/plot_target_angles.m): Plotting utilities for target vs actual joint angles.
+- **analysis/**: MATLAB analysis scripts used to validate kinematics and compare logged data.
+  - `analysis/matlab_files/compare_rotations.m`: Compare rotation matrices or angles from different sources.
+  - `analysis/matlab_files/forward_kinematics.m`: Forward kinematics helper used for end-effector pose validation.
+  - `analysis/matlab_files/plot_target_angles.m`: Plot target vs actual joint angles.
 
-- **config/**: YAML configuration files for controllers and tuning parameters.
-	- [config/husky_ur3_controllers.yaml](config/husky_ur3_controllers.yaml): Controller parameters (PID/PD gains, computed-torque settings, topics, and other tuning constants).
+- **config/**: YAML configuration for controllers and tuning parameters.
+  - `config/husky_ur3_controllers.yaml`: PID/PD gains, computed-torque settings, controller mapping, and other tuning constants.
 
-- **include/ur3_end_effector_stabilization/**: C++ header files (public headers used by the nodes in `src/`).
+- **launch/**: ROS 2 Python launch files that set up the simulation and controller nodes.
+  - `launch/parkour_pd.launch.py`
+  - `launch/parkour_pi_pd.launch.py`
+  - `launch/parkour_pid.launch.py`
+  - `launch/parkour_ct_pd.launch.py`
+  - `launch/parkour_ct_pi_pd.launch.py`
+  - `launch/parkour_ct_pid.launch.py`
 
-- **launch/**: ROS 2 Python launch files that start simulation, controllers, and the stabilization nodes. Typical launch files:
-	- [launch/parkour_pd.launch.py](launch/parkour_pd.launch.py)
-	- [launch/parkour_pi_pd.launch.py](launch/parkour_pi_pd.launch.py)
-	- [launch/parkour_pid.launch.py](launch/parkour_pid.launch.py)
-	- [launch/parkour_ct_pd.launch.py](launch/parkour_ct_pd.launch.py)
-	- [launch/parkour_ct_pi_pd.launch.py](launch/parkour_ct_pi_pd.launch.py)
-	- [launch/parkour_ct_pid.launch.py](launch/parkour_ct_pid.launch.py)
+  Each launch file selects a controller variant and initializes Gazebo, the robot model, the controller manager, and the stabilization nodes.
 
-	Each launch file configures which controller stack to use (PD / PI-PD / PID / computed-torque variations) and accepts launch arguments such as `world` to select a simulation world.
-
-- **rviz/**: RViz configuration files and displays to visualize the robot and trajectories.
-
-- **scripts/**: Python helper scripts used for logging, reading data, and generating worlds.
-	- [scripts/matlab_tf_logger.py](scripts/matlab_tf_logger.py): Logs TF and joint states in a format compatible with MATLAB analysis.
-	- [scripts/read_target_and_actual_angles.py](scripts/read_target_and_actual_angles.py): Reads and processes CSV logs for plotting or debugging.
-	- [scripts/read_target_angles.py](scripts/read_target_angles.py): Utility to read target angle sequences.
-	- **world_generators/**: Python generators that produce custom worlds for testing.
-		- [scripts/world_generators/generate_bumpy_world.py](scripts/world_generators/generate_bumpy_world.py)
-		- [scripts/world_generators/generate_custom_parkour.py](scripts/world_generators/generate_custom_parkour.py)
-		- [scripts/world_generators/generate_extreme_parkour.py](scripts/world_generators/generate_extreme_parkour.py)
-		- [scripts/world_generators/generate_high_freq_world.py](scripts/world_generators/generate_high_freq_world.py)
-		- [scripts/world_generators/generate_hilly_world.py](scripts/world_generators/generate_hilly_world.py)
-		- [scripts/world_generators/generate_street_world.py](scripts/world_generators/generate_street_world.py)
+- **scripts/**: Python helper scripts for logging, reading data, and generating custom worlds.
+  - `scripts/matlab_tf_logger.py`: Logs TF and joint-state data for MATLAB analysis.
+  - `scripts/read_target_and_actual_angles.py`: Reads recorded target and actual angle CSV logs.
+  - `scripts/read_target_angles.py`: Reads a target angle sequence from a file.
+  - `scripts/world_generators/`: Generates custom Gazebo world files for testing.
 
 - **src/**: Core C++ nodes and controller implementations.
-	- [src/computed_torque_pd.cpp](src/computed_torque_pd.cpp): Computed-torque + PD stabilizer implementation.
-	- [src/computed_torque_pi_pd.cpp](src/computed_torque_pi_pd.cpp): Computed-torque + PI-PD hybrid controller.
-	- [src/computed_torque_pid.cpp](src/computed_torque_pid.cpp): Computed-torque + PID controller variant.
-	- [src/inverse_kinematics.cpp](src/inverse_kinematics.cpp): Inverse kinematics utilities used to compute joint targets for a desired end-effector pose.
-	- [src/pd_controller.cpp](src/pd_controller.cpp): PD controller node implementation.
-	- [src/pi_pd_controller.cpp](src/pi_pd_controller.cpp): PI-PD style controller node.
-	- [src/pid_controller.cpp](src/pid_controller.cpp): PID controller node.
-	- [src/target_pose_full_rpy.cpp](src/target_pose_full_rpy.cpp): Computes full target pose with roll/pitch/yaw for end-effector tracking.
+  - `src/computed_torque_pd.cpp`: Computed-torque controller with PD feedback.
+  - `src/computed_torque_pi_pd.cpp`: Computed-torque controller with PI+PD feedback.
+  - `src/computed_torque_pid.cpp`: Computed-torque controller with PID feedback.
+  - `src/inverse_kinematics.cpp`: Inverse kinematics solver for the UR3 arm.
+  - `src/pd_controller.cpp`: PD joint controller node.
+  - `src/pi_pd_controller.cpp`: PI+PD controller node.
+  - `src/pid_controller.cpp`: PID joint controller node.
+  - `src/target_pose_full_rpy.cpp`: Publishes a full target pose with roll, pitch, and yaw.
 
-- **urdf/**: Robot description files (URDF/Xacro) for Husky + UR3 setups.
-	- [urdf/mobile_manipulator_moveit.urdf](urdf/mobile_manipulator_moveit.urdf)
-	- [urdf/mobile_manipulator.urdf.xacro](urdf/mobile_manipulator.urdf.xacro)
+- **urdf/**: Robot description files for the Husky + UR3 mobile manipulator.
+  - `urdf/mobile_manipulator_moveit.urdf`
+  - `urdf/mobile_manipulator.urdf.xacro`
 
-- **worlds/**: Gazebo/SDF world files used for simulation testing and benchmarking.
-	- [worlds/bumpy_world.sdf](worlds/bumpy_world.sdf)
-	- [worlds/extreme_disturbance.world](worlds/extreme_disturbance.world)
-	- [worlds/high_freq_bumpy.world](worlds/high_freq_bumpy.world)
-	- [worlds/hilly_world.sdf](worlds/hilly_world.sdf)
-	- [worlds/street_world.sdf](worlds/street_world.sdf)
-
+- **worlds/**: Simulation world files used to test different terrain and disturbance conditions.
+  - `worlds/bumpy_world.sdf`
+  - `worlds/extreme_disturbance.world`
+  - `worlds/high_freq_bumpy.world`
+  - `worlds/hilly_world.sdf`
+  - `worlds/street_world.sdf`
 
 ## Requirements
 
-- ROS 2 (compatible distribution)
-- ament_cmake build system
-- C++ toolchain (gcc/clang) and Eigen3
-- ROS 2 dependencies: `rclcpp`, `std_msgs`, `geometry_msgs`, `sensor_msgs`, `tf2`, `tf2_ros`, `robot_state_publisher`, `xacro`
-- Optional: `teleop_twist_keyboard` for teleoperation and Husky / UR packages installed in the workspace or system
-
+- ROS 2 Jazzy or compatible ROS 2 distribution
+- `ament_cmake` build system
+- C++ toolchain (`gcc` or `clang`)
+- `Eigen3`
+- ROS 2 packages: `rclcpp`, `std_msgs`, `geometry_msgs`, `sensor_msgs`, `tf2`, `tf2_ros`, `robot_state_publisher`, `xacro`
+- Optional: `teleop_twist_keyboard` for keyboard teleoperation
 
 ## Installation and Build
 
-1. From your workspace `src` folder, place or clone this package.
+Follow these steps to create a workspace from scratch and build the package together with its Clearpath and Universal Robots dependencies.
 
-2. Build the workspace (from workspace root):
+### 1. Create the workspace root
+
+```bash
+mkdir -p ~/ur3_ws/src
+cd ~/ur3_ws/src
+```
+
+### 2. Create the workspace source layout
+
+Your workspace source tree should contain three main folders:
+
+```text
+~/ur3_ws/src/
+  ├── clearpath_repositories/
+  │   ├── clearpath_common
+  │   ├── clearpath_config
+  │   ├── clearpath_msgs
+  │   └── clearpath_simulator
+  ├── universal_robots_repositories/
+  │   ├── Universal_Robots_Client_Library
+  │   ├── Universal_Robots_ROS2_Description
+  │   ├── Universal_Robots_ROS2_Driver
+  │   └── Universal_Robots_ROS2_GZ_Simulation
+  └── ur3_end_effector_stabilization
+```
+
+### 3. Clone Clearpath repositories
+
+```bash
+cd ~/ur3_ws/src/clearpath_repositories
+git clone <CLEARPATH_COMMON_GITHUB_LINK> clearpath_common
+git clone <CLEARPATH_CONFIG_GITHUB_LINK> clearpath_config
+git clone <CLEARPATH_MSGS_GITHUB_LINK> clearpath_msgs
+git clone <CLEARPATH_SIMULATOR_GITHUB_LINK> clearpath_simulator
+```
+
+> Replace each placeholder with the actual GitHub URL for the corresponding Clearpath repository.
+
+### 4. Clone Universal Robots repositories
+
+```bash
+cd ~/ur3_ws/src/universal_robots_repositories
+git clone <UNIVERSAL_ROBOTS_CLIENT_LIBRARY_GITHUB_LINK> Universal_Robots_Client_Library
+git clone <UNIVERSAL_ROBOTS_ROS2_DESCRIPTION_GITHUB_LINK> Universal_Robots_ROS2_Description
+git clone <UNIVERSAL_ROBOTS_ROS2_DRIVER_GITHUB_LINK> Universal_Robots_ROS2_Driver
+git clone <UNIVERSAL_ROBOTS_ROS2_GZ_SIMULATION_GITHUB_LINK> Universal_Robots_ROS2_GZ_Simulation
+```
+
+> Replace the placeholder links with the actual GitHub URLs for each Universal Robots repository.
+
+### 5. Add this package
+
+Clone or copy this package into `~/ur3_ws/src/ur3_end_effector_stabilization`.
+
+```bash
+cd ~/ur3_ws/src
+git clone <THIS_PACKAGE_GITHUB_LINK> ur3_end_effector_stabilization
+```
+
+### 6. Source ROS 2
+
+Before building, source the ROS 2 environment:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+If you are using another overlay, source that after the base ROS 2 setup.
+
+### 7. Build the workspace
+
+From the workspace root:
 
 ```bash
 cd ~/ur3_ws
-colcon build --symlink-install
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-3. Source the workspace overlay in each new shell:
+If build failures occur due to missing packages, install the missing dependencies and rerun the build.
+
+### 8. Source the workspace overlay
+
+After a successful build, source the workspace overlay in every new terminal:
 
 ```bash
 source ~/ur3_ws/install/setup.bash
 ```
 
-
 ## Quick Start — Launching Simulation
 
-Pick one of the provided launch files. For example, to start the PD controller scenario:
+### Basic launch
+
+Run a simulation and controller pipeline using one of the launch files:
 
 ```bash
 ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py
 ```
 
-To change the simulation world at launch, pass the `world` argument:
+This command loads Gazebo, spawns the mobile manipulator, starts controllers, and begins stabilization with the PD controller.
+
+### Launch with a selected world
+
+Choose a world by passing the `world` argument:
 
 ```bash
 ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py world:=bumpy_world
 ```
 
-Most launch files will spawn Gazebo (or your chosen simulator), load the robot description, start `controller_manager` and load the appropriate controllers (for example `ur_effort_controller` and `diff_drive_base_controller`), then start the stabilization nodes.
+The launch system will look for the world in `worlds/`.
 
+### Controller launch file choices
+
+- `parkour_pd.launch.py`: PD stabilization controller
+- `parkour_pi_pd.launch.py`: PI+PD stabilization controller
+- `parkour_pid.launch.py`: PID stabilization controller
+- `parkour_ct_pd.launch.py`: Computed torque + PD controller
+- `parkour_ct_pi_pd.launch.py`: Computed torque + PI+PD controller
+- `parkour_ct_pid.launch.py`: Computed torque + PID controller
+
+### Full launch commands
+
+```bash
+ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py
+ros2 launch ur3_end_effector_stabilization parkour_pi_pd.launch.py
+ros2 launch ur3_end_effector_stabilization parkour_pid.launch.py
+ros2 launch ur3_end_effector_stabilization parkour_ct_pd.launch.py
+ros2 launch ur3_end_effector_stabilization parkour_ct_pi_pd.launch.py
+ros2 launch ur3_end_effector_stabilization parkour_ct_pid.launch.py
+```
+
+### How `world:=` works
+
+When you pass `world:=<name>`, the launch file resolves that name to a file in `worlds/`.
+
+For example:
+
+```bash
+ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py world:=hilly_world
+```
+
+If you need a full path, pass the file path instead of the short name.
+
+## Maps
+
+The package includes several built-in worlds for testing different conditions.
+
+### Bumpy World
+
+A moderately uneven terrain that tests end-effector stability over bumps.
+
+![Bumpy World](images/bumpy_world.png)
+
+### Extreme Disturbance
+
+A harder test environment with large disturbances to evaluate controller robustness.
+
+![Extreme Disturbance](images/extreme_disturbance.png)
+
+### Screenshot guidance for GitHub
+
+To include screenshots on GitHub, add the image files to the repository and reference them with a relative path in Markdown:
+
+```markdown
+![Bumpy World](images/bumpy_world.png)
+```
+
+Then commit both the image and the README update.
 
 ## Monitoring and Utilities
 
-- To log TFs for MATLAB analyses, run: `ros2 run ur3_end_effector_stabilization matlab_tf_logger.py` (use `--ros-args -p use_sim_time:=true` when recording simulation data).
-- To inspect or replay saved target/actual angle CSVs, use the Python utilities in `scripts/` such as [scripts/read_target_and_actual_angles.py](scripts/read_target_and_actual_angles.py).
+- Log TF and joint-state data for later analysis:
 
+```bash
+ros2 run ur3_end_effector_stabilization matlab_tf_logger.py --ros-args -p use_sim_time:=true
+```
+
+- Inspect recorded joint angle logs:
+
+```bash
+ros2 run ur3_end_effector_stabilization read_target_and_actual_angles.py
+```
 
 ## Development Notes
 
-- The computed-torque nodes compute required joint torques using the robot model and then apply feedback via PD / PI-PD / PID laws. Tuning the gains inside [config/husky_ur3_controllers.yaml](config/husky_ur3_controllers.yaml) is typically required for different payloads and worlds.
-- The inverse kinematics implementation in [src/inverse_kinematics.cpp](src/inverse_kinematics.cpp) is used to convert desired end-effector poses (position + orientation) to joint-space targets; this is important when the mobile base moves under the arm.
-- RViz configurations under `rviz/` can be used to visualize reference trajectories and the real-time pose of the end-effector.
-
-
-## Example Commands
-
-Start PD scenario with a bumpy world:
-
-```bash
-ros2 launch ur3_end_effector_stabilization parkour_pd.launch.py world:=bumpy_world
-```
-
-Drive Husky forward via topic publish:
-
-```bash
-ros2 topic pub /diff_drive_base_controller/cmd_vel geometry_msgs/msg/TwistStamped "{twist: {linear: {x: 0.5}, angular: {z: 0.0}}}" -r 10
-```
-
-
-## Files Worth Inspecting
-
-- [src/computed_torque_pd.cpp](src/computed_torque_pd.cpp) — starting point for computed-torque behavior.
-- [src/target_pose_full_rpy.cpp](src/target_pose_full_rpy.cpp) — how target pose and RPY are computed and published.
-- [launch/parkour_ct_pd.launch.py](launch/parkour_ct_pd.launch.py) — example of a computed-torque + PD launch pipeline.
-- [config/husky_ur3_controllers.yaml](config/husky_ur3_controllers.yaml) — tuning and mapping of controllers to joints/topics.
-
+- Computed-torque controllers use the robot dynamics model plus feedback control. The package includes computed torque variants with PD, PI+PD, and PID feedback.
+- The inverse kinematics node converts Cartesian end-effector poses into joint-space commands.
+- Tuning the gains in `config/husky_ur3_controllers.yaml` is important for different worlds, payloads, and robot motion conditions.
 
 ## License
 
