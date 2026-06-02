@@ -206,35 +206,39 @@ If you need a full path, pass the file path instead of the short name.
 
 ## Maps
 
-The package includes several built-in worlds for testing different conditions.
+The package includes four built-in world files for testing different terrain and disturbance scenarios. Use the shown `world:=` names in launch commands.
 
-### Hilly World
+### Hilly World (`world:=hilly_world`)
 
-A moderately uneven terrain that tests end-effector stability over bumps.
+A moderately uneven terrain that tests end-effector stability over rolling hills.
 
-![Hilly World](world/world_images/hilly_world_ss.png)
+World file: `worlds/hilly_world.sdf`
 
-### Extreme Disturbance
+![Hilly World](worlds/world_images/hilly_world_ss.png)
 
-A harder test environment with large disturbances to evaluate controller robustness.
+### High Frequency Bumpy World (`world:=high_freq_bumpy`)
 
-![Extreme Disturbance](images/extreme_disturbance.png)
+A higher-frequency disturbance world that tests controller response to rapid terrain changes.
 
-### High Freq Bumpy
+World file: `worlds/high_freq_bumpy.world`
 
-A harder test environment with large disturbances to evaluate controller robustness.
+![High Frequency Bumpy World](worlds/world_images/high_freq_bumpy_ss.png)
 
-![Extreme Disturbance](world/world_images/high_freq_bumpy_ss.png)
+### Extreme Disturbance (`world:=extreme_disturbance`)
 
-### Screenshot guidance for GitHub
+A more aggressive disturbance environment that stresses the stabilizer and evaluates robustness.
 
-To include screenshots on GitHub, add the image files to the repository and reference them with a relative path in Markdown:
+World file: `worlds/extreme_disturbance.world`
 
-```markdown
-![Bumpy World](images/bumpy_world.png)
-```
+![Extreme Disturbance World](worlds/world_images/extreme_disturbance_ss.png)
 
-Then commit both the image and the README update.
+### Street World (`world:=street_world`)
+
+A structured road test scene for evaluating controller performance on a street-like environment.
+
+World file: `worlds/street_world.sdf`
+
+![Street World](worlds/world_images/street_world_ss.png)
 
 ## Monitoring and Utilities
 
