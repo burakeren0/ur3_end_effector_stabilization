@@ -11,7 +11,7 @@ def create_box_model(name, x, y, z, roll, pitch, yaw, sx, sy, sz, color="0.5 0.5
       <link name="link">
         <collision name="collision">
           <geometry><box><size>{sx:.4f} {sy:.4f} {sz:.4f}</size></box></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Düz rampa yüzeylerinde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><box><size>{sx:.4f} {sy:.4f} {sz:.4f}</size></box></geometry>
@@ -81,7 +81,7 @@ def generate_world():
       <link name="link">
         <collision name="collision">
           <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Zemin düzleminde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
@@ -94,7 +94,7 @@ def generate_world():
     # --- RAMPALAR ---
     # Roll (yanal yatma) eğimleri 0.15'ten 0.07'ye düşürüldü ki robot devrilmesin.
     ramps = [
-        {"name": "ramp_pitch",      "X": 8.0,  "Y": 0, "Z": 0.4, "roll": 0,     "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.5 0.5 0.5 1"},
+        {"name": "ramp_pitch",      "X": 8.0,  "Y": 0, "Z": 0.35, "roll": 0,     "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.5 0.5 0.5 1"},  # İlk giriş tümseğini azaltmak için rampayı 5 cm aşağı aldım.
         {"name": "ramp_roll_pitch", "X": 16.0, "Y": 0, "Z": 1.2, "roll": 0.07,  "pitch": -0.1, "L": 8.5, "W": 4, "H": 0.2, "color": "0.6 0.4 0.4 1"},
         {"name": "ramp_down",       "X": 24.0, "Y": 0, "Z": 1.2, "roll": -0.07, "pitch": 0.1,  "L": 8.5, "W": 4, "H": 0.2, "color": "0.4 0.6 0.4 1"}
     ]

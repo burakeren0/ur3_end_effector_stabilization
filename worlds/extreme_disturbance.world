@@ -23,7 +23,7 @@
       <link name="link">
         <collision name="collision">
           <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Zemin düzleminde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
@@ -34,11 +34,11 @@
     
     <model name="ramp_pitch">
       <static>true</static>
-      <pose>8.0000 0.0000 0.4000 0.0000 -0.1000 0.0000</pose>
+      <pose>8.0000 0.0000 0.3500 0.0000 -0.1000 0.0000</pose> <!-- İlk giriş tümseğini azaltmak için rampayı 5 cm aşağı aldım. -->
       <link name="link">
         <collision name="collision">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Düz rampa yüzeylerinde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
@@ -56,7 +56,7 @@
       <link name="link">
         <collision name="collision">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Düz rampa yüzeylerinde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
@@ -74,7 +74,7 @@
       <link name="link">
         <collision name="collision">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction></surface> <!-- Düz rampa yüzeylerinde tutunmayı artırmak için sürtünmeyi yükselttim. -->
         </collision>
         <visual name="visual">
           <geometry><box><size>8.5000 4.0000 0.2000</size></box></geometry>
@@ -88,7 +88,7 @@
     
     <model name="stone_0">
       <static>true</static>
-      <pose>7.5542 -0.0027 0.4558 0.0000 -0.1000 0.0000</pose>
+      <pose>7.5542 -0.0027 0.4058 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0234</radius></sphere></geometry>
@@ -106,7 +106,7 @@
     
     <model name="stone_1">
       <static>true</static>
-      <pose>7.0949 -1.2095 0.4097 0.0000 -0.1000 0.0000</pose>
+      <pose>7.0949 -1.2095 0.3597 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0246</radius></sphere></geometry>
@@ -124,7 +124,7 @@
     
     <model name="stone_2">
       <static>true</static>
-      <pose>5.1019 -1.3518 0.2097 0.0000 -0.1000 0.0000</pose>
+      <pose>5.1019 -1.3518 0.1597 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0384</radius></sphere></geometry>
@@ -142,7 +142,7 @@
     
     <model name="stone_3">
       <static>true</static>
-      <pose>5.5654 -0.8937 0.2562 0.0000 -0.1000 0.0000</pose>
+      <pose>5.5654 -0.8937 0.2062 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0331</radius></sphere></geometry>
@@ -160,7 +160,7 @@
     
     <model name="stone_4">
       <static>true</static>
-      <pose>8.6660 1.7245 0.5673 0.0000 -0.1000 0.0000</pose>
+      <pose>8.6660 1.7245 0.5173 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0330</radius></sphere></geometry>
@@ -178,7 +178,7 @@
     
     <model name="stone_5">
       <static>true</static>
-      <pose>8.8788 0.2408 0.5887 0.0000 -0.1000 0.0000</pose>
+      <pose>8.8788 0.2408 0.5387 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0323</radius></sphere></geometry>
@@ -196,7 +196,7 @@
     
     <model name="stone_6">
       <static>true</static>
-      <pose>4.3024 -0.5049 0.1295 0.0000 -0.1000 0.0000</pose>
+      <pose>4.3024 -0.5049 0.0795 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0210</radius></sphere></geometry>
@@ -214,7 +214,7 @@
     
     <model name="stone_7">
       <static>true</static>
-      <pose>9.9087 0.4365 0.6920 0.0000 -0.1000 0.0000</pose>
+      <pose>9.9087 0.4365 0.6420 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0392</radius></sphere></geometry>
@@ -232,7 +232,7 @@
     
     <model name="stone_8">
       <static>true</static>
-      <pose>8.4927 -0.0433 0.5499 0.0000 -0.1000 0.0000</pose>
+      <pose>8.4927 -0.0433 0.4999 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0201</radius></sphere></geometry>
@@ -250,7 +250,7 @@
     
     <model name="stone_9">
       <static>true</static>
-      <pose>5.2980 -1.6987 0.2294 0.0000 -0.1000 0.0000</pose>
+      <pose>5.2980 -1.6987 0.1794 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0259</radius></sphere></geometry>
@@ -268,7 +268,7 @@
     
     <model name="stone_10">
       <static>true</static>
-      <pose>9.0527 -0.9660 0.6061 0.0000 -0.1000 0.0000</pose>
+      <pose>9.0527 -0.9660 0.5561 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0341</radius></sphere></geometry>
@@ -286,7 +286,7 @@
     
     <model name="stone_11">
       <static>true</static>
-      <pose>5.9834 -1.6856 0.2982 0.0000 -0.1000 0.0000</pose>
+      <pose>5.9834 -1.6856 0.2482 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0398</radius></sphere></geometry>
@@ -304,7 +304,7 @@
     
     <model name="stone_12">
       <static>true</static>
-      <pose>6.9105 0.3917 0.3912 0.0000 -0.1000 0.0000</pose>
+      <pose>6.9105 0.3917 0.3412 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0204</radius></sphere></geometry>
@@ -322,7 +322,7 @@
     
     <model name="stone_13">
       <static>true</static>
-      <pose>7.1229 -0.1029 0.4125 0.0000 -0.1000 0.0000</pose>
+      <pose>7.1229 -0.1029 0.3625 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0271</radius></sphere></geometry>
@@ -340,7 +340,7 @@
     
     <model name="stone_14">
       <static>true</static>
-      <pose>9.0011 0.5678 0.6009 0.0000 -0.1000 0.0000</pose>
+      <pose>9.0011 0.5678 0.5509 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0294</radius></sphere></geometry>
@@ -358,7 +358,7 @@
     
     <model name="stone_15">
       <static>true</static>
-      <pose>11.2967 -1.0448 0.8313 0.0000 -0.1000 0.0000</pose>
+      <pose>11.2967 -1.0448 0.7813 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0237</radius></sphere></geometry>
@@ -376,7 +376,7 @@
     
     <model name="stone_16">
       <static>true</static>
-      <pose>5.2325 -0.8949 0.2228 0.0000 -0.1000 0.0000</pose>
+      <pose>5.2325 -0.8949 0.1728 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0290</radius></sphere></geometry>
@@ -394,7 +394,7 @@
     
     <model name="stone_17">
       <static>true</static>
-      <pose>8.8531 -1.3412 0.5861 0.0000 -0.1000 0.0000</pose>
+      <pose>8.8531 -1.3412 0.5361 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0385</radius></sphere></geometry>
@@ -412,7 +412,7 @@
     
     <model name="stone_18">
       <static>true</static>
-      <pose>11.2355 -0.3347 0.8251 0.0000 -0.1000 0.0000</pose>
+      <pose>11.2355 -0.3347 0.7751 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0260</radius></sphere></geometry>
@@ -430,7 +430,7 @@
     
     <model name="stone_19">
       <static>true</static>
-      <pose>10.0169 -1.2525 0.7029 0.0000 -0.1000 0.0000</pose>
+      <pose>10.0169 -1.2525 0.6529 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0370</radius></sphere></geometry>
@@ -448,7 +448,7 @@
     
     <model name="stone_20">
       <static>true</static>
-      <pose>9.1886 0.8407 0.6198 0.0000 -0.1000 0.0000</pose>
+      <pose>9.1886 0.8407 0.5698 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0241</radius></sphere></geometry>
@@ -466,7 +466,7 @@
     
     <model name="stone_21">
       <static>true</static>
-      <pose>4.6196 -1.1935 0.1613 0.0000 -0.1000 0.0000</pose>
+      <pose>4.6196 -1.1935 0.1113 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0378</radius></sphere></geometry>
@@ -484,7 +484,7 @@
     
     <model name="stone_22">
       <static>true</static>
-      <pose>7.5220 1.7219 0.4525 0.0000 -0.1000 0.0000</pose>
+      <pose>7.5220 1.7219 0.4025 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0216</radius></sphere></geometry>
@@ -502,7 +502,7 @@
     
     <model name="stone_23">
       <static>true</static>
-      <pose>7.0791 1.5812 0.4081 0.0000 -0.1000 0.0000</pose>
+      <pose>7.0791 1.5812 0.3581 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0328</radius></sphere></geometry>
@@ -520,7 +520,7 @@
     
     <model name="stone_24">
       <static>true</static>
-      <pose>11.7804 -1.1603 0.8798 0.0000 -0.1000 0.0000</pose>
+      <pose>11.7804 -1.1603 0.8298 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0242</radius></sphere></geometry>
@@ -538,7 +538,7 @@
     
     <model name="stone_25">
       <static>true</static>
-      <pose>8.3025 -1.4323 0.5308 0.0000 -0.1000 0.0000</pose>
+      <pose>8.3025 -1.4323 0.4808 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0288</radius></sphere></geometry>
@@ -556,7 +556,7 @@
     
     <model name="stone_26">
       <static>true</static>
-      <pose>10.9721 -1.0439 0.7987 0.0000 -0.1000 0.0000</pose>
+      <pose>10.9721 -1.0439 0.7487 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0235</radius></sphere></geometry>
@@ -574,7 +574,7 @@
     
     <model name="stone_27">
       <static>true</static>
-      <pose>4.2309 0.3806 0.1223 0.0000 -0.1000 0.0000</pose>
+      <pose>4.2309 0.3806 0.0723 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0322</radius></sphere></geometry>
@@ -592,7 +592,7 @@
     
     <model name="stone_28">
       <static>true</static>
-      <pose>8.9983 1.5593 0.6007 0.0000 -0.1000 0.0000</pose>
+      <pose>8.9983 1.5593 0.5507 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0382</radius></sphere></geometry>
@@ -610,7 +610,7 @@
     
     <model name="stone_29">
       <static>true</static>
-      <pose>5.1134 -0.4183 0.2109 0.0000 -0.1000 0.0000</pose>
+      <pose>5.1134 -0.4183 0.1609 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0377</radius></sphere></geometry>
@@ -628,7 +628,7 @@
     
     <model name="stone_30">
       <static>true</static>
-      <pose>10.6892 0.4416 0.7703 0.0000 -0.1000 0.0000</pose>
+      <pose>10.6892 0.4416 0.7203 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0282</radius></sphere></geometry>
@@ -646,7 +646,7 @@
     
     <model name="stone_31">
       <static>true</static>
-      <pose>5.8297 -0.5776 0.2827 0.0000 -0.1000 0.0000</pose>
+      <pose>5.8297 -0.5776 0.2327 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0361</radius></sphere></geometry>
@@ -664,7 +664,7 @@
     
     <model name="stone_32">
       <static>true</static>
-      <pose>9.5082 -0.3780 0.6518 0.0000 -0.1000 0.0000</pose>
+      <pose>9.5082 -0.3780 0.6018 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0340</radius></sphere></geometry>
@@ -682,7 +682,7 @@
     
     <model name="stone_33">
       <static>true</static>
-      <pose>11.4467 0.6885 0.8463 0.0000 -0.1000 0.0000</pose>
+      <pose>11.4467 0.6885 0.7963 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0277</radius></sphere></geometry>
@@ -700,7 +700,7 @@
     
     <model name="stone_34">
       <static>true</static>
-      <pose>10.5348 0.5327 0.7548 0.0000 -0.1000 0.0000</pose>
+      <pose>10.5348 0.5327 0.7048 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0213</radius></sphere></geometry>
@@ -718,7 +718,7 @@
     
     <model name="stone_35">
       <static>true</static>
-      <pose>5.3607 -0.6608 0.2357 0.0000 -0.1000 0.0000</pose>
+      <pose>5.3607 -0.6608 0.1857 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0238</radius></sphere></geometry>
@@ -736,7 +736,7 @@
     
     <model name="stone_36">
       <static>true</static>
-      <pose>5.2264 -0.2634 0.2222 0.0000 -0.1000 0.0000</pose>
+      <pose>5.2264 -0.2634 0.1722 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0240</radius></sphere></geometry>
@@ -754,7 +754,7 @@
     
     <model name="stone_37">
       <static>true</static>
-      <pose>6.5134 -1.2578 0.3513 0.0000 -0.1000 0.0000</pose>
+      <pose>6.5134 -1.2578 0.3013 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0269</radius></sphere></geometry>
@@ -772,7 +772,7 @@
     
     <model name="stone_38">
       <static>true</static>
-      <pose>9.0817 -0.2871 0.6090 0.0000 -0.1000 0.0000</pose>
+      <pose>9.0817 -0.2871 0.5590 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0388</radius></sphere></geometry>
@@ -790,7 +790,7 @@
     
     <model name="stone_39">
       <static>true</static>
-      <pose>4.6015 -0.3369 0.1595 0.0000 -0.1000 0.0000</pose>
+      <pose>4.6015 -0.3369 0.1095 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0398</radius></sphere></geometry>
@@ -808,7 +808,7 @@
     
     <model name="stone_40">
       <static>true</static>
-      <pose>8.2033 1.6649 0.5209 0.0000 -0.1000 0.0000</pose>
+      <pose>8.2033 1.6649 0.4709 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0394</radius></sphere></geometry>
@@ -826,7 +826,7 @@
     
     <model name="stone_41">
       <static>true</static>
-      <pose>4.3511 0.1890 0.1344 0.0000 -0.1000 0.0000</pose>
+      <pose>4.3511 0.1890 0.0844 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0279</radius></sphere></geometry>
@@ -844,7 +844,7 @@
     
     <model name="stone_42">
       <static>true</static>
-      <pose>9.4343 -1.1395 0.6444 0.0000 -0.1000 0.0000</pose>
+      <pose>9.4343 -1.1395 0.5944 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0368</radius></sphere></geometry>
@@ -862,7 +862,7 @@
     
     <model name="stone_43">
       <static>true</static>
-      <pose>7.3234 -1.5900 0.4326 0.0000 -0.1000 0.0000</pose>
+      <pose>7.3234 -1.5900 0.3826 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0375</radius></sphere></geometry>
@@ -880,7 +880,7 @@
     
     <model name="stone_44">
       <static>true</static>
-      <pose>11.8080 0.4716 0.8826 0.0000 -0.1000 0.0000</pose>
+      <pose>11.8080 0.4716 0.8326 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0313</radius></sphere></geometry>
@@ -898,7 +898,7 @@
     
     <model name="stone_45">
       <static>true</static>
-      <pose>8.0095 0.6038 0.5015 0.0000 -0.1000 0.0000</pose>
+      <pose>8.0095 0.6038 0.4515 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0287</radius></sphere></geometry>
@@ -916,7 +916,7 @@
     
     <model name="stone_46">
       <static>true</static>
-      <pose>10.6520 1.1679 0.7666 0.0000 -0.1000 0.0000</pose>
+      <pose>10.6520 1.1679 0.7166 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0253</radius></sphere></geometry>
@@ -934,7 +934,7 @@
     
     <model name="stone_47">
       <static>true</static>
-      <pose>4.6659 -0.5826 0.1660 0.0000 -0.1000 0.0000</pose>
+      <pose>4.6659 -0.5826 0.1160 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0387</radius></sphere></geometry>
@@ -952,7 +952,7 @@
     
     <model name="stone_48">
       <static>true</static>
-      <pose>6.7862 0.1082 0.3787 0.0000 -0.1000 0.0000</pose>
+      <pose>6.7862 0.1082 0.3287 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0235</radius></sphere></geometry>
@@ -970,7 +970,7 @@
     
     <model name="stone_49">
       <static>true</static>
-      <pose>5.1120 0.4786 0.2107 0.0000 -0.1000 0.0000</pose>
+      <pose>5.1120 0.4786 0.1607 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0363</radius></sphere></geometry>
@@ -988,7 +988,7 @@
     
     <model name="stone_50">
       <static>true</static>
-      <pose>9.2366 -0.0761 0.6246 0.0000 -0.1000 0.0000</pose>
+      <pose>9.2366 -0.0761 0.5746 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0266</radius></sphere></geometry>
@@ -1006,7 +1006,7 @@
     
     <model name="stone_51">
       <static>true</static>
-      <pose>7.8185 -0.3217 0.4823 0.0000 -0.1000 0.0000</pose>
+      <pose>7.8185 -0.3217 0.4323 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0235</radius></sphere></geometry>
@@ -1024,7 +1024,7 @@
     
     <model name="stone_52">
       <static>true</static>
-      <pose>8.5739 -0.0414 0.5581 0.0000 -0.1000 0.0000</pose>
+      <pose>8.5739 -0.0414 0.5081 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0247</radius></sphere></geometry>
@@ -1042,7 +1042,7 @@
     
     <model name="stone_53">
       <static>true</static>
-      <pose>4.3076 -0.9566 0.1300 0.0000 -0.1000 0.0000</pose>
+      <pose>4.3076 -0.9566 0.0800 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0376</radius></sphere></geometry>
@@ -1060,7 +1060,7 @@
     
     <model name="stone_54">
       <static>true</static>
-      <pose>7.4943 0.5360 0.4498 0.0000 -0.1000 0.0000</pose>
+      <pose>7.4943 0.5360 0.3998 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0352</radius></sphere></geometry>
@@ -1078,7 +1078,7 @@
     
     <model name="stone_55">
       <static>true</static>
-      <pose>9.2271 0.9408 0.6236 0.0000 -0.1000 0.0000</pose>
+      <pose>9.2271 0.9408 0.5736 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0322</radius></sphere></geometry>
@@ -1096,7 +1096,7 @@
     
     <model name="stone_56">
       <static>true</static>
-      <pose>9.4174 0.6137 0.6427 0.0000 -0.1000 0.0000</pose>
+      <pose>9.4174 0.6137 0.5927 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0266</radius></sphere></geometry>
@@ -1114,7 +1114,7 @@
     
     <model name="stone_57">
       <static>true</static>
-      <pose>7.4350 -0.8847 0.4438 0.0000 -0.1000 0.0000</pose>
+      <pose>7.4350 -0.8847 0.3938 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0384</radius></sphere></geometry>
@@ -1132,7 +1132,7 @@
     
     <model name="stone_58">
       <static>true</static>
-      <pose>10.4112 -0.9734 0.7424 0.0000 -0.1000 0.0000</pose>
+      <pose>10.4112 -0.9734 0.6924 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0319</radius></sphere></geometry>
@@ -1150,7 +1150,7 @@
     
     <model name="stone_59">
       <static>true</static>
-      <pose>11.6759 -0.9681 0.8693 0.0000 -0.1000 0.0000</pose>
+      <pose>11.6759 -0.9681 0.8193 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0334</radius></sphere></geometry>
@@ -1168,7 +1168,7 @@
     
     <model name="stone_60">
       <static>true</static>
-      <pose>6.5019 -1.2277 0.3502 0.0000 -0.1000 0.0000</pose>
+      <pose>6.5019 -1.2277 0.3002 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0346</radius></sphere></geometry>
@@ -1186,7 +1186,7 @@
     
     <model name="stone_61">
       <static>true</static>
-      <pose>6.0606 1.5448 0.3059 0.0000 -0.1000 0.0000</pose>
+      <pose>6.0606 1.5448 0.2559 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0357</radius></sphere></geometry>
@@ -1204,7 +1204,7 @@
     
     <model name="stone_62">
       <static>true</static>
-      <pose>6.4230 -0.9926 0.3423 0.0000 -0.1000 0.0000</pose>
+      <pose>6.4230 -0.9926 0.2923 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0387</radius></sphere></geometry>
@@ -1222,7 +1222,7 @@
     
     <model name="stone_63">
       <static>true</static>
-      <pose>10.8635 -1.0461 0.7878 0.0000 -0.1000 0.0000</pose>
+      <pose>10.8635 -1.0461 0.7378 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0360</radius></sphere></geometry>
@@ -1240,7 +1240,7 @@
     
     <model name="stone_64">
       <static>true</static>
-      <pose>5.0207 -1.1915 0.2016 0.0000 -0.1000 0.0000</pose>
+      <pose>5.0207 -1.1915 0.1516 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0206</radius></sphere></geometry>
@@ -1258,7 +1258,7 @@
     
     <model name="stone_65">
       <static>true</static>
-      <pose>9.6077 1.7048 0.6618 0.0000 -0.1000 0.0000</pose>
+      <pose>9.6077 1.7048 0.6118 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0360</radius></sphere></geometry>
@@ -1276,7 +1276,7 @@
     
     <model name="stone_66">
       <static>true</static>
-      <pose>6.2322 -0.3017 0.3231 0.0000 -0.1000 0.0000</pose>
+      <pose>6.2322 -0.3017 0.2731 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0320</radius></sphere></geometry>
@@ -1294,7 +1294,7 @@
     
     <model name="stone_67">
       <static>true</static>
-      <pose>10.0403 -1.5963 0.7052 0.0000 -0.1000 0.0000</pose>
+      <pose>10.0403 -1.5963 0.6552 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0371</radius></sphere></geometry>
@@ -1312,7 +1312,7 @@
     
     <model name="stone_68">
       <static>true</static>
-      <pose>6.7740 1.1716 0.3775 0.0000 -0.1000 0.0000</pose>
+      <pose>6.7740 1.1716 0.3275 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0289</radius></sphere></geometry>
@@ -1330,7 +1330,7 @@
     
     <model name="stone_69">
       <static>true</static>
-      <pose>4.7121 -0.3725 0.1706 0.0000 -0.1000 0.0000</pose>
+      <pose>4.7121 -0.3725 0.1206 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0395</radius></sphere></geometry>
@@ -1348,7 +1348,7 @@
     
     <model name="stone_70">
       <static>true</static>
-      <pose>11.1243 -1.5620 0.8140 0.0000 -0.1000 0.0000</pose>
+      <pose>11.1243 -1.5620 0.7640 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0360</radius></sphere></geometry>
@@ -1366,7 +1366,7 @@
     
     <model name="stone_71">
       <static>true</static>
-      <pose>9.5089 1.2651 0.6519 0.0000 -0.1000 0.0000</pose>
+      <pose>9.5089 1.2651 0.6019 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0390</radius></sphere></geometry>
@@ -1384,7 +1384,7 @@
     
     <model name="stone_72">
       <static>true</static>
-      <pose>10.3125 0.0211 0.7325 0.0000 -0.1000 0.0000</pose>
+      <pose>10.3125 0.0211 0.6825 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0383</radius></sphere></geometry>
@@ -1402,7 +1402,7 @@
     
     <model name="stone_73">
       <static>true</static>
-      <pose>10.0146 0.8311 0.7026 0.0000 -0.1000 0.0000</pose>
+      <pose>10.0146 0.8311 0.6526 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0217</radius></sphere></geometry>
@@ -1420,7 +1420,7 @@
     
     <model name="stone_74">
       <static>true</static>
-      <pose>9.4578 -1.0573 0.6468 0.0000 -0.1000 0.0000</pose>
+      <pose>9.4578 -1.0573 0.5968 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0269</radius></sphere></geometry>
@@ -1438,7 +1438,7 @@
     
     <model name="stone_75">
       <static>true</static>
-      <pose>11.4264 -0.0339 0.8443 0.0000 -0.1000 0.0000</pose>
+      <pose>11.4264 -0.0339 0.7943 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0346</radius></sphere></geometry>
@@ -1456,7 +1456,7 @@
     
     <model name="stone_76">
       <static>true</static>
-      <pose>11.7052 -1.4582 0.8723 0.0000 -0.1000 0.0000</pose>
+      <pose>11.7052 -1.4582 0.8223 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0237</radius></sphere></geometry>
@@ -1474,7 +1474,7 @@
     
     <model name="stone_77">
       <static>true</static>
-      <pose>7.6430 0.1938 0.4647 0.0000 -0.1000 0.0000</pose>
+      <pose>7.6430 0.1938 0.4147 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0345</radius></sphere></geometry>
@@ -1492,7 +1492,7 @@
     
     <model name="stone_78">
       <static>true</static>
-      <pose>5.9394 0.2686 0.2937 0.0000 -0.1000 0.0000</pose>
+      <pose>5.9394 0.2686 0.2437 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0269</radius></sphere></geometry>
@@ -1510,7 +1510,7 @@
     
     <model name="stone_79">
       <static>true</static>
-      <pose>10.0745 -0.8097 0.7086 0.0000 -0.1000 0.0000</pose>
+      <pose>10.0745 -0.8097 0.6586 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0202</radius></sphere></geometry>
@@ -1528,7 +1528,7 @@
     
     <model name="stone_80">
       <static>true</static>
-      <pose>9.3639 -0.3644 0.6374 0.0000 -0.1000 0.0000</pose>
+      <pose>9.3639 -0.3644 0.5874 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0336</radius></sphere></geometry>
@@ -1546,7 +1546,7 @@
     
     <model name="stone_81">
       <static>true</static>
-      <pose>5.0728 0.4921 0.2068 0.0000 -0.1000 0.0000</pose>
+      <pose>5.0728 0.4921 0.1568 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0280</radius></sphere></geometry>
@@ -1564,7 +1564,7 @@
     
     <model name="stone_82">
       <static>true</static>
-      <pose>4.5618 1.2946 0.1555 0.0000 -0.1000 0.0000</pose>
+      <pose>4.5618 1.2946 0.1055 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0391</radius></sphere></geometry>
@@ -1582,7 +1582,7 @@
     
     <model name="stone_83">
       <static>true</static>
-      <pose>7.2565 0.0571 0.4259 0.0000 -0.1000 0.0000</pose>
+      <pose>7.2565 0.0571 0.3759 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0288</radius></sphere></geometry>
@@ -1600,7 +1600,7 @@
     
     <model name="stone_84">
       <static>true</static>
-      <pose>10.4373 -1.1907 0.7450 0.0000 -0.1000 0.0000</pose>
+      <pose>10.4373 -1.1907 0.6950 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0382</radius></sphere></geometry>
@@ -1618,7 +1618,7 @@
     
     <model name="stone_85">
       <static>true</static>
-      <pose>4.6175 -1.4036 0.1611 0.0000 -0.1000 0.0000</pose>
+      <pose>4.6175 -1.4036 0.1111 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0345</radius></sphere></geometry>
@@ -1636,7 +1636,7 @@
     
     <model name="stone_86">
       <static>true</static>
-      <pose>8.2603 -0.1337 0.5266 0.0000 -0.1000 0.0000</pose>
+      <pose>8.2603 -0.1337 0.4766 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0319</radius></sphere></geometry>
@@ -1654,7 +1654,7 @@
     
     <model name="stone_87">
       <static>true</static>
-      <pose>6.3822 1.2308 0.3382 0.0000 -0.1000 0.0000</pose>
+      <pose>6.3822 1.2308 0.2882 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0213</radius></sphere></geometry>
@@ -1672,7 +1672,7 @@
     
     <model name="stone_88">
       <static>true</static>
-      <pose>10.5626 0.1439 0.7576 0.0000 -0.1000 0.0000</pose>
+      <pose>10.5626 0.1439 0.7076 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0395</radius></sphere></geometry>
@@ -1690,7 +1690,7 @@
     
     <model name="stone_89">
       <static>true</static>
-      <pose>5.5675 0.9322 0.2564 0.0000 -0.1000 0.0000</pose>
+      <pose>5.5675 0.9322 0.2064 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0219</radius></sphere></geometry>
@@ -1708,7 +1708,7 @@
     
     <model name="stone_90">
       <static>true</static>
-      <pose>11.3856 0.2939 0.8402 0.0000 -0.1000 0.0000</pose>
+      <pose>11.3856 0.2939 0.7902 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0316</radius></sphere></geometry>
@@ -1726,7 +1726,7 @@
     
     <model name="stone_91">
       <static>true</static>
-      <pose>9.7040 -0.7195 0.6715 0.0000 -0.1000 0.0000</pose>
+      <pose>9.7040 -0.7195 0.6215 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0229</radius></sphere></geometry>
@@ -1744,7 +1744,7 @@
     
     <model name="stone_92">
       <static>true</static>
-      <pose>7.3181 0.4419 0.4321 0.0000 -0.1000 0.0000</pose>
+      <pose>7.3181 0.4419 0.3821 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0229</radius></sphere></geometry>
@@ -1762,7 +1762,7 @@
     
     <model name="stone_93">
       <static>true</static>
-      <pose>4.3567 -1.4163 0.1350 0.0000 -0.1000 0.0000</pose>
+      <pose>4.3567 -1.4163 0.0850 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0228</radius></sphere></geometry>
@@ -1780,7 +1780,7 @@
     
     <model name="stone_94">
       <static>true</static>
-      <pose>4.2826 -0.8449 0.1275 0.0000 -0.1000 0.0000</pose>
+      <pose>4.2826 -0.8449 0.0775 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0268</radius></sphere></geometry>
@@ -1798,7 +1798,7 @@
     
     <model name="stone_95">
       <static>true</static>
-      <pose>11.6629 -0.7920 0.8680 0.0000 -0.1000 0.0000</pose>
+      <pose>11.6629 -0.7920 0.8180 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0296</radius></sphere></geometry>
@@ -1816,7 +1816,7 @@
     
     <model name="stone_96">
       <static>true</static>
-      <pose>5.8185 1.6855 0.2816 0.0000 -0.1000 0.0000</pose>
+      <pose>5.8185 1.6855 0.2316 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0332</radius></sphere></geometry>
@@ -1834,7 +1834,7 @@
     
     <model name="stone_97">
       <static>true</static>
-      <pose>11.0017 -0.0368 0.8017 0.0000 -0.1000 0.0000</pose>
+      <pose>11.0017 -0.0368 0.7517 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0342</radius></sphere></geometry>
@@ -1852,7 +1852,7 @@
     
     <model name="stone_98">
       <static>true</static>
-      <pose>8.8645 -1.4328 0.5872 0.0000 -0.1000 0.0000</pose>
+      <pose>8.8645 -1.4328 0.5372 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0276</radius></sphere></geometry>
@@ -1870,7 +1870,7 @@
     
     <model name="stone_99">
       <static>true</static>
-      <pose>11.9923 1.5645 0.9011 0.0000 -0.1000 0.0000</pose>
+      <pose>11.9923 1.5645 0.8511 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0324</radius></sphere></geometry>
@@ -1888,7 +1888,7 @@
     
     <model name="stone_100">
       <static>true</static>
-      <pose>6.8182 -0.6044 0.3819 0.0000 -0.1000 0.0000</pose>
+      <pose>6.8182 -0.6044 0.3319 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0271</radius></sphere></geometry>
@@ -1906,7 +1906,7 @@
     
     <model name="stone_101">
       <static>true</static>
-      <pose>5.9714 -0.2084 0.2970 0.0000 -0.1000 0.0000</pose>
+      <pose>5.9714 -0.2084 0.2470 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0318</radius></sphere></geometry>
@@ -1924,7 +1924,7 @@
     
     <model name="stone_102">
       <static>true</static>
-      <pose>11.4790 0.9279 0.8496 0.0000 -0.1000 0.0000</pose>
+      <pose>11.4790 0.9279 0.7996 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0275</radius></sphere></geometry>
@@ -1942,7 +1942,7 @@
     
     <model name="stone_103">
       <static>true</static>
-      <pose>5.2241 1.7842 0.2220 0.0000 -0.1000 0.0000</pose>
+      <pose>5.2241 1.7842 0.1720 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0291</radius></sphere></geometry>
@@ -1960,7 +1960,7 @@
     
     <model name="stone_104">
       <static>true</static>
-      <pose>10.4204 0.8623 0.7434 0.0000 -0.1000 0.0000</pose>
+      <pose>10.4204 0.8623 0.6934 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0298</radius></sphere></geometry>
@@ -1978,7 +1978,7 @@
     
     <model name="stone_105">
       <static>true</static>
-      <pose>7.7301 -0.3847 0.4734 0.0000 -0.1000 0.0000</pose>
+      <pose>7.7301 -0.3847 0.4234 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0354</radius></sphere></geometry>
@@ -1996,7 +1996,7 @@
     
     <model name="stone_106">
       <static>true</static>
-      <pose>5.3433 0.7140 0.2339 0.0000 -0.1000 0.0000</pose>
+      <pose>5.3433 0.7140 0.1839 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0373</radius></sphere></geometry>
@@ -2014,7 +2014,7 @@
     
     <model name="stone_107">
       <static>true</static>
-      <pose>6.6562 0.3059 0.3657 0.0000 -0.1000 0.0000</pose>
+      <pose>6.6562 0.3059 0.3157 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0310</radius></sphere></geometry>
@@ -2032,7 +2032,7 @@
     
     <model name="stone_108">
       <static>true</static>
-      <pose>6.9467 -0.0162 0.3948 0.0000 -0.1000 0.0000</pose>
+      <pose>6.9467 -0.0162 0.3448 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0220</radius></sphere></geometry>
@@ -2050,7 +2050,7 @@
     
     <model name="stone_109">
       <static>true</static>
-      <pose>7.3232 0.1765 0.4326 0.0000 -0.1000 0.0000</pose>
+      <pose>7.3232 0.1765 0.3826 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0208</radius></sphere></geometry>
@@ -2068,7 +2068,7 @@
     
     <model name="stone_110">
       <static>true</static>
-      <pose>4.9133 1.1113 0.1908 0.0000 -0.1000 0.0000</pose>
+      <pose>4.9133 1.1113 0.1408 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0269</radius></sphere></geometry>
@@ -2086,7 +2086,7 @@
     
     <model name="stone_111">
       <static>true</static>
-      <pose>5.2900 -0.5350 0.2286 0.0000 -0.1000 0.0000</pose>
+      <pose>5.2900 -0.5350 0.1786 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0200</radius></sphere></geometry>
@@ -2104,7 +2104,7 @@
     
     <model name="stone_112">
       <static>true</static>
-      <pose>5.0836 -0.7465 0.2079 0.0000 -0.1000 0.0000</pose>
+      <pose>5.0836 -0.7465 0.1579 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0263</radius></sphere></geometry>
@@ -2122,7 +2122,7 @@
     
     <model name="stone_113">
       <static>true</static>
-      <pose>11.9835 -1.1840 0.9002 0.0000 -0.1000 0.0000</pose>
+      <pose>11.9835 -1.1840 0.8502 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0215</radius></sphere></geometry>
@@ -2140,7 +2140,7 @@
     
     <model name="stone_114">
       <static>true</static>
-      <pose>5.6898 -1.6867 0.2687 0.0000 -0.1000 0.0000</pose>
+      <pose>5.6898 -1.6867 0.2187 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0275</radius></sphere></geometry>
@@ -2158,7 +2158,7 @@
     
     <model name="stone_115">
       <static>true</static>
-      <pose>12.0063 1.3327 0.9025 0.0000 -0.1000 0.0000</pose>
+      <pose>12.0063 1.3327 0.8525 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0384</radius></sphere></geometry>
@@ -2176,7 +2176,7 @@
     
     <model name="stone_116">
       <static>true</static>
-      <pose>11.9861 1.0612 0.9004 0.0000 -0.1000 0.0000</pose>
+      <pose>11.9861 1.0612 0.8504 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0344</radius></sphere></geometry>
@@ -2194,7 +2194,7 @@
     
     <model name="stone_117">
       <static>true</static>
-      <pose>5.9674 -0.8199 0.2966 0.0000 -0.1000 0.0000</pose>
+      <pose>5.9674 -0.8199 0.2466 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0213</radius></sphere></geometry>
@@ -2212,7 +2212,7 @@
     
     <model name="stone_118">
       <static>true</static>
-      <pose>9.6170 -0.0930 0.6627 0.0000 -0.1000 0.0000</pose>
+      <pose>9.6170 -0.0930 0.6127 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0300</radius></sphere></geometry>
@@ -2230,7 +2230,7 @@
     
     <model name="stone_119">
       <static>true</static>
-      <pose>8.7747 1.0696 0.5782 0.0000 -0.1000 0.0000</pose>
+      <pose>8.7747 1.0696 0.5282 0.0000 -0.1000 0.0000</pose>
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>0.0335</radius></sphere></geometry>
