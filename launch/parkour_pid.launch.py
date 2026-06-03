@@ -60,6 +60,10 @@ def launch_setup(context, *args, **kwargs):
     description_file = LaunchConfiguration("description_file")
     launch_rviz = LaunchConfiguration("launch_rviz")
     rviz_config_file = LaunchConfiguration("rviz_config_file")
+    ee_pose_logger_enabled = LaunchConfiguration("ee_pose_logger_enabled")  # Read the optional end-effector logger switch.
+    ee_pose_log_file = LaunchConfiguration("ee_pose_log_file")  # Read the end-effector CSV output path.
+    ee_pose_log_rate = LaunchConfiguration("ee_pose_log_rate")  # Read the end-effector logging frequency.
+    ee_pose_imu_topic = LaunchConfiguration("ee_pose_imu_topic")  # Read the base IMU topic used for world-relative RPY logging.
 
     # Resolve the world file path. If a relative world name is provided,
     # look under this package's `worlds` directory and append .sdf/.world if needed.
@@ -231,6 +235,27 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
+    delayed_end_effector_pose_logger = TimerAction(  # Start the pose logger after TF and target-pose publishers are available.
+        period=20.0,  # Match the controller startup delay so logging begins with active control.
+        actions=[  # Hold the logger node inside the delayed action list.
+            Node(  # Launch the installed Python logger as a ROS 2 node.
+                package="ur3_end_effector_stabilization",  # Use this package's installed executable.
+                executable="end_effector_pose_target_logger.py",  # Log target/actual XYZ and world-frame RPY.
+                output="screen",  # Show logger startup and TF errors in the launch terminal.
+                arguments=[  # Forward output, rate, and IMU launch arguments to the logger CLI.
+                    "--output-file",  # Select the CSV output path option.
+                    ee_pose_log_file,  # Use the configured CSV output path.
+                    "--rate",  # Select the logging frequency option.
+                    ee_pose_log_rate,  # Use the configured logging frequency.
+                    "--imu-topic",  # Select the base IMU topic used for world-relative RPY angles.
+                    ee_pose_imu_topic,  # Use the configured base IMU topic.
+                ],  # Finish logger CLI arguments.
+                parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],  # Timestamp samples with simulation time.
+                condition=IfCondition(ee_pose_logger_enabled),  # Allow disabling automatic logging from the launch command.
+            )  # Finish the logger node definition.
+        ],  # Finish the delayed logger action list.
+    )  # Finish the delayed logger action.
+
     return [
         robot_state_publisher_node,
         gz_sim,
@@ -244,6 +269,7 @@ def launch_setup(context, *args, **kwargs):
         delayed_target_pose,
         delayed_inverse_kinematics,
         delayed_pid_controller,
+        delayed_end_effector_pose_logger,  # Start the end-effector pose logger with the simulation by default.
     ]
 
 
@@ -308,6 +334,35 @@ def generate_launch_description():
     )
 
     declared_arguments.append(DeclareLaunchArgument("launch_rviz", default_value="true"))
+    declared_arguments.append(  # Declare whether automatic end-effector pose logging is enabled.
+        DeclareLaunchArgument(  # Create the logger enable/disable launch option.
+            "ee_pose_logger_enabled",  # Name used by LaunchConfiguration in launch_setup.
+            default_value="true",  # Enable pose logging by default.
+            choices=["true", "false"],  # Restrict the option to valid boolean strings.
+            description="Start the end-effector target/actual pose CSV logger.",  # Explain the option in --show-args output.
+        )  # Finish the logger switch argument.
+    )  # Finish appending the logger switch argument.
+    declared_arguments.append(  # Declare the CSV output path passed to the logger.
+        DeclareLaunchArgument(  # Create the logger output-file launch option.
+            "ee_pose_log_file",  # Name used by LaunchConfiguration in launch_setup.
+            default_value="/home/taylan/ur3_ws/src/ur3_end_effector_stabilization/analysis/end_effector_pose_pid_log.csv",  # Keep PID samples in a controller-specific CSV.
+            description="CSV path for end-effector target/actual pose samples.",  # Explain the output path option.
+        )  # Finish the logger output-file argument.
+    )  # Finish appending the logger output-file argument.
+    declared_arguments.append(  # Declare the logger sampling-frequency option.
+        DeclareLaunchArgument(  # Create the logger rate launch option.
+            "ee_pose_log_rate",  # Name used by LaunchConfiguration in launch_setup.
+            default_value="20.0",  # Record twenty target/actual samples per second by default.
+            description="End-effector pose logging rate in Hz.",  # Explain the sampling-rate option.
+        )  # Finish the logger rate argument.
+    )  # Finish appending the logger rate argument.
+    declared_arguments.append(  # Declare the base IMU topic used for world-relative end-effector RPY logging.
+        DeclareLaunchArgument(  # Create the logger IMU-topic launch option.
+            "ee_pose_imu_topic",  # Name used by LaunchConfiguration in launch_setup.
+            default_value="/imu_data",  # Use the Gazebo base IMU bridged by this launch file.
+            description="Base IMU topic used for world-relative end-effector roll, pitch, and yaw.",  # Explain the world-orientation source.
+        )  # Finish the logger IMU-topic argument.
+    )  # Finish appending the logger IMU-topic argument.
     declared_arguments.append(
         DeclareLaunchArgument(
             "rviz_config_file",

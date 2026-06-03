@@ -119,6 +119,7 @@ install(TARGETS
 # Install Python scripts
 # These can be run with 'ros2 run ur3_end_effector_stabilization <script_name>'
 install(PROGRAMS
+  scripts/end_effector_pose_target_logger.py  # Log end-effector target/actual pose samples for MATLAB plots.
   scripts/matlab_tf_logger.py
   scripts/read_target_angles.py
   scripts/read_target_and_actual_angles.py

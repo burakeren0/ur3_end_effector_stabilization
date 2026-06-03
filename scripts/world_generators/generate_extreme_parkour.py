@@ -24,8 +24,8 @@ def create_box_model(name, x, y, z, roll, pitch, yaw, sx, sy, sz, color="0.5 0.5
     </model>
     """
 
-# --- TAŞLAR İÇİN KÜRE (SPHERE) MODELİ ---
-def create_sphere_model(name, x, y, z, roll, pitch, yaw, radius, color="0.7 0.6 0.5 1"):
+# --- BUMPY.WORLD İLE AYNI KALIPTAKİ KÜRE TAŞ MODELİ ---
+def create_sphere_model(name, x, y, z, roll, pitch, yaw, radius):  # Taşların görünüş ve sürtünme kalıbını bumpy.world ile eşitledim.
     return f"""
     <model name="{name}">
       <static>true</static>
@@ -33,13 +33,13 @@ def create_sphere_model(name, x, y, z, roll, pitch, yaw, radius, color="0.7 0.6 
       <link name="link">
         <collision name="collision">
           <geometry><sphere><radius>{radius:.4f}</radius></sphere></geometry>
-          <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2></ode></friction></surface>
+          <surface><friction><ode><mu>100.0</mu><mu2>100.0</mu2></ode></friction></surface> <!-- Taş sürtünmesini bumpy.world ile eşitledim. -->
         </collision>
         <visual name="visual">
           <geometry><sphere><radius>{radius:.4f}</radius></sphere></geometry>
           <material>
-            <ambient>{color}</ambient>
-            <diffuse>{color}</diffuse>
+            <ambient>0.3 0.3 0.3 1</ambient> <!-- Taş ortam rengini bumpy.world ile eşitledim. -->
+            <diffuse>0.4 0.4 0.4 1</diffuse> <!-- Taş yayınık rengini bumpy.world ile eşitledim. -->
           </material>
         </visual>
       </link>
@@ -102,8 +102,10 @@ def generate_world():
     for r in ramps:
         world += create_box_model(r["name"], r["X"], r["Y"], r["Z"], r["roll"], r["pitch"], 0, r["L"], r["W"], r["H"], r["color"])
 
-    # --- YARIM KÜRE TAŞLAR ---
-    num_stones_per_ramp = 120
+    # --- BUMPY.WORLD KALIBINDA, RAMPAYA GÖMÜLÜ KÜRE TAŞLAR ---
+    num_stones_per_ramp = 120  # Mevcut extreme haritasının taş yoğunluğunu korudum.
+    min_visible_height = 0.01  # bumpy.world kalıbında taşların en az 1 cm'si yüzeyin üstünde kalır.
+    max_visible_height = 0.03  # bumpy.world kalıbında taşların en fazla 3 cm'si yüzeyin üstünde kalır.
     stone_idx = 0
     
     for r in ramps:
@@ -111,12 +113,13 @@ def generate_world():
             x_L = random.uniform(-r["L"]/2 + 0.2, r["L"]/2 - 0.2)
             y_L = random.uniform(-r["W"]/2 + 0.2, r["W"]/2 - 0.2)
             
-            radius = random.uniform(0.02, 0.04)
-            z_L = r["H"]/2
+            radius = random.uniform(0.05, 0.10)  # Taş yarıçapını bumpy.world ile aynı 5-10 cm aralığına getirdim.
+            visible_height = random.uniform(min_visible_height, max_visible_height)  # Her taşın yüzeyde görünen yüksekliğini rastgele belirledim.
+            z_L = r["H"]/2 + visible_height - radius  # Küreyi rampaya gömerek yalnızca 1-3 cm'lik kısmını görünür bıraktım.
             
             X_G, Y_G, Z_G = transform_to_global(x_L, y_L, z_L, r["X"], r["Y"], r["Z"], r["roll"], r["pitch"])
             
-            world += create_sphere_model(f"stone_{stone_idx}", X_G, Y_G, Z_G, r["roll"], r["pitch"], 0, radius, "0.7 0.6 0.5 1")
+            world += create_sphere_model(f"stone_{stone_idx}", X_G, Y_G, Z_G, r["roll"], r["pitch"], 0, radius)  # bumpy.world taş kalıbını rampaya ekledim.
             stone_idx += 1
 
     world += '</world>\n</sdf>'
