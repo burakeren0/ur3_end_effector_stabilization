@@ -253,6 +253,18 @@ ros2 run ur3_end_effector_stabilization matlab_tf_logger.py --ros-args -p use_si
 ros2 run ur3_end_effector_stabilization read_target_and_actual_angles.py
 ```
 
+
+## Example Video
+
+
+
+https://github.com/user-attachments/assets/cd9649f6-6015-4f3d-b250-394b314d95d3
+
+
+
+
+
+
 ## Development Notes
 
 - Computed-torque controllers use the robot dynamics model plus feedback control. The package includes computed torque variants with PD, PI+PD, and PID feedback.
