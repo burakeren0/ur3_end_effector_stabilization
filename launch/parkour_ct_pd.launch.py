@@ -129,6 +129,10 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         arguments=["ur_effort_controller", "-c", "/controller_manager"],
     )
+    delayed_ur_controller_spawner = TimerAction(  # Delay UR effort controller activation so torque control starts later.
+        period=50.0,  # Switch to the UR effort/torque controller 50 seconds after launch.
+        actions=[ur_controller_spawner],  # Spawn the torque controller only after the delay expires.
+    )
 
     husky_controller_spawner = Node(
         package="controller_manager",
@@ -182,7 +186,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     delayed_diff_drive_teleop = TimerAction(
-        period=5.0,
+        period=5.0,  # Start teleop 5 seconds after the simulation launch begins.
         actions=[
             ExecuteProcess(
                 cmd=[
@@ -203,7 +207,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     delayed_target_pose = TimerAction(
-        period=10.0,
+        period=65.0,  # Start target-pose generation 5 seconds after the delayed teleop process.
         actions=[
             Node(
                 package="ur3_end_effector_stabilization",
@@ -214,7 +218,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     delayed_inverse_kinematics = TimerAction(
-        period=15.0,
+        period=70.0,  # Start inverse kinematics 10 seconds after the delayed process sequence begins.
         actions=[
             Node(
                 package="ur3_end_effector_stabilization",
@@ -225,7 +229,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     delayed_computed_torque = TimerAction(
-        period=20.0,
+        period=75.0,  # Start computed-torque control 15 seconds after the delayed process sequence begins.
         actions=[
             Node(
                 package="ur3_end_effector_stabilization",
@@ -236,7 +240,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     delayed_end_effector_pose_logger = TimerAction(  # Start the pose logger after TF and target-pose publishers are available.
-        period=20.0,  # Match the controller startup delay so logging begins with active control.
+        period=75.0,  # Match the delayed controller startup so logging begins with active control.
         actions=[  # Hold the logger node inside the delayed action list.
             Node(  # Launch the installed Python logger as a ROS 2 node.
                 package="ur3_end_effector_stabilization",  # Use this package's installed executable.
@@ -261,7 +265,7 @@ def launch_setup(context, *args, **kwargs):
         gz_sim,
         gz_spawn_entity,
         joint_state_broadcaster_spawner,
-        ur_controller_spawner,
+        delayed_ur_controller_spawner,  # Start the UR effort controller at 50 seconds instead of immediately.
         husky_controller_spawner,
         delay_rviz,
         gz_sim_bridge,
